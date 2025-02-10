@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<Config xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SubmissionRegex>[1,2,3]DAE[0,1,2]\d_Programming4_[0,1]\d_[a-zA-Z]+_[a-zA-Z]+(-\d)?\.zip$</SubmissionRegex>
+  <BuildAfterReport>false</BuildAfterReport>
+  <QuickBuildAfterReport>false</QuickBuildAfterReport>
+  <OpenVSAfterReport>false</OpenVSAfterReport>
+  <VSMajorVersionNumber>17</VSMajorVersionNumber>
+  <PlatformToolsetVersion>v143</PlatformToolsetVersion>
+  <UseTempFolderForAnalysis>true</UseTempFolderForAnalysis>
+  <MinCMakeVersion />
+  <MinCodeVersion />
+  <CMakeBuildSystemGenerator>Visual Studio 17 2022</CMakeBuildSystemGenerator>
+</Config>
