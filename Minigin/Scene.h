@@ -12,12 +12,13 @@ public:
 	~Scene() = default;
 
 	void Add(std::unique_ptr<GameObject> object);
-	void Remove(std::unique_ptr<GameObject> object);
+	void Remove(GameObject* object);
 	void RemoveAll();
 
 	void Start();
 	void Update();
 	void FixedUpdate();
+	void LateUpdate();
 	void Render() const;
 
 	Scene(const Scene& other) = delete;

@@ -7,34 +7,34 @@
 
 class Texture2D;
 class Transform;
+class Scene;
 
 class GameObject final
 {
 public:
-	virtual void Start();
-	virtual void Update();
-	virtual void FixedUpdate();
-	virtual void Render() const;
+	void Start();
+	void Update();
+	void FixedUpdate();
+	void LateUpdate();
+	void Render() const;
 
 	GameObject();
-	virtual ~GameObject();
-	/*GameObject(const GameObject& other) = delete;
-	GameObject(GameObject&& other) = delete;
-	GameObject& operator=(const GameObject& other) = delete;
-	GameObject& operator=(GameObject&& other) = delete;*/
+	~GameObject();
 
 	void AddComponent(std::unique_ptr<Component> pComponent);
+	void RemoveComponent(Component* pComponent);
 
 	template<typename ComponentType>
 	ComponentType* GetComponent();
 
-	Transform* GetTransform() const { return m_pTransform; };
+	bool IsDestroyed() const { return m_IsDestroyed; }
+	Transform* GetTransform() const { return m_pTransform; }
 
 private:
+	friend class Scene;
 
-	Transform* m_pTransform{};
-	// todo: mmm, every gameobject has a texture? Is that correct?
-	std::shared_ptr<Texture2D> m_texture{};
+	bool m_IsDestroyed{ false };
+	Transform* m_pTransform{nullptr};
 	std::vector<std::unique_ptr<Component>> m_Components;
 };
 

@@ -22,6 +22,11 @@ void GameObject::AddComponent(std::unique_ptr<Component> pComponent)
 	m_Components.emplace_back(std::move(pComponent));
 }
 
+void GameObject::RemoveComponent(Component* pComponent)
+{
+	pComponent->m_Destroyed = true;
+}
+
 void GameObject::Start()
 {
 	for (auto& pComponent : m_Components)
@@ -44,6 +49,20 @@ void GameObject::FixedUpdate()
 	{
 		pComponent->FixedUpdate();
 	}
+}
+
+void GameObject::LateUpdate()
+{
+	for (auto& pComponent : m_Components)
+	{
+		pComponent->LateUpdate();
+	}
+
+	m_Components.erase(std::remove_if(m_Components.begin(), m_Components.end(),
+			[](const std::unique_ptr<Component>& pComponent)
+			{
+				return pComponent->IsDestroyed();
+			}),m_Components.end());
 }
 
 void GameObject::Render() const

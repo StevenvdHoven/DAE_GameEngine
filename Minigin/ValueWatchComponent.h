@@ -2,38 +2,95 @@
 #include <string>
 #include "Component.h"
 #include <functional>
+#include <vector>
+#include <type_traits>
 
 template<typename ValueType, typename CallBack>
 class ValueWatchComponent final : public Component
 {
 public:
-    ValueWatchComponent(ValueType& watchValue, CallBack callEvent);
+	ValueWatchComponent();
+	ValueWatchComponent(ValueType* watchValue);
+	ValueWatchComponent(ValueType* watchValue, CallBack callEvent);
 
-    void Update() override;
+	void SetWatchValue(ValueType* watchValue);
+	void AddListener(CallBack callEvent);
+	void RemoveListener(CallBack callEvent);
+	void Update() override;
 
 private:
-    ValueType& m_WatchValue;
-    ValueType m_OldValue;
-    CallBack m_CallEvent;
+	ValueType* m_WatchValue;
+	ValueType m_OldValue;
+	std::vector<CallBack> m_Events;
+	bool m_Filled{false};
+
 };
 
+template<typename ValueType, typename CallBack>
+inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent():
+	m_WatchValue{nullptr}
+{
+}
 
 template<typename ValueType, typename CallBack>
-inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(ValueType& watchValue, CallBack callEvent):
-    m_WatchValue{ watchValue },
-    m_OldValue{ m_WatchValue },
-    m_CallEvent{ callEvent }
+inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(ValueType* watchValue):
+	m_WatchValue{ watchValue },
+	m_OldValue{ *m_WatchValue }
+	
 {
+}
+
+template<typename ValueType, typename CallBack>
+inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(ValueType* watchValue, CallBack callEvent):
+	m_WatchValue{ watchValue },
+	m_OldValue{ *m_WatchValue },
+	m_Filled{ true }
+{
+	m_Events.emplace_back(callEvent);
+}
+
+template<typename ValueType, typename CallBack>
+inline void ValueWatchComponent<ValueType, CallBack>::SetWatchValue(ValueType* watchValue)
+{
+	m_WatchValue = watchValue;
+	m_OldValue = *m_WatchValue;
+
+	if (!m_Filled && m_Events.size() > 0) m_Filled = true;
+}
+
+template<typename ValueType, typename CallBack>
+inline void ValueWatchComponent<ValueType, CallBack>::AddListener(CallBack callEvent)
+{
+	m_Events.emplace_back(callEvent);
+
+	
+	if (!m_Filled) m_Filled = true;
+}
+
+template<typename ValueType, typename CallBack>
+inline void ValueWatchComponent<ValueType, CallBack>::RemoveListener(CallBack callEvent)
+{
+	if (m_Events.size() <= 0) return;
+
+	auto it{ std::find(m_Events.begin(), m_Events.end(), callEvent) };
+	if (it == m_Events.end()) return;
+
+	m_Events.erase(it);
 }
 
 template<typename ValueType, typename CallBack>
 inline void ValueWatchComponent<ValueType, CallBack>::Update()
 {
-    if (m_WatchValue != m_OldValue)
-    {
-        m_CallEvent(m_WatchValue);
-    }
-    m_OldValue = m_WatchValue;
+	if (!m_Filled) return;
+
+	if (*m_WatchValue != m_OldValue)
+	{
+		for (CallBack callBack : m_Events)
+		{
+			callBack(*m_WatchValue);
+		}
+	}
+	m_OldValue = *m_WatchValue;
 }
 
 

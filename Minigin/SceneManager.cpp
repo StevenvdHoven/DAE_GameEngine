@@ -25,6 +25,14 @@ void SceneManager::FixedUpdate()
 	}
 }
 
+void SceneManager::LateUpdate()
+{
+	for (auto& scene : m_Scenes)
+	{
+		scene->LateUpdate();
+	}
+}
+
 void SceneManager::Render()
 {
 	for (const auto& scene : m_Scenes)
@@ -35,8 +43,16 @@ void SceneManager::Render()
 
 Scene* SceneManager::CreateScene(const std::string& name)
 {
+	
+
 	auto scene = std::make_unique<Scene>(name);
 	Scene* rawPtr = scene.get();
 	m_Scenes.push_back(std::move(scene));
+
+	if (m_pActiveScene == nullptr)
+	{
+		m_pActiveScene = rawPtr;
+	}
+
 	return rawPtr;
 }
