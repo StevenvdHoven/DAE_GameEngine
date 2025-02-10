@@ -1,24 +1,55 @@
 #include <string>
 #include "GameObject.h"
+#include "Transform.h"
 #include "ResourceManager.h"
 #include "Renderer.h"
+#include "Component.h"
 
-dae::GameObject::~GameObject() = default;
-
-void dae::GameObject::Update(){}
-
-void dae::GameObject::Render() const
+GameObject::GameObject()
 {
-	const auto& pos = m_transform.GetPosition();
-	Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
+	auto transform{ std::make_unique<Transform>() };
+	m_pTransform = transform.get();
+	AddComponent(std::move(transform));
 }
 
-void dae::GameObject::SetTexture(const std::string& filename)
+GameObject::~GameObject() = default;
+
+void GameObject::AddComponent(std::unique_ptr<Component> pComponent)
 {
-	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
+	pComponent->m_pGameObject = this;
+	pComponent->m_pTransform = m_pTransform;
+
+	m_Components.emplace_back(std::move(pComponent));
 }
 
-void dae::GameObject::SetPosition(float x, float y)
+void GameObject::Start()
 {
-	m_transform.SetPosition(x, y, 0.0f);
+	for (auto& pComponent : m_Components)
+	{
+		pComponent->Start();
+	}
+}
+
+void GameObject::Update()
+{
+	for(auto& pComponent : m_Components)
+	{
+		pComponent->Update();
+	}
+}
+
+void GameObject::FixedUpdate()
+{
+	for (auto& pComponent : m_Components)
+	{
+		pComponent->FixedUpdate();
+	}
+}
+
+void GameObject::Render() const
+{
+	for (auto& pComponent : m_Components)
+	{
+		pComponent->Render();
+	}
 }

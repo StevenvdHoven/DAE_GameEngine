@@ -1,33 +1,37 @@
 #pragma once
-#include "SceneManager.h"
+#include <string>
+#include <xmemory>
+#include <vector>
+#include "GameObject.h"
 
-namespace dae
+class Scene final
 {
-	class GameObject;
-	class Scene final
-	{
-		friend Scene& SceneManager::CreateScene(const std::string& name);
-	public:
-		void Add(std::shared_ptr<GameObject> object);
-		void Remove(std::shared_ptr<GameObject> object);
-		void RemoveAll();
+	//friend Scene& SceneManager::CreateScene(const std::string& name);
+public:
+	explicit Scene(const std::string& name);
+	~Scene() = default;
 
-		void Update();
-		void Render() const;
+	void Add(std::unique_ptr<GameObject> object);
+	void Remove(std::unique_ptr<GameObject> object);
+	void RemoveAll();
 
-		~Scene();
-		Scene(const Scene& other) = delete;
-		Scene(Scene&& other) = delete;
-		Scene& operator=(const Scene& other) = delete;
-		Scene& operator=(Scene&& other) = delete;
+	void Start();
+	void Update();
+	void FixedUpdate();
+	void Render() const;
 
-	private: 
-		explicit Scene(const std::string& name);
+	Scene(const Scene& other) = delete;
+	Scene(Scene&& other) = delete;
+	Scene& operator=(const Scene& other) = delete;
+	Scene& operator=(Scene&& other) = delete;
 
-		std::string m_name;
-		std::vector < std::shared_ptr<GameObject>> m_objects{};
+private:
+	
 
-		static unsigned int m_idCounter; 
-	};
+	std::string m_name;
+	std::vector<std::unique_ptr<GameObject>> m_objects{};
 
-}
+	static unsigned int m_idCounter;
+};
+
+

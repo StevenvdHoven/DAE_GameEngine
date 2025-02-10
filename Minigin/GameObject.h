@@ -1,31 +1,54 @@
 #pragma once
 #include <memory>
-#include "Transform.h"
+#include <vector>
+#include <algorithm>
+#include "Component.h"
 
-namespace dae
+
+class Texture2D;
+class Transform;
+
+class GameObject final
 {
-	class Texture2D;
+public:
+	virtual void Start();
+	virtual void Update();
+	virtual void FixedUpdate();
+	virtual void Render() const;
 
-	// todo: this should become final.
-	class GameObject 
+	GameObject();
+	virtual ~GameObject();
+	/*GameObject(const GameObject& other) = delete;
+	GameObject(GameObject&& other) = delete;
+	GameObject& operator=(const GameObject& other) = delete;
+	GameObject& operator=(GameObject&& other) = delete;*/
+
+	void AddComponent(std::unique_ptr<Component> pComponent);
+
+	template<typename ComponentType>
+	ComponentType* GetComponent();
+
+	Transform* GetTransform() const { return m_pTransform; };
+
+private:
+
+	Transform* m_pTransform{};
+	// todo: mmm, every gameobject has a texture? Is that correct?
+	std::shared_ptr<Texture2D> m_texture{};
+	std::vector<std::unique_ptr<Component>> m_Components;
+};
+
+template<typename ComponentType>
+inline ComponentType* GameObject::GetComponent()
+{
+	for (auto& pComponent : m_Components)
 	{
-	public:
-		virtual void Update();
-		virtual void Render() const;
+		ComponentType* type = dynamic_cast<ComponentType*>(pComponent.get());
+		if (type != nullptr)
+		{
+			return type;
+		}
+	}
 
-		void SetTexture(const std::string& filename);
-		void SetPosition(float x, float y);
-
-		GameObject() = default;
-		virtual ~GameObject();
-		GameObject(const GameObject& other) = delete;
-		GameObject(GameObject&& other) = delete;
-		GameObject& operator=(const GameObject& other) = delete;
-		GameObject& operator=(GameObject&& other) = delete;
-
-	private:
-		Transform m_transform{};
-		// todo: mmm, every gameobject has a texture? Is that correct?
-		std::shared_ptr<Texture2D> m_texture{};
-	};
+	return nullptr;
 }

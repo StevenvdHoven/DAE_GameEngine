@@ -1,25 +1,42 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-void dae::SceneManager::Update()
+void SceneManager::Start()
 {
-	for(auto& scene : m_scenes)
+	for (auto& scene : m_Scenes)
+	{
+		scene->Start();
+	}
+}
+
+void SceneManager::Update()
+{
+	for(auto& scene : m_Scenes)
 	{
 		scene->Update();
 	}
 }
 
-void dae::SceneManager::Render()
+void SceneManager::FixedUpdate()
 {
-	for (const auto& scene : m_scenes)
+	for (auto& scene : m_Scenes)
+	{
+		scene->FixedUpdate();
+	}
+}
+
+void SceneManager::Render()
+{
+	for (const auto& scene : m_Scenes)
 	{
 		scene->Render();
 	}
 }
 
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
+Scene* SceneManager::CreateScene(const std::string& name)
 {
-	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
-	m_scenes.push_back(scene);
-	return *scene;
+	auto scene = std::make_unique<Scene>(name);
+	Scene* rawPtr = scene.get();
+	m_Scenes.push_back(std::move(scene));
+	return rawPtr;
 }
