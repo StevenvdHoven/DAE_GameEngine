@@ -1,8 +1,7 @@
 #include "Transform.h"
 
-void Transform::SetPosition(const float x, const float y, const float z)
+void Transform::SetPosition(const float x, const float y)
 {
 	m_position.x = x;
 	m_position.y = y;
-	m_position.z = z;
 }

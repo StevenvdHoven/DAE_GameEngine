@@ -50,7 +50,7 @@ void TextRenderer::SetText(const std::string& text)
 
 void TextRenderer::SetPosition(const float x, const float y)
 {
-	GetTransform()->SetPosition(x, y, 0.0f);
+	GetTransform()->SetPosition(x, y);
 }
 
 
