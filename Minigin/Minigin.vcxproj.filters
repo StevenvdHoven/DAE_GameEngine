@@ -70,7 +70,7 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="FPSCounterComponent.h">
-      <Filter>DataTypes</Filter>
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -123,7 +123,7 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="FPSCounterComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

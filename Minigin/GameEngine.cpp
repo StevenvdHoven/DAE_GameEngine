@@ -90,7 +90,7 @@ void GameEngine::Run(const std::function<void()>& load)
 	sceneManager.Start();
 
 	// todo: this update loop could use some work.
-	const int ms_per_frame{ 1000 / 60 };
+	const int ms_per_frame{ 1000 / 144 };
 	const float fixed_time_step{ .02f };
 	bool doContinue = true;
 	auto last_time = std::chrono::high_resolution_clock::now();
