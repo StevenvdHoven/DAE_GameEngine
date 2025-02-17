@@ -4,14 +4,15 @@
 #include <functional>
 #include <vector>
 #include <type_traits>
+#include <concepts>
 
 template<typename ValueType, typename CallBack>
 class ValueWatchComponent final : public Component
 {
 public:
-	ValueWatchComponent();
-	ValueWatchComponent(ValueType* watchValue);
-	ValueWatchComponent(ValueType* watchValue, CallBack callEvent);
+	ValueWatchComponent(GameObject* pOwner);
+	ValueWatchComponent(GameObject* pOwner,ValueType* watchValue);
+	ValueWatchComponent(GameObject* pOwner,ValueType* watchValue, CallBack callEvent);
 
 	void SetWatchValue(ValueType* watchValue);
 	void AddListener(CallBack callEvent);
@@ -27,13 +28,15 @@ private:
 };
 
 template<typename ValueType, typename CallBack>
-inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent():
+inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(GameObject* pOwner):
+	Component{ pOwner },
 	m_WatchValue{nullptr}
 {
 }
 
 template<typename ValueType, typename CallBack>
-inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(ValueType* watchValue):
+inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(GameObject* pOwner, ValueType* watchValue):
+	Component{ pOwner },
 	m_WatchValue{ watchValue },
 	m_OldValue{ *m_WatchValue }
 	
@@ -41,13 +44,16 @@ inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(ValueType* 
 }
 
 template<typename ValueType, typename CallBack>
-inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(ValueType* watchValue, CallBack callEvent):
+inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(GameObject* pOwner, ValueType* watchValue, CallBack callEvent):
+	Component{ pOwner },
 	m_WatchValue{ watchValue },
 	m_OldValue{ *m_WatchValue },
 	m_Filled{ true }
 {
 	m_Events.emplace_back(callEvent);
 }
+
+
 
 template<typename ValueType, typename CallBack>
 inline void ValueWatchComponent<ValueType, CallBack>::SetWatchValue(ValueType* watchValue)

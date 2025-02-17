@@ -101,22 +101,23 @@ void GameEngine::Run(const std::function<void()>& load)
 	{
 		const auto current_time = std::chrono::high_resolution_clock::now();
 		const float delta_time = std::chrono::duration<float>(current_time - last_time).count();
+
 		time.m_DeltaTime = delta_time;
 		last_time = current_time;
 		lag += delta_time;
 
+		doContinue = input.ProcessInput();
 		
 		while (lag >= fixed_time_step)
 		{
 			sceneManager.FixedUpdate();
 			lag -= fixed_time_step;
 		}
-
-
-		doContinue = input.ProcessInput();
+		
 		sceneManager.Update();
 		sceneManager.LateUpdate();
 		renderer.Render();
+
 		const auto sleep_time = current_time + std::chrono::milliseconds(ms_per_frame) - std::chrono::high_resolution_clock::now();
 		std::this_thread::sleep_for(sleep_time);
 	}

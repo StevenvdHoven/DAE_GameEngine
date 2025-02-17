@@ -6,6 +6,11 @@
 #include <iomanip>
 #include "GameObject.h"
 
+FPSCounterComponent::FPSCounterComponent(GameObject* pOwner):
+	Component(pOwner)
+{
+}
+
 void FPSCounterComponent::Start()
 {
 	m_pTextRenderer = GetGameObject()->GetComponent<TextRenderer>();

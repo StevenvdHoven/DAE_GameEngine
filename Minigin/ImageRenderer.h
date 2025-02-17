@@ -4,10 +4,11 @@
 
 
 class Texture2D;
+class GameObject;
 class ImageRenderer final : public Component
 {
 public:
-	ImageRenderer(const std::string& imagePath);
+	ImageRenderer(GameObject* pOwner, const std::string& imagePath);
 
 	void Update() override;
 	void Render() const override;

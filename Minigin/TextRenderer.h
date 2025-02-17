@@ -14,7 +14,7 @@ public:
 	void SetText(const std::string& text);
 	void SetPosition(float x, float y);
 
-	TextRenderer(const std::string& text, Font* font);
+	TextRenderer(GameObject* pOwner,const std::string& text, Font* font);
 	virtual ~TextRenderer() = default;
 	TextRenderer(const TextRenderer& other) = delete;
 	TextRenderer(TextRenderer&& other) = delete;

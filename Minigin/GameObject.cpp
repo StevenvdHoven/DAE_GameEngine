@@ -7,24 +7,14 @@
 
 GameObject::GameObject()
 {
-	auto transform{ std::make_unique<Transform>() };
-	m_pTransform = transform.get();
-	AddComponent(std::move(transform));
+	m_pTransform = AddComponent<Transform>();
 }
 
 GameObject::~GameObject() = default;
 
-void GameObject::AddComponent(std::unique_ptr<Component> pComponent)
-{
-	pComponent->m_pGameObject = this;
-	pComponent->m_pTransform = m_pTransform;
-
-	m_Components.emplace_back(std::move(pComponent));
-}
-
 void GameObject::RemoveComponent(Component* pComponent)
 {
-	pComponent->m_Destroyed = true;
+	pComponent->Destroy(pComponent);
 }
 
 void GameObject::Start()

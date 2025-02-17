@@ -21,7 +21,9 @@ public:
 	GameObject();
 	~GameObject();
 
-	void AddComponent(std::unique_ptr<Component> pComponent);
+	template<typename ComponentType, typename... Args>
+	ComponentType* AddComponent(Args&&... args);
+
 	void RemoveComponent(Component* pComponent);
 
 	template<typename ComponentType>
@@ -37,6 +39,16 @@ private:
 	Transform* m_pTransform{nullptr};
 	std::vector<std::unique_ptr<Component>> m_Components;
 };
+
+template<typename ComponentType, typename ...Args>
+inline ComponentType* GameObject::AddComponent(Args&&... args)
+{
+	auto pComponent = std::make_unique<ComponentType>(this,std::forward<Args>(args)...);
+	auto rawPtr = pComponent.get();	
+
+	m_Components.emplace_back(std::move(pComponent));
+	return rawPtr;
+}
 
 template<typename ComponentType>
 inline ComponentType* GameObject::GetComponent()

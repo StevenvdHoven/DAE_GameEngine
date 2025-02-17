@@ -7,6 +7,7 @@ class TextRenderer;
 class FPSCounterComponent final : public Component
 {
 public:
+	FPSCounterComponent(GameObject* pOwner);
 	void Start() override;
 	void Update() override;
 
