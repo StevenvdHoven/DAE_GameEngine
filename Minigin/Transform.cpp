@@ -19,6 +19,10 @@ void Transform::SetPosition(const float x, const float y)
 	m_LocalPosition.y = y;
 }
 
+void Transform::SetParent(GameObject* pParent)
+{
+}
+
 void Transform::SetPositionDirty(bool flag)
 {
 	m_PositionIsDirty = flag;
@@ -42,8 +46,10 @@ void Transform::CaculateWorldPosition()
 
 void Transform::AddChild(GameObject* pChild)
 {
+	m_pChildren.emplace_back(pChild);
 }
 
 void Transform::RemoveChild(GameObject* pChild)
 {
+	m_pChildren.erase(std::remove(m_pChildren.begin(), m_pChildren.end(), pChild), m_pChildren.end());
 }
