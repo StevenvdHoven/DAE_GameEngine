@@ -48,6 +48,10 @@ void Transform::SetParent(GameObject* pParent, bool keepWorldPosition)
 	if (m_pParent) m_pParent->GetTransform()->AddChild(GetGameObject());
 }
 
+void Transform::SetParent(GameObject* pParent)
+{
+}
+
 void Transform::SetPositionDirty(bool flag)
 {
 	m_PositionIsDirty = flag;
