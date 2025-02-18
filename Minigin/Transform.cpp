@@ -1,22 +1,21 @@
 #include "Transform.h"
 #include "GameObject.h"
 
-Transform::Transform(GameObject* pOwner) : 
+Transform::Transform(GameObject* pOwner) :
 	Component(pOwner),
 	m_LocalPosition{},
 	m_WorldPosition{},
 	m_pParent{ nullptr },
 	m_PositionIsDirty{ false }
 {
-	
+
 }
 
 void Transform::Update()
 {
-	if (m_PositionIsDirty)
-	{
-		CaculateWorldPosition();
-	}
+
+	CaculateWorldPosition();
+
 }
 
 void Transform::SetLocalPosition(const glm::vec2& pos)
@@ -33,23 +32,19 @@ void Transform::SetLocalPosition(const float x, const float y)
 
 void Transform::SetParent(GameObject* pParent, bool keepWorldPosition)
 {
-	if (IsChild(pParent) || pParent == GetGameObject() || pParent == pParent)
+	if (IsChild(pParent) || pParent == GetGameObject() || m_pParent == pParent)
 		return;
 	if (pParent == nullptr)
 		SetLocalPosition(GetWorldLocation());
 	else
 	{
-		if(keepWorldPosition)
+		if (keepWorldPosition)
 			SetLocalPosition(GetWorldLocation() - pParent->GetTransform()->GetWorldLocation());
 		SetPositionDirty();
 	}
 	if (m_pParent) m_pParent->GetTransform()->RemoveChild(GetGameObject());
 	m_pParent = pParent;
 	if (m_pParent) m_pParent->GetTransform()->AddChild(GetGameObject());
-}
-
-void Transform::SetParent(GameObject* pParent)
-{
 }
 
 void Transform::SetPositionDirty(bool flag)

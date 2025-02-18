@@ -17,5 +17,8 @@ void ImageRenderer::Update()
 void ImageRenderer::Render() const
 {
 	const Transform* transform{ GetTransform() };
-	Renderer::GetInstance().RenderTexture(*m_pTexture, transform->GetLocalPosition().x, transform->GetLocalPosition().y);
+
+	auto pos{ transform->GetWorldLocation() };
+
+	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
 }

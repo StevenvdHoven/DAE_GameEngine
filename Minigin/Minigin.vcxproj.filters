@@ -72,6 +72,9 @@
     <ClInclude Include="FPSCounterComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="RotatorComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -123,6 +126,9 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="FPSCounterComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RotatorComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

@@ -11,17 +11,12 @@ public:
 
 	void Update() override;
 
-	glm::vec2 GetWorldLocation()
-	{
-		if (m_PositionIsDirty)
-			CaculateWorldPosition();
-		return m_WorldPosition;
-	}
+	glm::vec2 GetWorldLocation() const { return m_WorldPosition; }
 	glm::vec2 GetLocalPosition() const { return m_LocalPosition; }
 	void SetLocalPosition(const glm::vec2& pos);
 	void SetLocalPosition(float x, float y);
 
-	void SetParent(GameObject* pParent, bool keepWorldPosition);
+	void SetParent(GameObject* pParent, bool keepWorldPosition = false);
 private:
 	void SetPositionDirty(bool flag = true);
 	void CaculateWorldPosition();
