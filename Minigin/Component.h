@@ -27,7 +27,6 @@ public:
 
     bool IsDestroyed() const { return m_Destroyed; }
     GameObject* GetGameObject() const { return m_pGameObject; }
-    Transform* GetTransform() const { return m_pTransform; }
 
 protected:
     explicit Component(GameObject* pOwner);
@@ -35,7 +34,6 @@ protected:
 private:
     
     GameObject* m_pGameObject = nullptr;
-    Transform* m_pTransform = nullptr;
     bool m_Destroyed{ false };
 };
 

@@ -75,6 +75,9 @@
     <ClInclude Include="RotatorComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="RotatorComponent.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

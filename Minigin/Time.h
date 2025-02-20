@@ -1,25 +1,29 @@
 #pragma once
 #include "Singleton.h"
 
-class GameEngine;
-class Time final : public Singleton<Time>
+namespace Engine
 {
-public:
-	float timeScale = 1;
-	float fixedTimeScale = 1;
+	class GameEngine;
 
-	float GetDeltaTime() { return m_DeltaTime * timeScale; }
-	float GetFixedDeltaTime() { return m_FixedDeltaTime * m_FixedDeltaTime; }
+	class Time final : public Singleton<Time>
+	{
+	public:
+		float timeScale = 1;
+		float fixedTimeScale = 1;
 
-	float GetDelta() { return m_DeltaTime; }
+		float GetDeltaTime() { return m_DeltaTime * timeScale; }
+		float GetFixedDeltaTime() { return m_FixedDeltaTime * m_FixedDeltaTime; }
 
-private:
-	friend class Singleton<Time>;
-	friend class GameEngine;
-	Time() = default;
+		float GetDelta() { return m_DeltaTime; }
 
-	float m_DeltaTime = 0.f;
-	float m_FixedDeltaTime = 0.f;
+	private:
+		friend class Singleton<Time>;
+		friend class GameEngine;
+		Time() = default;
 
-};
+		float m_DeltaTime = 0.f;
+		float m_FixedDeltaTime = 0.f;
+
+	};
+}
 

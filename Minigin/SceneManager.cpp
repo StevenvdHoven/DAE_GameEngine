@@ -1,7 +1,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-void SceneManager::Start()
+void Engine::SceneManager::Start()
 {
 	for (auto& scene : m_Scenes)
 	{
@@ -9,7 +9,7 @@ void SceneManager::Start()
 	}
 }
 
-void SceneManager::Update()
+void Engine::SceneManager::Update()
 {
 	for(auto& scene : m_Scenes)
 	{
@@ -17,7 +17,7 @@ void SceneManager::Update()
 	}
 }
 
-void SceneManager::FixedUpdate()
+void Engine::SceneManager::FixedUpdate()
 {
 	for (auto& scene : m_Scenes)
 	{
@@ -25,7 +25,7 @@ void SceneManager::FixedUpdate()
 	}
 }
 
-void SceneManager::LateUpdate()
+void Engine::SceneManager::LateUpdate()
 {
 	for (auto& scene : m_Scenes)
 	{
@@ -33,7 +33,7 @@ void SceneManager::LateUpdate()
 	}
 }
 
-void SceneManager::Render()
+void Engine::SceneManager::Render()
 {
 	for (const auto& scene : m_Scenes)
 	{
@@ -41,7 +41,7 @@ void SceneManager::Render()
 	}
 }
 
-Scene* SceneManager::CreateScene(const std::string& name)
+Scene* Engine::SceneManager::CreateScene(const std::string& name)
 {
 	
 

@@ -5,6 +5,9 @@
 #include "Font.h"
 #include "Texture2D.h"
 #include "Transform.h"
+#include "GameObject.h"
+
+using namespace Engine;
 
 TextRenderer::TextRenderer(GameObject* pOwner, const std::string& text, Font* font):
 	Component{pOwner}, m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
@@ -36,7 +39,7 @@ void TextRenderer::Render() const
 {
 	if (m_textTexture != nullptr)
 	{
-		const auto& pos = GetTransform()->GetLocalPosition();
+		const auto& pos = GetGameObject()->GetTransform()->GetLocalPosition();
 		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}
 }
@@ -50,7 +53,7 @@ void TextRenderer::SetText(const std::string& text)
 
 void TextRenderer::SetPosition(const float x, const float y)
 {
-	GetTransform()->SetLocalPosition(x, y);
+	GetGameObject()->GetTransform()->SetLocalPosition(x, y);
 }
 
 

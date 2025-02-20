@@ -3,9 +3,9 @@
 #include "Transform.h"
 #include "Time.h"
 
+using namespace Engine;
 
-
-RotatorComponent::RotatorComponent(GameObject* pOwner, const glm::vec2& center, bool clockWise, float rotationDistance, float angle, float speed):
+RotatorComponent::RotatorComponent(GameObject* pOwner, const Vector2& center, bool clockWise, float rotationDistance, float angle, float speed):
 	Component{ pOwner },
 	m_Center{ center },
 	m_ClockWise{ clockWise },
@@ -22,6 +22,6 @@ void RotatorComponent::Update()
 	else
 		m_Angle += m_Speed * Time::GetInstance().GetDeltaTime();
 	
-	GetGameObject()->GetTransform()->SetLocalPosition(m_Center + glm::vec2{ cos(m_Angle) * m_RotationDistance, sin(m_Angle) * m_RotationDistance });
+	GetGameObject()->GetTransform()->SetLocalPosition(m_Center + Vector2{ cos(m_Angle) * m_RotationDistance, sin(m_Angle) * m_RotationDistance });
 }
 

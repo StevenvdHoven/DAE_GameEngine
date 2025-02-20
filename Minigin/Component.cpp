@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "SceneManager.h"
 
+using namespace Engine;
+
 void Component::Destroy(GameObject* pGameObject)
 {
 	SceneManager::GetInstance().GetActiveScene()->Remove(pGameObject);
@@ -20,7 +22,6 @@ void Component::Destroy(Component* pComponent)
 
 Component::Component(GameObject* pOwner):
 	m_pGameObject{ pOwner },
-	m_pTransform{ pOwner->GetTransform() },
 	m_Destroyed{ false }
 {
 }

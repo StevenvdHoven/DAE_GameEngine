@@ -8,7 +8,7 @@
 
 namespace fs = std::filesystem;
 
-void ResourceManager::Init(const std::filesystem::path& dataPath)
+void Engine::ResourceManager::Init(const std::filesystem::path& dataPath)
 {
 	m_dataPath = dataPath;
 
@@ -18,7 +18,7 @@ void ResourceManager::Init(const std::filesystem::path& dataPath)
 	}
 }
 
-Texture2D* ResourceManager::LoadTexture(const std::string& file)
+Texture2D* Engine::ResourceManager::LoadTexture(const std::string& file)
 {
 	const auto fullPath = m_dataPath/file;
 	const auto filename = fs::path(fullPath).filename().string();
@@ -27,7 +27,7 @@ Texture2D* ResourceManager::LoadTexture(const std::string& file)
 	return m_loadedTextures.at(filename).get();
 }
 
-Font* ResourceManager::LoadFont(const std::string& file, uint8_t size)
+Font* Engine::ResourceManager::LoadFont(const std::string& file, uint8_t size)
 {
 	const auto fullPath = m_dataPath/file;
 	const auto filename = fs::path(fullPath).filename().string();
@@ -36,22 +36,3 @@ Font* ResourceManager::LoadFont(const std::string& file, uint8_t size)
 		m_loadedFonts.insert(std::pair(key,std::make_unique<Font>(fullPath.string(), size)));
 	return m_loadedFonts.at(key).get();
 }
-
-//void ResourceManager::UnloadUnusedResources()
-//{
-//	for (auto it = m_loadedTextures.begin(); it != m_loadedTextures.end();)
-//	{
-//		if (it->second.use_count() == 1)
-//			it = m_loadedTextures.erase(it);
-//		else
-//			++it;
-//	}
-//
-//	for (auto it = m_loadedFonts.begin(); it != m_loadedFonts.end();)
-//	{
-//		if (it->second.use_count() == 1)
-//			it = m_loadedFonts.erase(it);
-//		else
-//			++it;
-//	}
-//}

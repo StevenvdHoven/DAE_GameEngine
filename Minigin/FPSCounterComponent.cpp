@@ -6,6 +6,8 @@
 #include <iomanip>
 #include "GameObject.h"
 
+using namespace Engine;
+
 FPSCounterComponent::FPSCounterComponent(GameObject* pOwner):
 	Component(pOwner)
 {

@@ -18,7 +18,18 @@ void Transform::Update()
 
 }
 
-void Transform::SetLocalPosition(const glm::vec2& pos)
+void Transform::SetWorldLocation(const Vector2& pos)
+{
+	SetWorldLocation(pos.x, pos.y);
+}
+
+void Transform::SetWorldLocation(float x, float y)
+{
+	m_WorldPosition = { x,y };
+	m_LocalPosition = m_WorldPosition - m_pParent->GetTransform()->GetWorldLocation();
+}
+
+void Transform::SetLocalPosition(const Vector2& pos)
 {
 	SetLocalPosition(pos.x, pos.y);
 }
@@ -28,6 +39,25 @@ void Transform::SetLocalPosition(const float x, const float y)
 	m_LocalPosition.x = x;
 	m_LocalPosition.y = y;
 	SetPositionDirty();
+}
+
+void Transform::SetWorldRotation(float angle)
+{
+	m_WorldRotation = angle;
+	if(m_pParent)
+		m_LocalRotation = m_WorldRotation - m_pParent->GetTransform()->GetWorldRotation();
+	else
+		m_LocalRotation = m_WorldRotation;
+
+}
+
+void Transform::SetLocalRotation(float angle)
+{
+	m_LocalRotation = angle;
+	if (m_pParent)
+		m_WorldRotation = m_LocalRotation + m_pParent->GetTransform()->GetWorldRotation();
+	else
+		m_WorldRotation = m_LocalRotation;
 }
 
 void Transform::SetParent(GameObject* pParent, bool keepWorldPosition)

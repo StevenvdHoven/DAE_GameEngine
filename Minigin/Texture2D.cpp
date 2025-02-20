@@ -4,6 +4,8 @@
 #include "Renderer.h"
 #include <stdexcept>
 
+using namespace Engine;
+
 Texture2D::~Texture2D()
 {
 	SDL_DestroyTexture(m_texture);
