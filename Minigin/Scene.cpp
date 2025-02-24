@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 #include <algorithm>
+#include "Transform.h"
 
 unsigned int Scene::m_idCounter = 0;
 
@@ -15,6 +16,7 @@ void Scene::Add(std::unique_ptr<GameObject> object)
 void Scene::Remove(GameObject* object)
 {
 	object->m_IsDestroyed = true;
+
 	for (auto& pComponent : object->m_Components)
 	{
 		object->RemoveComponent(pComponent.get());

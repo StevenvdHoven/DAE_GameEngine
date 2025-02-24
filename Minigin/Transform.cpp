@@ -11,6 +11,20 @@ Transform::Transform(GameObject* pOwner) :
 
 }
 
+Transform::~Transform()
+{
+	if (m_pParent) // If a child is deleted notify parent
+	{
+		m_pParent->GetTransform()->RemoveChild(GetGameObject());
+	}
+
+	for (auto& child : m_pChildren) // Apply the same for all children
+	{
+		child->GetTransform()->SetParent(nullptr);
+		Destroy(child);
+	}
+}
+
 void Transform::Update()
 {
 
@@ -80,6 +94,12 @@ void Transform::SetParent(GameObject* pParent, bool keepWorldPosition)
 void Transform::SetPositionDirty(bool flag)
 {
 	m_PositionIsDirty = flag;
+
+	for (auto pChild : m_pChildren)
+	{
+		pChild->GetTransform()->SetPositionDirty(flag);
+	}
+
 }
 
 void Transform::CaculateWorldPosition()

@@ -10,7 +10,10 @@ GameObject::GameObject()
 	m_pTransform = AddComponent<Transform>();
 }
 
-GameObject::~GameObject() = default;
+GameObject::~GameObject()
+{
+	
+}
 
 void GameObject::RemoveComponent(Component* pComponent)
 {

@@ -9,6 +9,7 @@ class Transform final : public Component
 {
 public:
 	Transform(GameObject* pOwner);
+	virtual ~Transform();
 
 	void Update() override;
 
