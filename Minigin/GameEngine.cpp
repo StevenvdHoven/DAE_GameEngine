@@ -9,6 +9,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "Exercise2UI.h"
 #include "Time.h"
 #include <chrono>
 #include <thread>
@@ -68,6 +69,8 @@ Engine::GameEngine::GameEngine(const std::string &dataPath)
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
+
+	Exercise2UI::GetInstance().Init();
 }
 
 Engine::GameEngine::~GameEngine()
