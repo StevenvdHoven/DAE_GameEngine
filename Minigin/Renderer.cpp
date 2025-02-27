@@ -29,6 +29,7 @@ void Engine::Renderer::Init(SDL_Window* window)
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
+	
 	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
 	ImGui_ImplOpenGL3_Init();
 	
