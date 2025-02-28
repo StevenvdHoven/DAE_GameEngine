@@ -114,6 +114,9 @@
     <ClInclude Include="Exercise3UI.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui\imgui_plot.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -170,9 +173,6 @@
     <ClCompile Include="RotatorComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\imgui.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
@@ -199,6 +199,12 @@
     </ClCompile>
     <ClCompile Include="Exercise3UI.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>DataTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

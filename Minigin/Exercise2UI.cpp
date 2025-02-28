@@ -1,14 +1,13 @@
 #include "Exercise2UI.h"
 #include "imgui.h"
+
 #include <chrono>
 #include <backends/imgui_impl_sdl2.h>
 #include <backends/imgui_impl_opengl3.h>
 
 void Exercise2UI::Render() const
 {
-	ImGui::NewFrame();
-
-	ImGui::Text("Exercise 2");
+	ImGui::Begin("Exercise 2");
 
 	if (ImGui::Button("Button"))
 	{
@@ -21,6 +20,8 @@ void Exercise2UI::Render() const
 		float max = *std::max_element(m_Samples.begin(), m_Samples.end());
 		ImGui::PlotLines("Performance", m_Samples.data(), static_cast<int>(m_Samples.size()), 0, nullptr, 0, max, ImVec2(0, 80));
 	}
+
+	ImGui::End();
 
 }
 
@@ -55,7 +56,7 @@ void Exercise2UI::CaculateSamples()
 			arr[i] *= 2;
 		}
 
-		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - time);
+		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - time);
 		m_Samples.emplace_back(static_cast<float>( duration.count()));
 	}
 
