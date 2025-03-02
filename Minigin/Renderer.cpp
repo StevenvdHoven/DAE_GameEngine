@@ -47,13 +47,6 @@ void Engine::Renderer::Render() const
 
 	SceneManager::GetInstance().Render();
 
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame();
-	ImGui::NewFrame();
-
-	Exercise2UI::GetInstance().Render();
-	Exercise3::Exercise3UI::GetInstance().Render();
-
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	

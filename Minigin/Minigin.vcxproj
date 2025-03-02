@@ -190,6 +190,7 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSCounterComponent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="ImageRenderer.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="GameEngine.h" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="ValueWatchComponent.h" />
     <ClInclude Include="Vector2.h" />
+    <ClInclude Include="ViewPort.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui\backends\imgui_impl_opengl3.cpp" />
@@ -221,6 +223,7 @@
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSCounterComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="ImageRenderer.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -236,6 +239,7 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="ValueWatchComponent.cpp" />
     <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="ViewPort.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

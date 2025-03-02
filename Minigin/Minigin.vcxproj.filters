@@ -117,6 +117,12 @@
     <ClInclude Include="..\3rdParty\imgui\imgui_plot.h">
       <Filter>imgui</Filter>
     </ClInclude>
+    <ClInclude Include="ViewPort.h">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -205,6 +211,12 @@
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewPort.cpp">
+      <Filter>DataTypes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

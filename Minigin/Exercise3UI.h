@@ -1,6 +1,7 @@
 #pragma once
 #include "Singleton.h"
 #include <vector>
+#include "GUI.h"
 
 namespace Exercise3
 {
@@ -27,21 +28,20 @@ namespace Exercise3
 		int ID;
 	};
 
-	class Exercise3UI : public Singleton<Exercise3UI>
+	class Exercise3UI final : public GUI
 	{
 	public:
-		void Render() const;
-		void Destroy();
-		void Init();
+		Exercise3UI() = default;
+		void Render();
+		void Update();
 
 	private:
-		friend class Singleton<Exercise3UI>;
-		Exercise3UI() = default;
-
 		void CaculateSamples();
 		void CaculateSamplesAlt();
 
+		int m_SampleAmount = 100;
 		std::vector<float> m_Samples;
 		std::vector<float> m_SamplesAlt;
+		std::vector<float> m_Steps{1, 2, 4, 8, 16, 32, 64 , 128, 256, 512, 1024};
 	};
 }

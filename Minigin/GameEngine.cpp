@@ -9,11 +9,12 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
-#include "Exercise2UI.h"
-#include "Exercise3UI.h"
+#include "ViewPort.h"
 #include "Time.h"
 #include <chrono>
 #include <thread>
+#include <backends/imgui_impl_opengl3.h>
+#include <backends/imgui_impl_sdl2.h>
 
 SDL_Window* g_window{};
 
@@ -70,9 +71,7 @@ Engine::GameEngine::GameEngine(const std::string &dataPath)
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
-
-	Exercise2UI::GetInstance().Init();
-	Exercise3::Exercise3UI::GetInstance().Init();
+	
 }
 
 Engine::GameEngine::~GameEngine()
@@ -90,6 +89,7 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
+	auto& viewPort = ViewPort::GetInstance();
 	auto& time = Time::GetInstance();
 
 	sceneManager.Start();
@@ -121,6 +121,9 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 		
 		sceneManager.Update();
 		sceneManager.LateUpdate();
+
+		viewPort.Render();
+
 		renderer.Render();
 
 		const auto sleep_time = current_time + std::chrono::milliseconds(ms_per_frame) - std::chrono::high_resolution_clock::now();
