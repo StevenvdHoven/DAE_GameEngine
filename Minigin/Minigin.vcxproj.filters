@@ -28,6 +28,9 @@
     <Filter Include="Managers\Input">
       <UniqueIdentifier>{9515380f-a6f4-4422-9709-e30b3d5990d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Managers\Input\Commands">
+      <UniqueIdentifier>{4b3bb2ab-d987-44f1-998a-d621e812f62c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -126,6 +129,12 @@
     <ClInclude Include="InputManager.h">
       <Filter>Managers\Input</Filter>
     </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Managers\Input\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MovePlayerCommand.h">
+      <Filter>Managers\Input\Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -220,6 +229,12 @@
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>Managers\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>Managers\Input\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MovePlayerCommand.cpp">
+      <Filter>Managers\Input\Commands</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

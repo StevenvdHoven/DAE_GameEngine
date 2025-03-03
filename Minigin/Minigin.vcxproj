@@ -22,7 +22,7 @@
     <ProjectGuid>{41B0EC47-D48C-4B0F-951B-D98595FFAE0A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Minigin</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
     <ProjectName>DaeEngine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -126,7 +126,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>xinput.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
   </ItemDefinitionGroup>
@@ -184,6 +184,7 @@
     <ClInclude Include="..\3rdParty\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\3rdParty\imgui\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui\imstb_truetype.h" />
+    <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Exercise2UI.h" />
     <ClInclude Include="Exercise3UI.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="ImageRenderer.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="MovePlayerCommand.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="RotatorComponent.h" />
@@ -217,6 +219,7 @@
     <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp" />
     <ClCompile Include="..\3rdParty\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Exercise2UI.cpp" />
     <ClCompile Include="Exercise3UI.cpp" />
@@ -228,6 +231,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="GameEngine.cpp" />
+    <ClCompile Include="MovePlayerCommand.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
