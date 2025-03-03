@@ -3,8 +3,6 @@
 #include <vector>
 #include "Vector2.h"
 
-using namespace Engine;
-
 class Transform final : public Component
 {
 public:
@@ -13,13 +11,13 @@ public:
 
 	void Update() override;
 
-	Vector2 GetWorldLocation() const { return m_WorldPosition; }
-	Vector2 GetLocalPosition() const { return m_LocalPosition; }
+	Engine::Vector2 GetWorldLocation() const { return m_WorldPosition; }
+	Engine::Vector2 GetLocalPosition() const { return m_LocalPosition; }
 
-	void SetWorldLocation(const Vector2& pos);
+	void SetWorldLocation(const Engine::Vector2& pos);
 	void SetWorldLocation(float x, float y);
 
-	void SetLocalPosition(const Vector2& pos);
+	void SetLocalPosition(const Engine::Vector2& pos);
 	void SetLocalPosition(float x, float y);
 
 	float GetWorldRotation() const { return m_WorldRotation; }
@@ -39,8 +37,8 @@ private:
 	bool IsChild(GameObject* pChild) const;
 
 	bool m_PositionIsDirty;
-	Vector2 m_LocalPosition;
-	Vector2 m_WorldPosition;
+	Engine::Vector2 m_LocalPosition;
+	Engine::Vector2 m_WorldPosition;
 
 	float m_LocalRotation;
 	float m_WorldRotation;

@@ -25,6 +25,9 @@
     <Filter Include="UI">
       <UniqueIdentifier>{acabb492-9c62-4367-bbb0-6293557f8734}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Managers\Input">
+      <UniqueIdentifier>{9515380f-a6f4-4422-9709-e30b3d5990d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -62,9 +65,6 @@
     </ClInclude>
     <ClInclude Include="ImageRenderer.h">
       <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="Time.h">
       <Filter>Managers</Filter>
@@ -123,6 +123,9 @@
     <ClInclude Include="GUI.h">
       <Filter>DataTypes</Filter>
     </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Managers\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -144,9 +147,6 @@
       <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="ImageRenderer.cpp">
@@ -217,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="ViewPort.cpp">
       <Filter>DataTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Managers\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

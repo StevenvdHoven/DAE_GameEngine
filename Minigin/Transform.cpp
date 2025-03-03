@@ -32,7 +32,7 @@ void Transform::Update()
 
 }
 
-void Transform::SetWorldLocation(const Vector2& pos)
+void Transform::SetWorldLocation(const Engine::Vector2& pos)
 {
 	SetWorldLocation(pos.x, pos.y);
 }
@@ -43,7 +43,7 @@ void Transform::SetWorldLocation(float x, float y)
 	m_LocalPosition = m_WorldPosition - m_pParent->GetTransform()->GetWorldLocation();
 }
 
-void Transform::SetLocalPosition(const Vector2& pos)
+void Transform::SetLocalPosition(const Engine::Vector2& pos)
 {
 	SetLocalPosition(pos.x, pos.y);
 }
