@@ -85,7 +85,7 @@ public:
 
 	void CheckBindings()
 	{
-		for (auto binding : m_ButtonBindings)
+		for (auto& binding : m_ButtonBindings)
 		{
 			bool pressed{ binding.pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Pressed(binding.InputMask) : Is_KeyPressed(binding.InputMask) };
 			bool released{ binding.pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Released(binding.InputMask) : Is_KeyReleased(binding.InputMask) };
@@ -103,7 +103,7 @@ public:
 
 	void CheckValueBindings()
 	{
-		for (auto binding : m_ValueBindings)
+		for (auto& binding : m_ValueBindings)
 		{
 			if (Is_Pressed(binding.InputMask))
 			{
@@ -298,6 +298,8 @@ private:
 	std::vector<Engine::PlayerBindingButton> m_ButtonBindings;
 	std::vector<Engine::PlayerBindingValue> m_ValueBindings;
 	std::vector<Engine::PlayerBinding2DValue> m_2DValueBindings;
+	
+	
 };
 
 class Engine::InputManager::InputManagerImpl
@@ -317,12 +319,16 @@ public:
 
 	void Update();
 
-	void BindButton(int playerIndex, int button, Command* pCommand);
-	void BindValue(int playerIndex, int button, ValueCommand<float>* pCommand);
-	void Bind2DValue(int playerIndex, ValueCommand<Vector2>* pCommand);
+	void BindButton(int playerIndex, int button, std::unique_ptr<Command> pCommand);
+	void BindValue(int playerIndex, int button, std::unique_ptr <ValueCommand<float>> pCommand);
+	void Bind2DValue(int playerIndex, std::unique_ptr <ValueCommand<Vector2>> pCommand);
 
 private:
 	std::vector<PlayerController> m_Controllers;
+
+	std::vector<std::unique_ptr<Engine::Command>> m_Commands;
+	std::vector<std::unique_ptr<Engine::ValueCommand<float>>> m_ValueCommands;
+	std::vector<std::unique_ptr<Engine::ValueCommand<Engine::Vector2>>> m_2DValueCommands;
 };
 
 void Engine::InputManager::InputManagerImpl::Update()
@@ -338,19 +344,22 @@ void Engine::InputManager::InputManagerImpl::Update()
 	}
 }
 
-void Engine::InputManager::InputManagerImpl::BindButton(int playerIndex, int button, Command* pCommand)
+void Engine::InputManager::InputManagerImpl::BindButton(int playerIndex, int button, std::unique_ptr<Command> pCommand)
 {
-	m_Controllers[playerIndex].BindButton(button, pCommand);
+	m_Controllers[playerIndex].BindButton(button, pCommand.get());
+	m_Commands.emplace_back(std::move(pCommand));
 }
 
-void Engine::InputManager::InputManagerImpl::BindValue(int playerIndex, int button, ValueCommand<float>* pCommand)
+void Engine::InputManager::InputManagerImpl::BindValue(int playerIndex, int button, std::unique_ptr <ValueCommand<float>> pCommand)
 {
-	m_Controllers[playerIndex].BindValue(button, pCommand);
+	m_Controllers[playerIndex].BindValue(button, pCommand.get());
+	m_ValueCommands.emplace_back(std::move(pCommand));
 }
 
-void Engine::InputManager::InputManagerImpl::Bind2DValue(int playerIndex, ValueCommand<Vector2>* pCommand)
+void Engine::InputManager::InputManagerImpl::Bind2DValue(int playerIndex, std::unique_ptr <ValueCommand<Vector2>> pCommand)
 {
-	m_Controllers[playerIndex].Bind2DValue(pCommand);
+	m_Controllers[playerIndex].Bind2DValue(pCommand.get());
+	m_2DValueCommands.emplace_back(std::move(pCommand));
 }
 
 #pragma endregion
@@ -391,19 +400,19 @@ bool Engine::InputManager::ProcessInput()
 	return ProcessKeyboard();
 }
 
-void Engine::InputManager::BindButton(int playerIndex, int button, Command* pCommand)
+void Engine::InputManager::BindButton(int playerIndex, int button, std::unique_ptr<Command> pCommand)
 {
-	m_pImpl->BindButton(playerIndex, button, pCommand);
+	m_pImpl->BindButton(playerIndex, button, std::move(pCommand));
 }
 
-void Engine::InputManager::BindValue(int playerIndex, int button, ValueCommand<float>* pCommand)
+void Engine::InputManager::BindValue(int playerIndex, int button, std::unique_ptr<ValueCommand<float>> pCommand)
 {
-	m_pImpl->BindValue(playerIndex, button, pCommand);
+	m_pImpl->BindValue(playerIndex, button, std::move(pCommand));
 }
 
-void Engine::InputManager::Bind2DValue(int playerIndex, ValueCommand<Vector2>* pCommand)
+void Engine::InputManager::Bind2DValue(int playerIndex, std::unique_ptr<ValueCommand<Vector2>> pCommand)
 {
-	m_pImpl->Bind2DValue(playerIndex, pCommand);
+	m_pImpl->Bind2DValue(playerIndex, std::move(pCommand));
 }
 
 

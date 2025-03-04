@@ -1,15 +1,16 @@
 #pragma once
+#include <memory.h>
 #include "Singleton.h"
 #include "Command.h"
 #include "Vector2.h"
 
 namespace Engine
 {
-
 	struct PlayerBindingButton
 	{
 		int InputMask;
 		Command* pCommand;
+
 	};
 
 	struct PlayerBindingValue
@@ -35,9 +36,9 @@ namespace Engine
 		~InputManager();
 		bool ProcessInput();
 
-		void BindButton(int playerIndex,int button, Command* pCommand);
-		void BindValue(int playerIndex, int button, ValueCommand<float>* pCommand);
-		void Bind2DValue(int playerIndex, ValueCommand<Vector2>* pCommand);
+		void BindButton(int playerIndex, int button, std::unique_ptr<Command> pCommand);
+		void BindValue(int playerIndex, int button, std::unique_ptr <ValueCommand<float>> pCommand);
+		void Bind2DValue(int playerIndex, std::unique_ptr <ValueCommand<Vector2>> pCommand);
 	};
 }
 
