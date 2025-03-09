@@ -160,7 +160,7 @@ private:
 		Engine::Vector2 stick;
 		stick.x = CurrentState.Gamepad.sThumbLX / 32767.0f;
 		stick.y = CurrentState.Gamepad.sThumbLY / 32767.0f;
-		return stick;
+		return stick * 1.1f;
 	}
 
 	Engine::Vector2 GetRightStick() const
@@ -168,7 +168,7 @@ private:
 		Engine::Vector2 stick{};
 		stick.x = CurrentState.Gamepad.sThumbRX / 32767.0f;
 		stick.y = CurrentState.Gamepad.sThumbRY / 32767.0f;
-		return stick;
+		return stick * 1.1f;
 	}
 
 	Engine::Vector2 GetDPad() const
@@ -194,7 +194,7 @@ private:
 			y += 1.f;
 		}
 
-		return Engine::Vector2{ x, y };
+		return Engine::Vector2{ x, y } * 1.1f;
 	}
 
 	Engine::Vector2 GetWASD() const
