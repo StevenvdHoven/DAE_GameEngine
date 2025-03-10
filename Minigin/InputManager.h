@@ -21,7 +21,7 @@ namespace Engine
 
 	struct PlayerBinding2DValue
 	{
-		ValueCommand<Vector2>* pCommand;
+		ValueCommand<Vector2>* pCommand; 
 	};
 
 	class InputManager final : public Singleton<InputManager>

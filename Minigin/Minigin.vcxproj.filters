@@ -31,6 +31,9 @@
     <Filter Include="Managers\Input\Commands">
       <UniqueIdentifier>{4b3bb2ab-d987-44f1-998a-d621e812f62c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Observer">
+      <UniqueIdentifier>{f2e04e99-3179-45ca-bcd9-4a65f6964ca6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -135,6 +138,18 @@
     <ClInclude Include="MovePlayerCommand.h">
       <Filter>Managers\Input\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="Observers.h">
+      <Filter>Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDamageCommand.h">
+      <Filter>Managers\Input\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerHealthComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="HealtBarComponent.h">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -235,6 +250,18 @@
     </ClCompile>
     <ClCompile Include="MovePlayerCommand.cpp">
       <Filter>Managers\Input\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Observers.cpp">
+      <Filter>Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDamageCommand.cpp">
+      <Filter>Managers\Input\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerHealthComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="HealtBarComponent.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

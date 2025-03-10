@@ -51,6 +51,7 @@ namespace Engine
 		virtual void Execute() = 0;
 
 		DeviceType GetDeviceType() const { return m_DeviceType; }
+		void ChangeDeviceType(DeviceType deviceType) { m_DeviceType = deviceType; }
 
 	protected:
 		DeviceType m_DeviceType;

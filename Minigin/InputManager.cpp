@@ -94,7 +94,7 @@ public:
 			{
 				binding.pCommand->Execute();
 			}
-			else if (released)
+			if (released)
 			{
 				binding.pCommand->Execute();
 			}
