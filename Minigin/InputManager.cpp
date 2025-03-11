@@ -26,9 +26,18 @@ public:
 		ZeroMemory(m_PreviousKeyboardState, NUM_KEYS);
 		ZeroMemory(m_CurrentKeyboardState, NUM_KEYS);
 	};
-	
+
 	~PlayerController()
 	{
+		for (auto binding : m_ButtonBindings)
+			delete binding;
+
+		for (auto binding : m_ValueBindings)
+			delete binding;
+
+		for (auto binding : m_2DValueBindings)
+			delete binding;
+
 		m_ButtonBindings.clear();
 		m_ValueBindings.clear();
 		m_2DValueBindings.clear();
@@ -39,64 +48,118 @@ public:
 		CopyMemory(&PreviousState, &CurrentState, sizeof(XINPUT_STATE));
 		ZeroMemory(&CurrentState, sizeof(XINPUT_STATE));
 
-		auto result{ XInputGetState(Index, &CurrentState) };
+		XInputGetState(Index, &CurrentState);
 
-		if (result)
-		{
-			auto buttonChanges{ CurrentState.Gamepad.wButtons ^ PreviousState.Gamepad.wButtons };
-			ButtonsPressedThisFrame = buttonChanges & CurrentState.Gamepad.wButtons;
-			ButtonsReleasedThisFrame = buttonChanges & (~CurrentState.Gamepad.wButtons);
-		}
+
+		auto buttonChanges{ CurrentState.Gamepad.wButtons ^ PreviousState.Gamepad.wButtons };
+		ButtonsPressedThisFrame = buttonChanges & CurrentState.Gamepad.wButtons;
+		auto inv{ (~CurrentState.Gamepad.wButtons) };
+		ButtonsReleasedThisFrame = buttonChanges & inv;
 
 		CopyMemory(m_PreviousKeyboardState, m_CurrentKeyboardState, NUM_KEYS);
 		CopyMemory(m_CurrentKeyboardState, keyboardState, NUM_KEYS);
 	}
 
-	bool Is_Pressed(unsigned int button) const { return CurrentState.Gamepad.wButtons & button; }
-	bool Is_Released(unsigned int button) const { return ButtonsReleasedThisFrame & button; }
-	bool Is_Down(unsigned int button) const { return ButtonsPressedThisFrame & button; }
+	bool Is_Pressed(unsigned int button) const
+	{
+		return CurrentState.Gamepad.wButtons & button;
+	}
+	bool Is_Released(unsigned int button) const
+	{
+		return ButtonsReleasedThisFrame & button;
+	}
+	bool Is_Down(unsigned int button) const
+	{
+		return ButtonsPressedThisFrame & button;
+	}
 
-	bool Is_KeyPressed(unsigned int key) const { return !m_PreviousKeyboardState[key] && m_CurrentKeyboardState[key];}
-	bool Is_KeyReleased(unsigned int key) const { return m_PreviousKeyboardState[key] && !m_CurrentKeyboardState[key]; }
-	bool Is_KeyDown(unsigned int key) const { return m_CurrentKeyboardState[key]; }
+	bool Is_KeyPressed(unsigned int key) const
+	{
+		return !m_PreviousKeyboardState[key] && m_CurrentKeyboardState[key];
+	}
+	bool Is_KeyReleased(unsigned int key) const
+	{
+		return m_PreviousKeyboardState[key] && !m_CurrentKeyboardState[key];
+	}
+	bool Is_KeyDown(unsigned int key) const
+	{
+		return m_CurrentKeyboardState[key];
+	}
 
 	void BindButton(int button, Engine::Command* pCommand)
 	{
-		Engine::PlayerBindingButton binding;
-		binding.InputMask = button;
-		binding.pCommand = pCommand;
+		Engine::PlayerBindingButton* binding{ new Engine::PlayerBindingButton{} };
+		binding->InputMask = button;
+		binding->Pressed = false;
+		binding->pCommand = pCommand;
 		m_ButtonBindings.emplace_back(binding);
 	}
 
 	void BindValue(int button, Engine::ValueCommand<float>* pCommand)
 	{
-		Engine::PlayerBindingValue binding;
-		binding.InputMask = button;
-		binding.pCommand = pCommand;
+		Engine::PlayerBindingValue* binding{ new Engine::PlayerBindingValue{} };
+		binding->InputMask = button;
+		binding->Pressed = false;
+		binding->pCommand = pCommand;
 		m_ValueBindings.emplace_back(binding);
 	}
 
 	void Bind2DValue(Engine::ValueCommand<Engine::Vector2>* pCommand)
 	{
-		Engine::PlayerBinding2DValue binding;
-		binding.pCommand = pCommand;
+		Engine::PlayerBinding2DValue* binding{ new Engine::PlayerBinding2DValue{} };
+		binding->Pressed = false;
+		binding->pCommand = pCommand;
 		m_2DValueBindings.emplace_back(binding);
 	}
 
 	void CheckBindings()
 	{
+		//for (int index{ 0 }; index < m_ButtonBindings.size(); ++index)
+		//{
+		//	auto binding{ m_ButtonBindings[index] };
+		//	auto inputMask{ binding->InputMask };
+		//
+		//	bool pressed{ m_ButtonBindings[index]->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Pressed(inputMask) : Is_KeyPressed(inputMask)};
+		//	//bool released{ binding.pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Released(binding.InputMask) : Is_KeyReleased(binding.InputMask) };
+
+		//	auto triggerType{ binding->pCommand->GetTriggerState()};
+
+		//	if (pressed) {
+		//		if (!binding->Pressed)
+		//		{
+		//			binding->Pressed = true;
+		//			if (triggerType == Engine::TriggerState::PRESSED)
+		//				binding->pCommand->Execute();
+		//		}
+
+		//		if (triggerType == Engine::TriggerState::HELD)
+		//			binding->pCommand->Execute();
+		//	}
+		//	else
+		//	{
+		//		if (binding->Pressed)
+		//		{
+		//			binding->Pressed = false;
+		//			if (triggerType == Engine::TriggerState::RELEASED)
+		//				binding->pCommand->Execute();
+		//		}
+		//	}
+
+		//	m_ButtonBindings[index] = binding;
+		//}
+
 		for (auto& binding : m_ButtonBindings)
 		{
-			bool pressed{ binding.pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Pressed(binding.InputMask) : Is_KeyPressed(binding.InputMask) };
-			bool released{ binding.pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Released(binding.InputMask) : Is_KeyReleased(binding.InputMask) };
+			//bool pressed{ binding->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Pressed(binding.InputMask) : Is_KeyPressed(binding.InputMask) };
+			bool released{ binding->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Released(binding->InputMask) : Is_KeyReleased(binding->InputMask) };
 
-			if (pressed)
+			/*if (pressed)
 			{
-				binding.pCommand->Execute();
-			}
+				binding->pCommand->Execute();
+			}*/
 			if (released)
 			{
-				binding.pCommand->Execute();
+				binding->pCommand->Execute();
 			}
 		}
 	}
@@ -105,13 +168,13 @@ public:
 	{
 		for (auto& binding : m_ValueBindings)
 		{
-			if (Is_Pressed(binding.InputMask))
+			if (Is_Pressed(binding->InputMask))
 			{
-				binding.pCommand->Execute(1.0f);
+				binding->pCommand->Execute(1.0f);
 			}
-			else if (Is_Released(binding.InputMask))
+			else if (Is_Released(binding->InputMask))
 			{
-				binding.pCommand->Execute(0.0f);
+				binding->pCommand->Execute(0.0f);
 			}
 		}
 	}
@@ -120,7 +183,7 @@ public:
 	{
 		for (auto& binding : m_2DValueBindings)
 		{
-			auto type = binding.pCommand->GetInputType();
+			auto type = binding->pCommand->GetInputType();
 			Engine::Vector2 value{};
 			bool pressed = false, released = false;
 
@@ -146,9 +209,9 @@ public:
 			}
 
 			if (pressed)
-				binding.pCommand->Execute(value);
+				binding->pCommand->Execute(value);
 			else if (released)
-				binding.pCommand->Execute(Engine::Vector2{}); // Stop movement
+				binding->pCommand->Execute(Engine::Vector2{}); // Stop movement
 		}
 	}
 
@@ -194,7 +257,7 @@ private:
 			y += 1.f;
 		}
 
-		return Engine::Vector2{ x, y } * 1.1f;
+		return Engine::Vector2{ x, y } *1.1f;
 	}
 
 	Engine::Vector2 GetWASD() const
@@ -295,11 +358,11 @@ private:
 	Uint8 m_PreviousKeyboardState[NUM_KEYS];
 	Uint8 m_CurrentKeyboardState[NUM_KEYS];
 
-	std::vector<Engine::PlayerBindingButton> m_ButtonBindings;
-	std::vector<Engine::PlayerBindingValue> m_ValueBindings;
-	std::vector<Engine::PlayerBinding2DValue> m_2DValueBindings;
-	
-	
+	std::vector<Engine::PlayerBindingButton*> m_ButtonBindings;
+	std::vector<Engine::PlayerBindingValue*> m_ValueBindings;
+	std::vector<Engine::PlayerBinding2DValue*> m_2DValueBindings;
+
+
 };
 
 class Engine::InputManager::InputManagerImpl
@@ -309,7 +372,7 @@ public:
 	{
 		for (int i = 0; i < XUSER_MAX_COUNT; ++i)
 		{
-			m_Controllers.emplace_back(i);
+			m_Controllers.emplace_back(std::move(std::make_unique<PlayerController>(i)));
 		}
 	}
 	~InputManagerImpl()
@@ -324,7 +387,7 @@ public:
 	void Bind2DValue(int playerIndex, std::unique_ptr <ValueCommand<Vector2>> pCommand);
 
 private:
-	std::vector<PlayerController> m_Controllers;
+	std::vector<std::unique_ptr<PlayerController>> m_Controllers;
 
 	std::vector<std::unique_ptr<Engine::Command>> m_Commands;
 	std::vector<std::unique_ptr<Engine::ValueCommand<float>>> m_ValueCommands;
@@ -334,31 +397,31 @@ private:
 void Engine::InputManager::InputManagerImpl::Update()
 {
 	auto state{ SDL_GetKeyboardState(nullptr) };
-	
-	for (auto playerController : m_Controllers)
+
+	for (auto& playerController : m_Controllers)
 	{
-		playerController.Update(state);
-		playerController.CheckBindings();
-		playerController.CheckValueBindings();
-		playerController.Check2DValueBindings();
+		playerController->Update(state);
+		playerController->CheckBindings();
+		playerController->CheckValueBindings();
+		playerController->Check2DValueBindings();
 	}
 }
 
 void Engine::InputManager::InputManagerImpl::BindButton(int playerIndex, int button, std::unique_ptr<Command> pCommand)
 {
-	m_Controllers[playerIndex].BindButton(button, pCommand.get());
+	m_Controllers[playerIndex]->BindButton(button, pCommand.get());
 	m_Commands.emplace_back(std::move(pCommand));
 }
 
 void Engine::InputManager::InputManagerImpl::BindValue(int playerIndex, int button, std::unique_ptr <ValueCommand<float>> pCommand)
 {
-	m_Controllers[playerIndex].BindValue(button, pCommand.get());
+	m_Controllers[playerIndex]->BindValue(button, pCommand.get());
 	m_ValueCommands.emplace_back(std::move(pCommand));
 }
 
 void Engine::InputManager::InputManagerImpl::Bind2DValue(int playerIndex, std::unique_ptr <ValueCommand<Vector2>> pCommand)
 {
-	m_Controllers[playerIndex].Bind2DValue(pCommand.get());
+	m_Controllers[playerIndex]->Bind2DValue(pCommand.get());
 	m_2DValueCommands.emplace_back(std::move(pCommand));
 }
 
@@ -384,7 +447,7 @@ bool Engine::InputManager::ProcessKeyboard()
 	return true;
 }
 
-Engine::InputManager::InputManager():
+Engine::InputManager::InputManager() :
 	m_pImpl{ new InputManagerImpl() }
 {
 }

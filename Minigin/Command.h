@@ -4,6 +4,13 @@
 
 namespace Engine
 {
+	enum class TriggerState
+	{
+		PRESSED,
+		RELEASED,
+		HELD
+	};
+
 	enum class DeviceType
 	{
 		KEYBOARD,
@@ -13,39 +20,11 @@ namespace Engine
 	class Command
 	{
 	public:
-		Command() : m_DeviceType(DeviceType::KEYBOARD)
+		Command() : m_DeviceType(DeviceType::KEYBOARD), m_TriggerState(TriggerState::PRESSED)
 		{
 
 		}
 		virtual ~Command() = default;
-
-		Command(const Command& other)
-		{
-			m_DeviceType = other.m_DeviceType;
-		}
-
-		Command(Command&& other) noexcept
-		{
-			m_DeviceType = other.m_DeviceType;
-		}
-
-		Command& operator=(const Command& other)
-		{
-			if (this != &other)
-			{
-				m_DeviceType = other.m_DeviceType;
-			}
-			return *this;
-		}
-
-		Command& operator=(Command&& other) noexcept
-		{
-			if (this != &other)
-			{
-				m_DeviceType = other.m_DeviceType;
-			}
-			return *this;
-		}
 
 
 		virtual void Execute() = 0;
@@ -53,8 +32,12 @@ namespace Engine
 		DeviceType GetDeviceType() const { return m_DeviceType; }
 		void ChangeDeviceType(DeviceType deviceType) { m_DeviceType = deviceType; }
 
+		TriggerState GetTriggerState() const { return m_TriggerState; }
+		void SetTriggerState(TriggerState triggerState) { m_TriggerState = triggerState; }
+
 	protected:
 		DeviceType m_DeviceType;
+		TriggerState m_TriggerState;
 	};
 
 	template<typename ValueType>
@@ -69,47 +52,24 @@ namespace Engine
 			WASD,
 			ARROW_KEYS
 		};
-		ValueCommand() : m_InputType(InputType2D::LEFT_STICK)
+		ValueCommand() : m_InputType(InputType2D::LEFT_STICK), m_TriggerState(TriggerState::PRESSED)
 		{
 
 		}
 		virtual ~ValueCommand() {}
 
-		ValueCommand(const ValueCommand& other)
-		{
-			m_InputType = other.m_InputType;
-		}
-
-		ValueCommand(ValueCommand&& other) noexcept
-		{
-			m_InputType = other.m_InputType;
-		}
-
-		ValueCommand& operator=(const ValueCommand& other)
-		{
-			if (this != &other)
-			{
-				m_InputType = other.m_InputType;
-			}
-			return *this;
-		}
-
-		ValueCommand& operator=(ValueCommand&& other) noexcept
-		{
-			if (this != &other)
-			{
-				m_InputType = other.m_InputType;
-			}
-			return *this;
-		}
-
 		virtual void Execute(const ValueType& value) = 0;
 
 	public:
 		InputType2D GetInputType() const { return m_InputType; }
+		void SetInputType(InputType2D inputType) { m_InputType = inputType; }
+
+		TriggerState GetTriggerState() const { return m_TriggerState; }
+		void SetTriggerState(TriggerState triggerState) { m_TriggerState = triggerState; }
 
 	protected:
 		InputType2D m_InputType;
+		TriggerState m_TriggerState;
 	};
 
 	class GameActorCommand : public Command
@@ -138,6 +98,7 @@ namespace Engine
 		GameActorCommand2D(GameObject* pActor, ValueCommand::InputType2D inputType) : m_pActor(pActor)
 		{
 			m_InputType = inputType;
+			m_TriggerState = TriggerState::HELD;
 		}
 		virtual ~GameActorCommand2D() {};
 

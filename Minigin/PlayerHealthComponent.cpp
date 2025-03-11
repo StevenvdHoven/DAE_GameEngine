@@ -21,6 +21,11 @@ void PlayerHealthComponent::TakeDamage(int damage)
 {
 	m_Health -= damage;
 	m_OnTakeDamage->Notify();
+
+	if (m_Health <= 0)
+	{
+		Destroy(GetGameObject());
+	}
 }
 
 void PlayerHealthComponent::Heal(int heal)

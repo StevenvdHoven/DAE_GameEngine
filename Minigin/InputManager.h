@@ -6,21 +6,26 @@
 
 namespace Engine
 {
-	struct PlayerBindingButton
+	class PlayerBindingButton
 	{
+	public:
 		int InputMask;
+		bool Pressed;
 		Command* pCommand;
-
 	};
 
-	struct PlayerBindingValue
+	class PlayerBindingValue
 	{
+	public:
 		int InputMask;
+		bool Pressed;
 		ValueCommand<float>* pCommand;
 	};
 
-	struct PlayerBinding2DValue
+	class PlayerBinding2DValue
 	{
+	public:
+		bool Pressed;
 		ValueCommand<Vector2>* pCommand; 
 	};
 
