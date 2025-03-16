@@ -62,7 +62,7 @@ public:
 
 	bool Is_Pressed(unsigned int button) const
 	{
-		return CurrentState.Gamepad.wButtons & button;
+		return ButtonsPressedThisFrame & button;
 	}
 	bool Is_Released(unsigned int button) const
 	{
@@ -70,7 +70,7 @@ public:
 	}
 	bool Is_Down(unsigned int button) const
 	{
-		return ButtonsPressedThisFrame & button;
+		return CurrentState.Gamepad.wButtons & button;
 	}
 
 	bool Is_KeyPressed(unsigned int key) const
@@ -114,50 +114,19 @@ public:
 
 	void CheckBindings()
 	{
-		//for (int index{ 0 }; index < m_ButtonBindings.size(); ++index)
-		//{
-		//	auto binding{ m_ButtonBindings[index] };
-		//	auto inputMask{ binding->InputMask };
-		//
-		//	bool pressed{ m_ButtonBindings[index]->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Pressed(inputMask) : Is_KeyPressed(inputMask)};
-		//	//bool released{ binding.pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Released(binding.InputMask) : Is_KeyReleased(binding.InputMask) };
-
-		//	auto triggerType{ binding->pCommand->GetTriggerState()};
-
-		//	if (pressed) {
-		//		if (!binding->Pressed)
-		//		{
-		//			binding->Pressed = true;
-		//			if (triggerType == Engine::TriggerState::PRESSED)
-		//				binding->pCommand->Execute();
-		//		}
-
-		//		if (triggerType == Engine::TriggerState::HELD)
-		//			binding->pCommand->Execute();
-		//	}
-		//	else
-		//	{
-		//		if (binding->Pressed)
-		//		{
-		//			binding->Pressed = false;
-		//			if (triggerType == Engine::TriggerState::RELEASED)
-		//				binding->pCommand->Execute();
-		//		}
-		//	}
-
-		//	m_ButtonBindings[index] = binding;
-		//}
-
 		for (auto& binding : m_ButtonBindings)
 		{
-			//bool pressed{ binding->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Pressed(binding.InputMask) : Is_KeyPressed(binding.InputMask) };
+
+			const auto triggerState{ binding->pCommand->GetTriggerState() };
+
+			bool pressed{ binding->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Pressed(binding->InputMask) : Is_KeyPressed(binding->InputMask) };
 			bool released{ binding->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Released(binding->InputMask) : Is_KeyReleased(binding->InputMask) };
 
-			/*if (pressed)
+			if (pressed && triggerState == Engine::TriggerState::PRESSED)
 			{
 				binding->pCommand->Execute();
-			}*/
-			if (released)
+			}
+			if (released && triggerState == Engine::TriggerState::RELEASED)
 			{
 				binding->pCommand->Execute();
 			}
@@ -168,29 +137,40 @@ public:
 	{
 		for (auto& binding : m_ValueBindings)
 		{
-			if (Is_Pressed(binding->InputMask))
+			const auto triggerState{ binding->pCommand->GetTriggerState() };
+
+			bool pressed{ binding->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Pressed(binding->InputMask) : Is_KeyPressed(binding->InputMask) };
+			bool released{ binding->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Released(binding->InputMask) : Is_KeyReleased(binding->InputMask) };
+
+
+			if (pressed && triggerState == Engine::TriggerState::PRESSED)
 			{
-				binding->pCommand->Execute(1.0f);
+				binding->pCommand->Execute(1.0);
 			}
-			else if (Is_Released(binding->InputMask))
+			if (released && triggerState == Engine::TriggerState::RELEASED)
 			{
-				binding->pCommand->Execute(0.0f);
+				binding->pCommand->Execute(0);
 			}
 		}
+
 	}
 
 	void Check2DValueBindings()
 	{
 		for (auto& binding : m_2DValueBindings)
 		{
+			auto triggerState{ binding->pCommand->GetTriggerState() };
 			auto type = binding->pCommand->GetInputType();
 			Engine::Vector2 value{};
-			bool pressed = false, released = false;
+			bool pressed = false;
+			bool down = false;
+			bool released = false;
 
 			if (type == Engine::GameActorCommand2D::InputType2D::WASD ||
 				type == Engine::GameActorCommand2D::InputType2D::ARROW_KEYS)
 			{
 				pressed = Is_KeyboardPressed(type);
+				down = Is_KeyboardDown(type);
 				released = Is_KeyboardReleased(type);
 				value = (type == Engine::GameActorCommand2D::InputType2D::WASD) ? GetWASD() : GetArrows();
 			}
@@ -198,8 +178,10 @@ public:
 			{
 				int mask = Get2DBindingMask(type);
 				pressed = Is_Pressed(mask);
+				down = Is_Down(mask);
 				released = Is_Released(mask);
 
+				
 				switch (type)
 				{
 				case Engine::GameActorCommand2D::InputType2D::LEFT_STICK: value = GetLeftStick(); break;
@@ -208,10 +190,12 @@ public:
 				}
 			}
 
-			if (pressed)
+			if (pressed && triggerState == Engine::TriggerState::PRESSED)
 				binding->pCommand->Execute(value);
-			else if (released)
-				binding->pCommand->Execute(Engine::Vector2{}); // Stop movement
+			if (down && triggerState == Engine::TriggerState::HELD)
+				binding->pCommand->Execute(value);
+			if (released && triggerState == Engine::TriggerState::RELEASED)
+				binding->pCommand->Execute(Engine::Vector2{});
 		}
 	}
 
@@ -239,20 +223,20 @@ private:
 		float x{ 0 };
 		float y{ 0 };
 
-		if (Is_Pressed(XINPUT_GAMEPAD_DPAD_LEFT))
+		if (Is_Down(XINPUT_GAMEPAD_DPAD_LEFT))
 		{
 			x += -1.f;
 		}
-		else if (Is_Pressed(XINPUT_GAMEPAD_DPAD_RIGHT))
+		else if (Is_Down(XINPUT_GAMEPAD_DPAD_RIGHT))
 		{
 			x += 1.f;
 		}
 
-		if (Is_Pressed(XINPUT_GAMEPAD_DPAD_UP))
+		if (Is_Down(XINPUT_GAMEPAD_DPAD_UP))
 		{
 			y += -1.f;
 		}
-		else if (Is_Pressed(XINPUT_GAMEPAD_DPAD_DOWN))
+		else if (Is_Down(XINPUT_GAMEPAD_DPAD_DOWN))
 		{
 			y += 1.f;
 		}
@@ -310,6 +294,21 @@ private:
 		case Engine::GameActorCommand2D::InputType2D::ARROW_KEYS:
 			return Is_KeyPressed(SDL_SCANCODE_UP) || Is_KeyPressed(SDL_SCANCODE_DOWN) ||
 				Is_KeyPressed(SDL_SCANCODE_LEFT) || Is_KeyPressed(SDL_SCANCODE_RIGHT);
+		default:
+			return false;
+		}
+	}
+
+	bool Is_KeyboardDown(Engine::GameActorCommand2D::InputType2D type)
+	{
+		switch (type)
+		{
+		case Engine::GameActorCommand2D::InputType2D::WASD:
+			return Is_KeyDown(SDL_SCANCODE_W) || Is_KeyDown(SDL_SCANCODE_A) ||
+				Is_KeyDown(SDL_SCANCODE_S) || Is_KeyDown(SDL_SCANCODE_D);
+		case Engine::GameActorCommand2D::InputType2D::ARROW_KEYS:
+			return Is_KeyDown(SDL_SCANCODE_UP) || Is_KeyDown(SDL_SCANCODE_DOWN) ||
+				Is_KeyDown(SDL_SCANCODE_LEFT) || Is_KeyDown(SDL_SCANCODE_RIGHT);
 		default:
 			return false;
 		}

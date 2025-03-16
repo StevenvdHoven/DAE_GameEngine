@@ -9,12 +9,14 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "AchievementHandler.h"
 #include "ViewPort.h"
 #include "Time.h"
 #include <chrono>
 #include <thread>
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_sdl2.h>
+#include <steam_api.h>
 
 SDL_Window* g_window{};
 
@@ -89,10 +91,13 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
+	auto& achievementHandler = AchievementHandler::GetInstance();
 	auto& viewPort = ViewPort::GetInstance();
 	auto& time = Time::GetInstance();
 
 	sceneManager.Start();
+
+	achievementHandler.ValidateAchievements();
 
 	// todo: this update loop could use some work.
 	const int ms_per_frame{ 1000 / 144 };
@@ -110,6 +115,8 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 		time.m_DeltaTime = delta_time;
 		last_time = current_time;
 		lag += delta_time;
+
+		SteamAPI_RunCallbacks();
 
 		doContinue = input.ProcessInput();
 		
@@ -129,4 +136,6 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 		const auto sleep_time = current_time + std::chrono::milliseconds(ms_per_frame) - std::chrono::high_resolution_clock::now();
 		std::this_thread::sleep_for(sleep_time);
 	}
+
+	
 }

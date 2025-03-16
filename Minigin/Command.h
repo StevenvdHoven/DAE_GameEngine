@@ -52,7 +52,7 @@ namespace Engine
 			WASD,
 			ARROW_KEYS
 		};
-		ValueCommand() : m_InputType(InputType2D::LEFT_STICK), m_TriggerState(TriggerState::PRESSED)
+		ValueCommand() : m_DeviceType{DeviceType::KEYBOARD},  m_InputType(InputType2D::LEFT_STICK), m_TriggerState(TriggerState::PRESSED)
 		{
 
 		}
@@ -64,10 +64,15 @@ namespace Engine
 		InputType2D GetInputType() const { return m_InputType; }
 		void SetInputType(InputType2D inputType) { m_InputType = inputType; }
 
+		DeviceType GetDeviceType() const { return m_DeviceType; }
+		void ChangeDeviceType(DeviceType deviceType) { m_DeviceType = deviceType; }
+
 		TriggerState GetTriggerState() const { return m_TriggerState; }
 		void SetTriggerState(TriggerState triggerState) { m_TriggerState = triggerState; }
 
 	protected:
+
+		DeviceType m_DeviceType;
 		InputType2D m_InputType;
 		TriggerState m_TriggerState;
 	};
@@ -97,6 +102,7 @@ namespace Engine
 	public:
 		GameActorCommand2D(GameObject* pActor, ValueCommand::InputType2D inputType) : m_pActor(pActor)
 		{
+			m_DeviceType = DeviceType::KEYBOARD;
 			m_InputType = inputType;
 			m_TriggerState = TriggerState::HELD;
 		}

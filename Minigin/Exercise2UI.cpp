@@ -46,7 +46,7 @@ void Exercise2UI::CaculateSamples()
 {
 	m_Samples.clear();
 
-	const int arrLength{ 1000000000 };
+	const int arrLength{ 1000000 };
 	int* arr = new int[arrLength];
 
 	for (int i = 0; i < arrLength; i++)

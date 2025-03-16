@@ -34,6 +34,9 @@
     <Filter Include="Observer">
       <UniqueIdentifier>{f2e04e99-3179-45ca-bcd9-4a65f6964ca6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Managers\Achievements">
+      <UniqueIdentifier>{dafab0d9-10f0-4cf3-93f3-5deac74619cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -148,7 +151,19 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="HealtBarComponent.h">
-      <Filter>DataTypes</Filter>
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AchievementHandler.h">
+      <Filter>Managers\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="Achievements.h">
+      <Filter>Managers\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="AddScoreCommand.h">
+      <Filter>Managers\Input\Commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -261,7 +276,19 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="HealtBarComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AchievementHandler.cpp">
+      <Filter>Managers\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Achievements.cpp">
+      <Filter>Managers\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="AddScoreCommand.cpp">
+      <Filter>Managers\Input\Commands</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
