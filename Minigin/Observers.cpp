@@ -1,6 +1,8 @@
 #include "Observers.h"
 #include <algorithm>
 
+using namespace Engine;
+
 void Subject::AddObserver(IObserver* observer)
 {
 	if (!observer) return;

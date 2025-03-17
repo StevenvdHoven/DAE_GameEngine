@@ -1,8 +1,8 @@
 #pragma once
 #include "Component.h"
 #include <memory>
+#include "Observers.h"
 
-class Subject;
 class PlayerHealthComponent final : public Component
 {
 public:
@@ -12,10 +12,10 @@ public:
 	void TakeDamage(int damage);
 	void Heal(int heal);
 
-	Subject* GetOnTakeDamage() const { return m_OnTakeDamage.get(); }
+	Engine::Subject* GetOnTakeDamage() const { return m_OnTakeDamage.get(); }
 
 private:
 	int m_Health;
-	std::unique_ptr<Subject> m_OnTakeDamage;
+	std::unique_ptr<Engine::Subject> m_OnTakeDamage;
 };
 

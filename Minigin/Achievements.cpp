@@ -23,8 +23,10 @@ void WinGameAchievement::OnNotify()
 
 	if (m_pScoreComponent->GetScore() >= 1000)
 	{
-			SteamUserStats()->SetAchievement("ACH_WIN_ONE_GAME");
-			SteamUserStats()->StoreStats();
+		SteamUserStats()->SetAchievement("ACH_WIN_ONE_GAME");
+		SteamUserStats()->StoreStats();
+
+		m_pScoreComponent->GetOnScoreChange()->RemoveObserver(this);
 	}
 
 }
