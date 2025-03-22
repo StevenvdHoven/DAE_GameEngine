@@ -1,10 +1,12 @@
 #include "PlayerHealthComponent.h"
 #include "Observers.h"
 
+using namespace Engine;
+
 PlayerHealthComponent::PlayerHealthComponent(GameObject* pOwner, int health):
 	Component{ pOwner },
 	m_Health{ health },
-	m_OnTakeDamage{ std::make_unique<Subject>() }
+	m_OnTakeDamage{ std::make_unique<Engine::Subject>() }
 {
 }
 

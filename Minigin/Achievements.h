@@ -18,7 +18,7 @@ protected:
 	int ID;
 };
 
-class WinGameAchievement : public Achievement, public IObserver
+class WinGameAchievement : public Achievement, public Engine::IObserver
 {
 public:
 	WinGameAchievement(int id, GameObject* pPlayer);

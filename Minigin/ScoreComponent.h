@@ -15,12 +15,12 @@ public:
 	int GetScore() const;
 	void AddScore(int score);
 
-	Subject* GetOnScoreChange() const { return m_OnScoreChange.get(); }
+	Engine::Subject* GetOnScoreChange() const { return m_OnScoreChange.get(); }
 
 private:
 	int m_Score;
 	TextRenderer* m_pTextRenderer;
-	std::unique_ptr<Subject> m_OnScoreChange;
+	std::unique_ptr<Engine::Subject> m_OnScoreChange;
 	
 };
 

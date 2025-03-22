@@ -4,7 +4,7 @@
 
 class PlayerHealthComponent;
 class TextRenderer;
-class HealtBarComponent final : public Component, public IObserver
+class HealtBarComponent final : public Component, public Engine::IObserver
 {
 public:
 	HealtBarComponent(GameObject* pOwner, PlayerHealthComponent* pHealth);

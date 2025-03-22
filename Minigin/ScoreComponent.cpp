@@ -6,7 +6,7 @@ ScoreComponent::ScoreComponent(GameObject* pOwner) :
 	Component{ pOwner },
 	m_Score{ 0 }
 {
-	m_OnScoreChange = std::make_unique<Subject>();
+	m_OnScoreChange = std::make_unique<Engine::Subject>();
 }
 
 ScoreComponent::~ScoreComponent()
