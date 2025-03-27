@@ -1,5 +1,5 @@
 #include "FPSCounterComponent.h"
-#include "Time.h"
+#include "EngineTime.h"
 #include "TextRenderer.h"
 #include <string>
 #include <sstream>

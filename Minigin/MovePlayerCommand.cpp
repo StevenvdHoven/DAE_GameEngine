@@ -1,7 +1,7 @@
 #include "MovePlayerCommand.h"
 #include "GameObject.h"
 #include "Transform.h"
-#include "Time.h"
+#include "EngineTime.h"
 
 Engine::MovePlayerCommand::MovePlayerCommand(GameObject* pActor, InputType2D inputType, float speed):
 	GameActorCommand2D{ pActor, inputType }

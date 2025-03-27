@@ -1,7 +1,6 @@
 #include "Achievements.h"
 #include "GameObject.h"
 #include "ScoreComponent.h"
-#include "steam_api.h"
 
 
 WinGameAchievement::WinGameAchievement(int id, GameObject* pPlayer) :
@@ -15,7 +14,7 @@ WinGameAchievement::WinGameAchievement(int id, GameObject* pPlayer) :
 void WinGameAchievement::OnNotify()
 {
 	bool m_bAchieved = false;
-	SteamUserStats()->GetAchievement("ACH_WIN_ONE_GAME", &m_bAchieved);
+	//SteamUserStats()->GetAchievement("ACH_WIN_ONE_GAME", &m_bAchieved);
 	if (m_bAchieved)
 	{
 		return;
@@ -23,8 +22,8 @@ void WinGameAchievement::OnNotify()
 
 	if (m_pScoreComponent->GetScore() >= 1000)
 	{
-		SteamUserStats()->SetAchievement("ACH_WIN_ONE_GAME");
-		SteamUserStats()->StoreStats();
+		/*SteamUserStats()->SetAchievement("ACH_WIN_ONE_GAME");
+		SteamUserStats()->StoreStats();*/
 
 		m_pScoreComponent->GetOnScoreChange()->RemoveObserver(this);
 	}

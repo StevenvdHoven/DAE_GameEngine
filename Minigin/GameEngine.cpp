@@ -1,3 +1,4 @@
+#pragma once
 #include <stdexcept>
 #define WIN32_LEAN_AND_MEAN 
 #include <windows.h>
@@ -11,12 +12,12 @@
 #include "ResourceManager.h"
 #include "AchievementHandler.h"
 #include "ViewPort.h"
-#include "Time.h"
+#include "EngineTime.h"
 #include <chrono>
 #include <thread>
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_sdl2.h>
-#include <steam_api.h>
+#include <iostream>
 
 SDL_Window* g_window{};
 
@@ -116,8 +117,6 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 		last_time = current_time;
 		lag += delta_time;
 
-		SteamAPI_RunCallbacks();
-
 		doContinue = input.ProcessInput();
 		
 		while (lag >= fixed_time_step)
@@ -136,6 +135,4 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 		const auto sleep_time = current_time + std::chrono::milliseconds(ms_per_frame) - std::chrono::high_resolution_clock::now();
 		std::this_thread::sleep_for(sleep_time);
 	}
-
-	
 }

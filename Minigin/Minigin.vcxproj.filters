@@ -22,9 +22,6 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{58e2695f-97cd-4040-80de-f3801d5aaaf3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI">
-      <UniqueIdentifier>{acabb492-9c62-4367-bbb0-6293557f8734}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Managers\Input">
       <UniqueIdentifier>{9515380f-a6f4-4422-9709-e30b3d5990d7}</UniqueIdentifier>
     </Filter>
@@ -75,7 +72,7 @@
     <ClInclude Include="ImageRenderer.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Time.h">
+    <ClInclude Include="EngineTime.h">
       <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
@@ -116,12 +113,6 @@
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui\backends\imgui_impl_sdl2.h">
       <Filter>imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Exercise2UI.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Exercise3UI.h">
-      <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui\imgui_plot.h">
       <Filter>imgui</Filter>
@@ -167,9 +158,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -190,9 +178,6 @@
     </ClCompile>
     <ClCompile Include="ImageRenderer.cpp">
       <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Time.cpp">
-      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>DataTypes</Filter>
@@ -238,12 +223,6 @@
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\backends\imgui_impl_opengl3.cpp">
       <Filter>imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Exercise2UI.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Exercise3UI.cpp">
-      <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="Vector2.cpp">
       <Filter>DataTypes</Filter>

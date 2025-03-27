@@ -2,8 +2,6 @@
 #include "Renderer.h"
 #include "SceneManager.h"
 #include "Texture2D.h"
-#include "Exercise2UI.h"
-#include "Exercise3UI.h"
 #include "imgui.h"
 #include <backends/imgui_impl_sdl2.h>
 #include <backends/imgui_impl_opengl3.h>
