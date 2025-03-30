@@ -93,7 +93,7 @@ void load()
 	score1Command->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
 	InputManager::GetInstance().BindButton(0, 0x1000, std::move(score1Command));
 
-	AchievementHandler::GetInstance().AddAchievement(std::move(std::make_unique<WinGameAchievement>(1, score1Text.get())));
+	//AchievementHandler::GetInstance().AddAchievement(std::move(std::make_unique<WinGameAchievement>(1, score1Text.get())));
 
 	scene->Add(std::move(score1Text));
 
@@ -128,8 +128,8 @@ void load()
 	score2Command->ChangeDeviceType(Engine::DeviceType::KEYBOARD);
 	InputManager::GetInstance().BindButton(1, SDL_SCANCODE_Z, std::move(score2Command));
 
-	auto winAchievement{ std::make_unique<WinGameAchievement>(0,score2Text.get()) };
-	AchievementHandler::GetInstance().AddAchievement(std::move(winAchievement));
+	/*auto winAchievement{ std::make_unique<WinGameAchievement>(0,score2Text.get()) };
+	AchievementHandler::GetInstance().AddAchievement(std::move(winAchievement));*/
 
 	// Creatine manual
 	auto manual1Object{ std::make_unique<GameObject>() };

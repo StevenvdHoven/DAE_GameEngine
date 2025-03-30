@@ -10,7 +10,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
-#include "AchievementHandler.h"
+//#include "AchievementHandler.h"
 #include "ViewPort.h"
 #include "EngineTime.h"
 #include <chrono>
@@ -92,13 +92,13 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
-	auto& achievementHandler = AchievementHandler::GetInstance();
+	//auto& achievementHandler = AchievementHandler::GetInstance();
 	auto& viewPort = ViewPort::GetInstance();
 	auto& time = Time::GetInstance();
 
 	sceneManager.Start();
 
-	achievementHandler.ValidateAchievements();
+	//achievementHandler.ValidateAchievements();
 
 	// todo: this update loop could use some work.
 	const int ms_per_frame{ 1000 / 144 };

@@ -13,10 +13,87 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{afc46e19-3713-43f7-b1cf-4017fc9da391}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Achievements">
+      <UniqueIdentifier>{1b01d725-116a-4721-a701-45680a884bd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Commands">
+      <UniqueIdentifier>{b517208f-8689-4435-a190-c568f9357881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Player">
+      <UniqueIdentifier>{fb00007f-8059-4304-a7e2-b07a528dd2c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Tools">
+      <UniqueIdentifier>{3c35f10b-2b92-4543-8fac-b2a90492f067}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AchievementHandler.cpp">
+      <Filter>Game\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Achievements.cpp">
+      <Filter>Game\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="AddScoreCommand.cpp">
+      <Filter>Game\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MovePlayerCommand.cpp">
+      <Filter>Game\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDamageCommand.cpp">
+      <Filter>Game\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerHealthComponent.cpp">
+      <Filter>Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="HealtBarComponent.cpp">
+      <Filter>Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreComponent.cpp">
+      <Filter>Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="FPSCounterComponent.cpp">
+      <Filter>Game\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="RotatorComponent.cpp">
+      <Filter>Game\Tools</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Achievements.h">
+      <Filter>Game\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="AchievementHandler.h">
+      <Filter>Game\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="AddScoreCommand.h">
+      <Filter>Game\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MovePlayerCommand.h">
+      <Filter>Game\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDamageCommand.h">
+      <Filter>Game\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreComponent.h">
+      <Filter>Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerHealthComponent.h">
+      <Filter>Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="HealtBarComponent.h">
+      <Filter>Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSCounterComponent.h">
+      <Filter>Game\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="RotatorComponent.h">
+      <Filter>Game\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

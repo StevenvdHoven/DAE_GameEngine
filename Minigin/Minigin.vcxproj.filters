@@ -31,9 +31,6 @@
     <Filter Include="Observer">
       <UniqueIdentifier>{f2e04e99-3179-45ca-bcd9-4a65f6964ca6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Managers\Achievements">
-      <UniqueIdentifier>{dafab0d9-10f0-4cf3-93f3-5deac74619cd}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -81,12 +78,6 @@
     <ClInclude Include="ValueWatchComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="FPSCounterComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="RotatorComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Vector2.h">
       <Filter>DataTypes</Filter>
     </ClInclude>
@@ -129,32 +120,8 @@
     <ClInclude Include="Command.h">
       <Filter>Managers\Input\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="MovePlayerCommand.h">
-      <Filter>Managers\Input\Commands</Filter>
-    </ClInclude>
     <ClInclude Include="Observers.h">
       <Filter>Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerDamageCommand.h">
-      <Filter>Managers\Input\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerHealthComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="HealtBarComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="AchievementHandler.h">
-      <Filter>Managers\Achievements</Filter>
-    </ClInclude>
-    <ClInclude Include="Achievements.h">
-      <Filter>Managers\Achievements</Filter>
-    </ClInclude>
-    <ClInclude Include="AddScoreCommand.h">
-      <Filter>Managers\Input\Commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -197,12 +164,6 @@
     <ClCompile Include="ValueWatchComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="FPSCounterComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="RotatorComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\imgui.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
@@ -242,32 +203,8 @@
     <ClCompile Include="Command.cpp">
       <Filter>Managers\Input\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="MovePlayerCommand.cpp">
-      <Filter>Managers\Input\Commands</Filter>
-    </ClCompile>
     <ClCompile Include="Observers.cpp">
       <Filter>Observer</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerDamageCommand.cpp">
-      <Filter>Managers\Input\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerHealthComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="HealtBarComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="AchievementHandler.cpp">
-      <Filter>Managers\Achievements</Filter>
-    </ClCompile>
-    <ClCompile Include="Achievements.cpp">
-      <Filter>Managers\Achievements</Filter>
-    </ClCompile>
-    <ClCompile Include="AddScoreCommand.cpp">
-      <Filter>Managers\Input\Commands</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

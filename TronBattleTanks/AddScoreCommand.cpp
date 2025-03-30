@@ -3,13 +3,14 @@
 #include "ScoreComponent.h"
 
 
-Engine::AddScoreCommand::AddScoreCommand(GameObject* pGameObject) :
-	GameActorCommand{ pGameObject },
+
+AddScoreCommand::AddScoreCommand(GameObject* pGameObject) :
+	Engine::GameActorCommand{ pGameObject },
 	m_pScoreComponent{ nullptr }
 {
 
 }
-void Engine::AddScoreCommand::Execute()
+void AddScoreCommand::Execute()
 {
 	if (m_pScoreComponent == nullptr)
 		m_pScoreComponent = GetActor()->GetComponent<ScoreComponent>();
