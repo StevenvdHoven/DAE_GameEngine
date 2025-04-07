@@ -1,18 +1,24 @@
 #pragma once
+#include <string>
 
 
 namespace Engine
 {
+	struct SoundClip
+	{
+		std::string Name;
+		int SoundID;
+		float durration;
+	};
+
 	class SoundSystem
 	{
 	public:
-		SoundSystem() = default;
 		virtual ~SoundSystem() = default;
 
-		SoundSystem(const SoundSystem&) = delete;
-		SoundSystem(SoundSystem&&) = delete;
-		SoundSystem& operator=(const SoundSystem&) = delete;
-		SoundSystem& operator=(SoundSystem&&) = delete;
+		virtual void Play(const SoundClip& clip) = 0;
+		virtual SoundClip LoadSound(const std::string& filePath) = 0;
+
 	};
 }
 

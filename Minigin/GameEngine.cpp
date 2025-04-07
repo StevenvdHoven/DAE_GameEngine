@@ -10,7 +10,8 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
-//#include "AchievementHandler.h"
+#include "ServiceLocator.h"
+#include "SDL_SoundSystem.h"
 #include "ViewPort.h"
 #include "EngineTime.h"
 #include <chrono>
@@ -89,10 +90,12 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 {
 	load();
 
+	ServiceLocator::RegisterSoundSystem(std::move(std::make_unique<SDL_SoundSystem>()));
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 	//auto& achievementHandler = AchievementHandler::GetInstance();
+	//auto& resourceManager = ResourceManager::GetInstance();
 	auto& viewPort = ViewPort::GetInstance();
 	auto& time = Time::GetInstance();
 
