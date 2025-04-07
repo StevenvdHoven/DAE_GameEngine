@@ -31,6 +31,9 @@
     <Filter Include="Observer">
       <UniqueIdentifier>{f2e04e99-3179-45ca-bcd9-4a65f6964ca6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Managers\Services">
+      <UniqueIdentifier>{59ddf87d-29fe-4dbc-98ca-308bf73d3f9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -123,6 +126,15 @@
     <ClInclude Include="Observers.h">
       <Filter>Observer</Filter>
     </ClInclude>
+    <ClInclude Include="ServiceLocator.h">
+      <Filter>Managers\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundSystem.h">
+      <Filter>Managers\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL_SoundSystem.h">
+      <Filter>Managers\Services</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -205,6 +217,15 @@
     </ClCompile>
     <ClCompile Include="Observers.cpp">
       <Filter>Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceLocator.cpp">
+      <Filter>Managers\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundSystem.cpp">
+      <Filter>Managers\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL_SoundSystem.cpp">
+      <Filter>Managers\Services</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
