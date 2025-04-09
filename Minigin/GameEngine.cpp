@@ -88,16 +88,16 @@ Engine::GameEngine::~GameEngine()
 
 void Engine::GameEngine::Run(const std::function<void()>& load)
 {
-	load();
+	
 
 	ServiceLocator::RegisterSoundSystem(std::move(std::make_unique<SDL_SoundSystem>()));
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
-	//auto& achievementHandler = AchievementHandler::GetInstance();
-	//auto& resourceManager = ResourceManager::GetInstance();
 	auto& viewPort = ViewPort::GetInstance();
 	auto& time = Time::GetInstance();
+
+	load();
 
 	sceneManager.Start();
 

@@ -168,6 +168,9 @@ void load()
 
 	//ViewPort::GetInstance().AddGUI(std::make_unique<Exercise2UI>());
 	//ViewPort::GetInstance().AddGUI(std::make_unique<Exercise3::Exercise3UI>());
+
+	auto backgroundMusic{ ServiceLocator::GetSoundSystem().LoadMusic("music.wav") };
+	ServiceLocator::GetSoundSystem().PlayMusic(backgroundMusic);
 }
 
 int main(int, char* []) {
