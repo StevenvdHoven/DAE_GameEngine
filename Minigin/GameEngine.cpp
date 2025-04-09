@@ -50,7 +50,7 @@ void PrintSDLVersion()
 		version.major, version.minor, version.patch);
 }
 
-Engine::GameEngine::GameEngine(const std::string &dataPath)
+Engine::GameEngine::GameEngine(const std::string& dataPath, int width, int height)
 {
 	PrintSDLVersion();
 	
@@ -63,8 +63,8 @@ Engine::GameEngine::GameEngine(const std::string &dataPath)
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		640,
-		480,
+		width,
+		height,
 		SDL_WINDOW_OPENGL
 	);
 	if (g_window == nullptr) 
@@ -88,8 +88,6 @@ Engine::GameEngine::~GameEngine()
 
 void Engine::GameEngine::Run(const std::function<void()>& load)
 {
-	
-
 	ServiceLocator::RegisterSoundSystem(std::move(std::make_unique<SDL_SoundSystem>()));
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
@@ -101,9 +99,6 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 
 	sceneManager.Start();
 
-	//achievementHandler.ValidateAchievements();
-
-	// todo: this update loop could use some work.
 	const int ms_per_frame{ 1000 / 144 };
 	const float fixed_time_step{ .02f };
 	bool doContinue = true;

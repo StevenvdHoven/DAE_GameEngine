@@ -7,7 +7,7 @@ namespace Engine
 	class GameEngine
 	{
 	public:
-		explicit GameEngine(const std::string& dataPath);
+		explicit GameEngine(const std::string& dataPath, int width, int height);
 		~GameEngine();
 		void Run(const std::function<void()>& load);
 
