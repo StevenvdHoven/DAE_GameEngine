@@ -12,6 +12,7 @@
 #include "ResourceManager.h"
 #include "ServiceLocator.h"
 #include "SDL_SoundSystem.h"
+#include "PhysicsSystem.h"
 #include "ViewPort.h"
 #include "EngineTime.h"
 #include <chrono>
@@ -89,6 +90,7 @@ Engine::GameEngine::~GameEngine()
 void Engine::GameEngine::Run(const std::function<void()>& load)
 {
 	ServiceLocator::RegisterSoundSystem(std::move(std::make_unique<SDL_SoundSystem>()));
+	ServiceLocator::RegisterPhysicsSystem(std::move(std::make_unique<PhysicsSystem>()));
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();

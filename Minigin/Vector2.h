@@ -69,6 +69,11 @@ namespace Engine
 			return !(*this == other);
 		}
 
+		float SquaredMagnitude() const
+		{
+			return x * x + y * y;
+		}
+
 		float Magnitude() const
 		{
 			return std::sqrt(x * x + y * y);

@@ -5,6 +5,8 @@
 #include "imgui.h"
 #include <backends/imgui_impl_sdl2.h>
 #include <backends/imgui_impl_opengl3.h>
+#include "ServiceLocator.h"
+#include "PhysicsSystem.h"
 
 
 int GetOpenGLDriverIndex()
@@ -45,6 +47,10 @@ void Engine::Renderer::Render() const
 
 	SceneManager::GetInstance().Render();
 
+	ServiceLocator::GetPhysicsSystem().Render();
+
+
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	
@@ -62,6 +68,71 @@ void Engine::Renderer::Destroy()
 		SDL_DestroyRenderer(m_renderer);
 		m_renderer = nullptr;
 	}
+}
+
+void Engine::Renderer::RenderRectangle(const Vector2& pos, float width, float height) const
+{
+	SDL_Rect rect{};
+	rect.x = static_cast<int>(pos.x);
+	rect.y = static_cast<int>(pos.y);
+	rect.w = static_cast<int>(width);
+	rect.h = static_cast<int>(height);
+	SDL_RenderDrawRect(m_renderer, &rect);
+}
+
+void Engine::Renderer::RenderFilledRectangle(const Vector2& pos, float width, float height) const
+{
+	SDL_Rect rect{};
+	rect.x = static_cast<int>(pos.x);
+	rect.y = static_cast<int>(pos.y);
+	rect.w = static_cast<int>(width);
+	rect.h = static_cast<int>(height);
+	SDL_RenderFillRect(m_renderer, &rect);
+}
+
+void Engine::Renderer::RenderOval(const Vector2& pos, float radiusX, float RadiusY) const
+{
+	SDL_Rect rect{};
+	rect.x = static_cast<int>(pos.x - radiusX);
+	rect.y = static_cast<int>(pos.y - RadiusY);
+	rect.w = static_cast<int>(radiusX * 2);
+	rect.h = static_cast<int>(RadiusY * 2);
+	// Draw the outline of the oval
+	for (int w = 0; w < rect.w; w++)
+	{
+		for (int h = 0; h < rect.h; h++)
+		{
+			int dx = rect.w / 2 - w;
+			int dy = rect.h / 2 - h;
+			if ((dx * dx) * (rect.h * rect.h) + (dy * dy) * (rect.w * rect.w) <= (rect.w * rect.h) * (rect.w * rect.h))
+			{
+				SDL_RenderDrawPoint(m_renderer, rect.x + w, rect.y + h);
+			}
+		}
+	}
+}
+
+void Engine::Renderer::RenderFilledOval(const Vector2& pos, float radiusX, float RadiusY) const
+{
+	SDL_Rect rect{};
+	rect.x = static_cast<int>(pos.x - radiusX);
+	rect.y = static_cast<int>(pos.y - RadiusY);
+	rect.w = static_cast<int>(radiusX * 2);
+	rect.h = static_cast<int>(RadiusY * 2);
+	// Draw the filled oval
+	for (int w = 0; w < rect.w; w++)
+	{
+		for (int h = 0; h < rect.h; h++)
+		{
+			int dx = rect.w / 2 - w;
+			int dy = rect.h / 2 - h;
+			if ((dx * dx) * (rect.h * rect.h) + (dy * dy) * (rect.w * rect.w) <= (rect.w * rect.h) * (rect.w * rect.h))
+			{
+				SDL_RenderDrawPoint(m_renderer, rect.x + w, rect.y + h);
+			}
+		}
+	}
+
 }
 
 void Engine::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const
