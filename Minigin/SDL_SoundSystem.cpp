@@ -12,6 +12,39 @@
 
 using namespace Engine;
 
+/// <summary>
+/// Custom deleter for mix chunk.
+/// NOTE: It caused a crash since Mix_FreeChunk already deletes what was in there so a custom deleter or wrapper class was a good solution.			
+/// </summary>
+struct Custom_MixChunk_Deleter
+{
+	Custom_MixChunk_Deleter() {};
+	Custom_MixChunk_Deleter(const Custom_MixChunk_Deleter&) {};
+	Custom_MixChunk_Deleter(Custom_MixChunk_Deleter&) {};
+	Custom_MixChunk_Deleter(Custom_MixChunk_Deleter&&) noexcept {};
+
+	void operator()(Mix_Chunk* chunk)
+	{
+		Mix_FreeChunk(chunk);
+	};
+};
+
+/// <summary>
+/// Custom deleter for mix music.
+/// NOTE: It caused a crash since Mix_FreeMusic already deletes what was in there so a custom deleter or wrapper class was a good solution.
+/// </summary>
+struct Custom_MixMusic_Deleter
+{
+	Custom_MixMusic_Deleter() {};
+	Custom_MixMusic_Deleter(const Custom_MixMusic_Deleter&) {};
+	Custom_MixMusic_Deleter(Custom_MixMusic_Deleter&) {};
+	Custom_MixMusic_Deleter(Custom_MixMusic_Deleter&&) noexcept {};
+	void operator()(Mix_Music* music)
+	{
+		Mix_FreeMusic(music);
+	};
+};
+
 class SDL_SoundSystem::SDL_SoundSystem_Pimpl final
 {
 public:
@@ -37,18 +70,6 @@ public:
 		Mix_HaltChannel(-1);
 		Mix_HaltMusic();
 
-		for (auto& sound : m_SoundClips)
-		{
-			Mix_FreeChunk(sound.second);
-		}
-		m_SoundClips.clear();
-
-		for (auto& music : m_MusicClips)
-		{
-			Mix_FreeMusic(music.second);
-		}
-		m_MusicClips.clear();
-
 		Mix_CloseAudio();
 		std::cout << "m_MusicClips cleared\n";
 	}
@@ -57,30 +78,38 @@ public:
 	{
 		while (!stopToken.stop_requested())
 		{
-			std::unique_lock<std::mutex> lock(m_SoundMutex);
+			std::unique_lock<std::mutex> lock(m_LoopMutex);
 			m_SoundCondition.wait(lock, [this,&stopToken] { return m_PlaySounds || stopToken.stop_requested(); });
 
 			if (stopToken.stop_requested()) break;
 
+			lock.unlock();
+
 			while (!m_SoundQueue.empty())
 			{
+				std::lock_guard<std::mutex> soundLock(m_SoundMutex);
+
 				SoundClip clip = m_SoundQueue.front();
 				m_SoundQueue.pop();
-				
+
+
 				if (clip.SoundID >= 0 && clip.SoundID < static_cast<int>(m_SoundClips.size()))
 				{
-					Mix_PlayChannel(-1, m_SoundClips[clip.Name], 0);
+					Mix_PlayChannel(-1, m_SoundClips[clip.Name].get(), 0);
 				}
 			}
 
 			while(!m_MusicQueue.empty())
 			{
+				std::lock_guard<std::mutex> musicLock(m_MusicMutex);
+
 				MusicClip clip = m_MusicQueue.front();
 				m_MusicQueue.pop();
 
+
 				if (clip.MusicID >= 0 && clip.MusicID < static_cast<int>(m_MusicClips.size()))
 				{
-					Mix_PlayMusic(m_MusicClips[clip.Name], -1);
+					Mix_PlayMusic(m_MusicClips[clip.Name].get(), -1);
 				}
 			}
 
@@ -107,7 +136,7 @@ public:
 		if (clip.MusicID < 0 || clip.MusicID >= static_cast<int>(m_MusicClips.size()))
 			return;
 
-		std::lock_guard<std::mutex> lock(m_SoundMutex);
+		std::lock_guard<std::mutex> lock(m_MusicMutex);
 		m_MusicQueue.emplace(clip);
 
 		m_PlaySounds = true;
@@ -142,8 +171,11 @@ public:
 			return clip;
 		}
 
+		Custom_MixChunk_Deleter d{};
+		auto pChunck = std::unique_ptr<Mix_Chunk, Custom_MixChunk_Deleter>(mixChunk,d);
 
-		m_SoundClips.emplace(filepath,mixChunk);
+		std::lock_guard<std::mutex> lock(m_SoundMutex);
+		m_SoundClips.emplace(filepath, std::move(pChunck));
 		
 		clip.Name = filepath;
 		clip.SoundID = static_cast<int>(m_SoundClips.size() - 1);
@@ -176,7 +208,12 @@ public:
 			clip.MusicID = -1;
 			return clip;
 		}
-		m_MusicClips.emplace(filepath,mixMusic);
+
+		Custom_MixMusic_Deleter d{};
+		auto pMusic = std::unique_ptr<Mix_Music, Custom_MixMusic_Deleter>(mixMusic, d);
+
+		std::lock_guard<std::mutex> lock(m_MusicMutex);
+		m_MusicClips.emplace(filepath,std::move(pMusic));
 
 		clip.Name = filepath;
 		clip.MusicID = static_cast<int>(m_MusicClips.size() - 1);
@@ -184,12 +221,14 @@ public:
 	}
 
 private:
+	std::mutex m_LoopMutex;
 	std::mutex m_SoundMutex;
+	std::mutex m_MusicMutex;
 	std::condition_variable m_SoundCondition;
 	bool m_PlaySounds;
 
-	std::unordered_map<std::string,Mix_Chunk*> m_SoundClips;
-	std::unordered_map<std::string,Mix_Music*> m_MusicClips;
+	std::unordered_map<std::string, std::unique_ptr<Mix_Chunk, Custom_MixChunk_Deleter>> m_SoundClips;
+	std::unordered_map<std::string,std::unique_ptr<Mix_Music,Custom_MixMusic_Deleter>> m_MusicClips;
 	std::queue<SoundClip> m_SoundQueue;
 	std::queue<MusicClip> m_MusicQueue;
 	std::jthread m_SoundThread;

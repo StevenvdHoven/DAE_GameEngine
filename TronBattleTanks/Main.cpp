@@ -14,8 +14,8 @@ using namespace Engine;
 
 void load()
 {
-	//TestScene::CreateScene();
-	BattleScene::CreateScene();
+	TestScene::CreateScene();
+	//BattleScene::CreateScene();
 }
 
 int main(int, char* []) {
