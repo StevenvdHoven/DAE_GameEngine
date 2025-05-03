@@ -6,6 +6,7 @@
 namespace Engine
 {
 	class Collider;
+	class PhysicsBody;
 	class PhysicsSystem
 	{
 	public:
@@ -16,6 +17,9 @@ namespace Engine
 
 		void Render();
 
+		void AddPhysicsBody(PhysicsBody* pPhysicsBody);
+		void RemovePhysicsBody(PhysicsBody* pPhysicsBody);
+
 		void AddCollider(Collider* pCollider);
 		void RemoveCollider(Collider* pCollider);
 
@@ -25,6 +29,7 @@ namespace Engine
 		bool m_RenderDebugColliders{ true };
 
 		std::vector<Collider*> m_Colliders;
+		std::vector<PhysicsBody*> m_PhysicsBodies;
 	};
 }
 
