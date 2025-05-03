@@ -6,18 +6,18 @@
 
 using namespace Engine;
 
-ImageRenderer::ImageRenderer(GameObject* pOwner,const std::string& imagePath):
+Engine::ImageRenderer::ImageRenderer(GameObject* pOwner,const std::string& imagePath):
 	Component{pOwner},
 	m_pTexture{ ResourceManager::GetInstance().LoadTexture(imagePath)}
 {
 	
 }
 
-void ImageRenderer::Update()
+void Engine::ImageRenderer::Update()
 {
 }
 
-void ImageRenderer::Render() const
+void Engine::ImageRenderer::Render() const
 {
 	const Transform* transform{ GetGameObject()->GetTransform()};
 

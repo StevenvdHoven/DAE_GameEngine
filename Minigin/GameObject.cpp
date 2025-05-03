@@ -5,22 +5,24 @@
 #include "Renderer.h"
 #include "Component.h"
 
-GameObject::GameObject()
+using namespace Engine;
+
+Engine::GameObject::GameObject()
 {
 	m_pTransform = AddComponent<Transform>();
 }
 
-GameObject::~GameObject()
+Engine::GameObject::~GameObject()
 {
-	
+
 }
 
-void GameObject::RemoveComponent(Component* pComponent)
+void Engine::GameObject::RemoveComponent(Component* pComponent)
 {
 	pComponent->Destroy(pComponent);
 }
 
-void GameObject::Start()
+void Engine::GameObject::Start()
 {
 	for (auto& pComponent : m_Components)
 	{
@@ -28,40 +30,98 @@ void GameObject::Start()
 	}
 }
 
-void GameObject::Update()
-{
-	for(auto& pComponent : m_Components)
-	{
-		pComponent->Update();
-	}
-}
-
-void GameObject::FixedUpdate()
+void Engine::GameObject::Update()
 {
 	for (auto& pComponent : m_Components)
 	{
-		pComponent->FixedUpdate();
+		if (pComponent->IsEnabled)
+			pComponent->Update();
 	}
 }
 
-void GameObject::LateUpdate()
+void Engine::GameObject::FixedUpdate()
 {
 	for (auto& pComponent : m_Components)
 	{
-		pComponent->LateUpdate();
+		if (pComponent->IsEnabled)
+			pComponent->FixedUpdate();
+	}
+}
+
+void Engine::GameObject::LateUpdate()
+{
+	for (auto& pComponent : m_Components)
+	{
+		if (pComponent->IsEnabled)
+			pComponent->LateUpdate();
 	}
 
 	m_Components.erase(std::remove_if(m_Components.begin(), m_Components.end(),
-			[](const std::unique_ptr<Component>& pComponent)
-			{
-				return pComponent->IsDestroyed();
-			}),m_Components.end());
+		[](const std::unique_ptr<Component>& pComponent)
+		{
+			return pComponent->IsDestroyed();
+		}), m_Components.end());
 }
 
-void GameObject::Render() const
+void Engine::GameObject::Render() const
 {
 	for (auto& pComponent : m_Components)
 	{
-		pComponent->Render();
+		if (pComponent->IsEnabled)
+			pComponent->Render();
+	}
+}
+
+void Engine::GameObject::OnCollisionEnter(Component* other)
+{
+	for (auto& pComponent : m_Components)
+	{
+		if (pComponent->IsEnabled)
+			pComponent->OnCollisionEnter(other);
+	}
+}
+
+void Engine::GameObject::OnCollisionStay(Component* other)
+{
+	for (auto& pComponent : m_Components)
+	{
+		if (pComponent->IsEnabled)
+			pComponent->OnCollisionStay(other);
+	}
+}
+
+void Engine::GameObject::OnCollisionExit(Component* other)
+{
+	for (auto& pComponent : m_Components)
+	{
+		if (pComponent->IsEnabled)
+			pComponent->OnCollisionExit(other);
+	}
+}
+
+void Engine::GameObject::OnTriggerEnter(Component* other)
+{
+	for (auto& pComponent : m_Components)
+	{
+		if (pComponent->IsEnabled)
+			pComponent->OnTriggerEnter(other);
+	}
+}
+
+void Engine::GameObject::OnTriggerStay(Component* other)
+{
+	for (auto& pComponent : m_Components)
+	{
+		if (pComponent->IsEnabled)
+			pComponent->OnTriggerStay(other);
+	}
+}
+
+void Engine::GameObject::OnTriggerExit(Component* other)
+{
+	for (auto& pComponent : m_Components)
+	{
+		if (pComponent->IsEnabled)
+			pComponent->OnTriggerExit(other);
 	}
 }

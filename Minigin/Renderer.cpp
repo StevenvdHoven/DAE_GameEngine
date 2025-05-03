@@ -8,6 +8,7 @@
 #include "ServiceLocator.h"
 #include "PhysicsSystem.h"
 
+using namespace Engine;
 
 int GetOpenGLDriverIndex()
 {

@@ -4,10 +4,10 @@
 
 
 
-class RotatorComponent final : public Component
+class RotatorComponent final : public Engine::Component
 {
 public:
-	RotatorComponent(GameObject* pOwner,const Engine::Vector2& center,bool clockWise, float rotationDistance, float angle, float speed);
+	RotatorComponent(Engine::GameObject* pOwner,const Engine::Vector2& center,bool clockWise, float rotationDistance, float angle, float speed);
 	void Update() override;
 
 private:

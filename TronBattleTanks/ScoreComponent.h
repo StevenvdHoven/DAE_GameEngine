@@ -3,11 +3,15 @@
 #include "Component.h"
 #include "Observers.h"
 
-class TextRenderer;
-class ScoreComponent final : public Component
+namespace Engine
+{
+	class TextRenderer;
+}
+
+class ScoreComponent final : public Engine::Component
 {
 public:
-	ScoreComponent(GameObject* pOwner);
+	ScoreComponent(Engine::GameObject* pOwner);
 	~ScoreComponent();
 
 	void Start() override;
@@ -19,7 +23,7 @@ public:
 
 private:
 	int m_Score;
-	TextRenderer* m_pTextRenderer;
+	Engine::TextRenderer* m_pTextRenderer;
 	std::unique_ptr<Engine::Subject> m_OnScoreChange;
 	
 };

@@ -3,10 +3,12 @@
 #include <memory>
 #include "Observers.h"
 
-class PlayerHealthComponent final : public Component
+
+
+class PlayerHealthComponent final : public Engine::Component
 {
 public:
-	PlayerHealthComponent(GameObject* pOwner, int health);
+	PlayerHealthComponent(Engine::GameObject* pOwner, int health);
 	virtual ~PlayerHealthComponent();
 	int GetHealth() const;
 	void TakeDamage(int damage);

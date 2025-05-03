@@ -6,36 +6,42 @@
 #include <type_traits>
 #include <concepts>
 
-template<typename ValueType, typename CallBack>
-class ValueWatchComponent final : public Component
+namespace Engine
 {
-public:
-	ValueWatchComponent(GameObject* pOwner);
-	ValueWatchComponent(GameObject* pOwner,ValueType* watchValue);
-	ValueWatchComponent(GameObject* pOwner,ValueType* watchValue, CallBack callEvent);
+	class GameObject;
 
-	void SetWatchValue(ValueType* watchValue);
-	void AddListener(CallBack callEvent);
-	void RemoveListener(CallBack callEvent);
-	void Update() override;
 
-private:
-	ValueType* m_WatchValue;
-	ValueType m_OldValue;
-	std::vector<CallBack> m_Events;
-	bool m_Filled{false};
+	template<typename ValueType, typename CallBack>
+	class ValueWatchComponent final : public Component
+	{
+	public:
+		ValueWatchComponent(Engine::GameObject* pOwner);
+		ValueWatchComponent(Engine::GameObject* pOwner, ValueType* watchValue);
+		ValueWatchComponent(Engine::GameObject* pOwner, ValueType* watchValue, CallBack callEvent);
 
-};
+		void SetWatchValue(ValueType* watchValue);
+		void AddListener(CallBack callEvent);
+		void RemoveListener(CallBack callEvent);
+		void Update() override;
+
+	private:
+		ValueType* m_WatchValue;
+		ValueType m_OldValue;
+		std::vector<CallBack> m_Events;
+		bool m_Filled{ false };
+
+	};
+}
 
 template<typename ValueType, typename CallBack>
-inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(GameObject* pOwner):
+inline Engine::ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(Engine::GameObject* pOwner):
 	Component{ pOwner },
 	m_WatchValue{nullptr}
 {
 }
 
 template<typename ValueType, typename CallBack>
-inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(GameObject* pOwner, ValueType* watchValue):
+inline Engine::ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(Engine::GameObject* pOwner, ValueType* watchValue):
 	Component{ pOwner },
 	m_WatchValue{ watchValue },
 	m_OldValue{ *m_WatchValue }
@@ -44,7 +50,7 @@ inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(GameObject*
 }
 
 template<typename ValueType, typename CallBack>
-inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(GameObject* pOwner, ValueType* watchValue, CallBack callEvent):
+inline Engine::ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(Engine::GameObject* pOwner, ValueType* watchValue, CallBack callEvent):
 	Component{ pOwner },
 	m_WatchValue{ watchValue },
 	m_OldValue{ *m_WatchValue },
@@ -56,7 +62,7 @@ inline ValueWatchComponent<ValueType, CallBack>::ValueWatchComponent(GameObject*
 
 
 template<typename ValueType, typename CallBack>
-inline void ValueWatchComponent<ValueType, CallBack>::SetWatchValue(ValueType* watchValue)
+inline void Engine::ValueWatchComponent<ValueType, CallBack>::SetWatchValue(ValueType* watchValue)
 {
 	m_WatchValue = watchValue;
 	m_OldValue = *m_WatchValue;
@@ -65,7 +71,7 @@ inline void ValueWatchComponent<ValueType, CallBack>::SetWatchValue(ValueType* w
 }
 
 template<typename ValueType, typename CallBack>
-inline void ValueWatchComponent<ValueType, CallBack>::AddListener(CallBack callEvent)
+inline void Engine::ValueWatchComponent<ValueType, CallBack>::AddListener(CallBack callEvent)
 {
 	m_Events.emplace_back(callEvent);
 
@@ -74,7 +80,7 @@ inline void ValueWatchComponent<ValueType, CallBack>::AddListener(CallBack callE
 }
 
 template<typename ValueType, typename CallBack>
-inline void ValueWatchComponent<ValueType, CallBack>::RemoveListener(CallBack callEvent)
+inline void Engine::ValueWatchComponent<ValueType, CallBack>::RemoveListener(CallBack callEvent)
 {
 	if (m_Events.size() <= 0) return;
 
@@ -85,7 +91,7 @@ inline void ValueWatchComponent<ValueType, CallBack>::RemoveListener(CallBack ca
 }
 
 template<typename ValueType, typename CallBack>
-inline void ValueWatchComponent<ValueType, CallBack>::Update()
+inline void Engine::ValueWatchComponent<ValueType, CallBack>::Update()
 {
 	if (!m_Filled) return;
 

@@ -1,13 +1,14 @@
 #pragma once
 #include <SDL.h>
 #include "Singleton.h"
-#include "Texture2D.h"
 #include "Vector2.h"
 /**
  * Simple RAII wrapper for the SDL renderer
  */
 namespace Engine
 {
+	class Texture2D;
+
 	struct Color
 	{
 		Uint8 r;

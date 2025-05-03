@@ -5,6 +5,6 @@
 class PrefabFactory
 {
 public:
-	static std::unique_ptr<GameObject> CreatePlayer();
+	static std::unique_ptr<Engine::GameObject> CreatePlayer();
 };
 

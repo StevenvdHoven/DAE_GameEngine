@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "TextRenderer.h"
 
+using namespace Engine;
+
 ScoreComponent::ScoreComponent(GameObject* pOwner) :
 	Component{ pOwner },
 	m_Score{ 0 }

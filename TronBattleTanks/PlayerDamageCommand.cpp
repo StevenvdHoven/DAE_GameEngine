@@ -1,6 +1,8 @@
 #include "PlayerDamageCommand.h"
 #include "PlayerHealthComponent.h"
 
+using namespace Engine;
+
 PlayerDamageCommand::PlayerDamageCommand(GameObject* pActor) :
 	GameActorCommand{ pActor }
 {

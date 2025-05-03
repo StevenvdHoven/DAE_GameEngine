@@ -3,64 +3,75 @@
 #include <vector>
 #include <algorithm>
 #include "Component.h"
+#include "Transform.h"
 
-
-class Texture2D;
-class Transform;
-class Scene;
-
-class GameObject final
+namespace Engine
 {
-public:
-	void Start();
-	void Update();
-	void FixedUpdate();
-	void LateUpdate();
-	void Render() const;
+	class Texture2D;
+	class Scene;
+	class Collider;
 
-	GameObject();
-	~GameObject();
-
-	template<typename ComponentType, typename... Args>
-	ComponentType* AddComponent(Args&&... args);
-
-	void RemoveComponent(Component* pComponent);
-
-	template<typename ComponentType>
-	ComponentType* GetComponent();
-
-	bool IsDestroyed() const { return m_IsDestroyed; }
-	Transform* GetTransform() const { return m_pTransform; }
-
-private:
-	friend class Scene;
-
-	bool m_IsDestroyed{ false };
-	Transform* m_pTransform{nullptr};
-	std::vector<std::unique_ptr<Component>> m_Components;
-};
-
-template<typename ComponentType, typename ...Args>
-inline ComponentType* GameObject::AddComponent(Args&&... args)
-{
-	auto pComponent = std::make_unique<ComponentType>(this,std::forward<Args>(args)...);
-	auto rawPtr = pComponent.get();	
-
-	m_Components.emplace_back(std::move(pComponent));
-	return rawPtr;
-}
-
-template<typename ComponentType>
-inline ComponentType* GameObject::GetComponent()
-{
-	for (auto& pComponent : m_Components)
+	class GameObject final
 	{
-		ComponentType* type = dynamic_cast<ComponentType*>(pComponent.get());
-		if (type != nullptr)
-		{
-			return type;
-		}
+	public:
+		void Start();
+		void Update();
+		void FixedUpdate();
+		void LateUpdate();
+		void Render() const;
+
+		void OnCollisionEnter(Component* other);
+		void OnCollisionStay(Component* other);
+		void OnCollisionExit(Component* other);
+
+		void OnTriggerEnter(Component* other);
+		void OnTriggerStay(Component* other);
+		void OnTriggerExit(Component* other);
+
+		GameObject();
+		~GameObject();
+
+		template<typename ComponentType, typename... Args>
+		ComponentType* AddComponent(Args&&... args);
+
+		void RemoveComponent(Component* pComponent);
+
+		template<typename ComponentType>
+		ComponentType* GetComponent();
+
+		bool IsDestroyed() const { return m_IsDestroyed; }
+		Transform* GetTransform() const { return m_pTransform; }
+
+	private:
+		friend class Scene;
+
+		bool m_IsDestroyed{ false };
+		Transform* m_pTransform{ nullptr };
+		std::vector<std::unique_ptr<Component>> m_Components;
+	};
+
+	template<typename ComponentType, typename ...Args>
+	inline ComponentType* GameObject::AddComponent(Args&&... args)
+	{
+		auto pComponent = std::make_unique<ComponentType>(this, std::forward<Args>(args)...);
+		auto rawPtr = pComponent.get();
+
+		m_Components.emplace_back(std::move(pComponent));
+		return rawPtr;
 	}
 
-	return nullptr;
+	template<typename ComponentType>
+	inline ComponentType* GameObject::GetComponent()
+	{
+		for (auto& pComponent : m_Components)
+		{
+			ComponentType* type = dynamic_cast<ComponentType*>(pComponent.get());
+			if (type != nullptr)
+			{
+				return type;
+			}
+		}
+
+		return nullptr;
+	}
 }

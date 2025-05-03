@@ -2,7 +2,11 @@
 #include "Observers.h"
 #include <string>
 
-class GameObject;
+namespace Engine
+{
+	class GameObject;
+}
+
 class ScoreComponent;
 
 class Achievement
@@ -21,7 +25,7 @@ protected:
 class WinGameAchievement : public Achievement, public Engine::IObserver
 {
 public:
-	WinGameAchievement(int id, GameObject* pPlayer);
+	WinGameAchievement(int id, Engine::GameObject* pPlayer);
 
 	// Inherited via IObserver
 	void OnNotify() override;
@@ -30,6 +34,6 @@ public:
 	
 private:
 	ScoreComponent* m_pScoreComponent;
-	GameObject* m_pPlayer;
+	Engine::GameObject* m_pPlayer;
 };
 

@@ -1,5 +1,10 @@
 #pragma once
-class Scene;
+
+namespace Engine
+{
+	class Scene;
+}
+
 
 class BattleScene
 {
@@ -7,6 +12,6 @@ public:
 	static void CreateScene();
 
 private:
-	static void AddWorldColliders(Scene* const pScene);
+	static void AddWorldColliders(Engine::Scene* const pScene);
 };
 

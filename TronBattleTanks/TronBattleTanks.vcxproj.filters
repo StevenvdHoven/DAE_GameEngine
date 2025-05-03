@@ -76,7 +76,7 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="TestScene.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Game\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +120,7 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="TestScene.h">
-      <Filter>Header Files</Filter>
+      <Filter>Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,11 +2,16 @@
 #include "Command.h"
 #include "ServiceLocator.h"
 
+namespace Engine
+{
+	class GameObject;
+}
+
 class ScoreComponent;
 class AddScoreCommand final : public Engine::GameActorCommand
 {
 public:
-	AddScoreCommand(GameObject* pGameObject);
+	AddScoreCommand(Engine::GameObject* pGameObject);
 	virtual ~AddScoreCommand() {};
 
 	void Execute() override;

@@ -3,7 +3,7 @@
 #include "ScoreComponent.h"
 #include "ServiceLocator.h"
 
-
+using namespace Engine;
 
 AddScoreCommand::AddScoreCommand(GameObject* pGameObject) :
 	Engine::GameActorCommand{ pGameObject },

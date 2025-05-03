@@ -5,7 +5,7 @@ class PlayerHealthComponent;
 class PlayerDamageCommand final : public Engine::GameActorCommand
 {
 public:
-	PlayerDamageCommand(GameObject* pActor);
+	PlayerDamageCommand(Engine::GameObject* pActor);
 	// Inherited via Command
 	void Execute() override;
 

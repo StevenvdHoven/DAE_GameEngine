@@ -3,6 +3,8 @@
 #include "Transform.h"
 #include "EngineTime.h"
 
+using namespace Engine;
+
 MovePlayerCommand::MovePlayerCommand(GameObject* pActor, InputType2D inputType, float speed):
 	Engine::GameActorCommand2D{ pActor, inputType }
 	, m_Speed{speed}

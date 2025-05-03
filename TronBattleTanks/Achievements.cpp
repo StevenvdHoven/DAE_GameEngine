@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "ScoreComponent.h"
 
+using namespace Engine;
 
 WinGameAchievement::WinGameAchievement(int id, GameObject* pPlayer) :
 	Achievement{ id },

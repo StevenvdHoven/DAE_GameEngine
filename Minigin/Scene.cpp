@@ -4,16 +4,18 @@
 #include <algorithm>
 #include "Transform.h"
 
-unsigned int Scene::m_idCounter = 0;
+using namespace Engine;
 
-Scene::Scene(const std::string& name) : m_name(name) {}
+unsigned int Engine::Scene::m_idCounter = 0;
 
-void Scene::Add(std::unique_ptr<GameObject> object)
+Engine::Scene::Scene(const std::string& name) : m_name(name) {}
+
+void Engine::Scene::Add(std::unique_ptr<GameObject> object)
 {
 	m_objects.emplace_back(std::move(object));
 }
 
-void Scene::Remove(GameObject* object)
+void Engine::Scene::Remove(GameObject* object)
 {
 	object->m_IsDestroyed = true;
 
@@ -23,12 +25,12 @@ void Scene::Remove(GameObject* object)
 	}
 }
 
-void Scene::RemoveAll()
+void Engine::Scene::RemoveAll()
 {
 	m_objects.clear();
 }
 
-void Scene::Start()
+void Engine::Scene::Start()
 {
 	for (auto& object : m_objects)
 	{
@@ -36,7 +38,7 @@ void Scene::Start()
 	}
 }
 
-void Scene::Update()
+void Engine::Scene::Update()
 {
 	for(auto& object : m_objects)
 	{
@@ -44,7 +46,7 @@ void Scene::Update()
 	}
 }
 
-void Scene::FixedUpdate()
+void Engine::Scene::FixedUpdate()
 {
 	for (auto& object : m_objects)
 	{
@@ -52,7 +54,7 @@ void Scene::FixedUpdate()
 	}
 }
 
-void Scene::LateUpdate()
+void Engine::Scene::LateUpdate()
 {
 	for (auto& object : m_objects)
 	{
@@ -66,7 +68,7 @@ void Scene::LateUpdate()
 		}),m_objects.end());
 }
 
-void Scene::Render() const
+void Engine::Scene::Render() const
 {
 	for (const auto& object : m_objects)
 	{

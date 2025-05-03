@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <map>
 
 
 
@@ -23,6 +24,8 @@ namespace Engine
 		void AddCollider(Collider* pCollider);
 		void RemoveCollider(Collider* pCollider);
 
+		void HandleColldingEvents(Collider* first, Collider* other, bool collided, bool& updateMovement);
+
 		void ClearColliders();
 
 	private:
@@ -30,6 +33,8 @@ namespace Engine
 
 		std::vector<Collider*> m_Colliders;
 		std::vector<PhysicsBody*> m_PhysicsBodies;
+
+		std::map<Collider*, std::vector<Collider*>> m_ColliderPairs;
 	};
 }
 

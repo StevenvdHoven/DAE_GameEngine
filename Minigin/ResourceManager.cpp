@@ -7,6 +7,7 @@
 #include "Font.h"
 
 namespace fs = std::filesystem;
+using namespace Engine;
 
 void Engine::ResourceManager::Init(const std::filesystem::path& dataPath)
 {

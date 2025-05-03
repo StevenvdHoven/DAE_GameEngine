@@ -3,6 +3,7 @@
 #include "PlayerHealthComponent.h"
 #include "TextRenderer.h"
 
+using namespace Engine;
 
 HealtBarComponent::HealtBarComponent(GameObject* pOwner, PlayerHealthComponent* pHealth) :
 	Component(pOwner),

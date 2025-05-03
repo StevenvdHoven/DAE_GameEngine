@@ -41,7 +41,7 @@ void Engine::SceneManager::Render()
 	}
 }
 
-Scene* Engine::SceneManager::CreateScene(const std::string& name)
+Engine::Scene* Engine::SceneManager::CreateScene(const std::string& name)
 {
 	
 
