@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Vector2.h"
 
 namespace Engine
 {
@@ -21,6 +22,8 @@ namespace Engine
 
 		void SetIsTrigger(bool isTrigger) { m_IsTrigger = isTrigger; }
 		bool IsTrigger() const { return m_IsTrigger; }
+
+		Vector2 Center{ 0.f, 0.f };
 
 	private:
 		bool m_IsTrigger{ false };

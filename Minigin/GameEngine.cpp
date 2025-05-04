@@ -122,6 +122,7 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 		while (lag >= fixed_time_step)
 		{
 			sceneManager.FixedUpdate();
+			ServiceLocator::GetPhysicsSystem().FixedUpdate();
 			lag -= fixed_time_step;
 		}
 		

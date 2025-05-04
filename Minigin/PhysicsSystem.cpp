@@ -15,33 +15,48 @@ void Engine::PhysicsSystem::Update()
 
 void Engine::PhysicsSystem::FixedUpdate()
 {
+	const float fixedDeltaTime = Time::GetInstance().GetFixedDeltaTime();
 	for (auto& physicsBody : m_PhysicsBodies)
 	{
 		if (!physicsBody->IsEnabled) continue;
 
-		auto bodyCollider{ physicsBody->GetGameObject()->GetComponent<Collider>() };
-		auto bodyTransform{ physicsBody->GetGameObject()->GetTransform() };
+		
 
-		for (auto& collider : m_Colliders)
+		auto* gameObject = physicsBody->GetGameObject();
+		auto* bodyCollider = gameObject->GetComponent<Collider>();
+		if (!bodyCollider || !bodyCollider->IsEnabled) continue;
+
+		auto* bodyTransform = gameObject->GetTransform();
+		const Vector2 perviousPosition = bodyTransform->GetWorldLocation();
+
+		Vector2& bodyVelocity = physicsBody->Velocity;
+		const auto worldPosition = bodyTransform->GetWorldLocation();
+		bodyTransform->SetWorldLocation(worldPosition + bodyVelocity * fixedDeltaTime);
+
+		bool updateMovement = true;
+
+		for (auto* collider : m_Colliders)
 		{
 			if (!collider->IsEnabled || collider == bodyCollider) continue;
 
-			bool isOverlapping{ collider->IsOverlapping(bodyCollider) };
+			bool isOverlapping = bodyCollider->IsOverlapping(collider);
 
-			Vector2& bodyVelocity{ physicsBody->Velocity };
+			bool resultMovement;
+			HandleCollidingEvents(bodyCollider, collider, isOverlapping, resultMovement);
 
-			bool updateMovement;
-			HandleColldingEvents(bodyCollider, collider, isOverlapping, updateMovement);
-
-			const float fixedDeltaTime{ Time::GetInstance().GetFixedDeltaTime() };
-			if (updateMovement)
+			if (!resultMovement)
 			{
-				const auto worldPosition{ bodyTransform->GetWorldLocation() };
-				bodyTransform->SetWorldLocation(worldPosition + bodyVelocity * fixedDeltaTime);
+				updateMovement = false;
 			}
+		}
+
+		if (!updateMovement)
+		{
+			bodyTransform->SetWorldLocation(perviousPosition);
 		}
 	}
 }
+
 
 void Engine::PhysicsSystem::Render()
 {
@@ -96,11 +111,11 @@ void Engine::PhysicsSystem::RemoveCollider(Collider* pCollider)
 	}
 }
 
-void Engine::PhysicsSystem::HandleColldingEvents(Collider* first, Collider* other, bool collided, bool& updateMovement)
+void Engine::PhysicsSystem::HandleCollidingEvents(Collider* first, Collider* other, bool collided, bool& updateMovement)
 {
-	if (!first || !other) return;
+	if (!first || !other || (first == other)) return;
 
-	updateMovement = first->IsTrigger() || other->IsTrigger();
+	updateMovement = !collided || (first->IsTrigger() || other->IsTrigger());
 
 	auto firstGameObject{ first->GetGameObject() };
 	if (collided)
@@ -110,13 +125,13 @@ void Engine::PhysicsSystem::HandleColldingEvents(Collider* first, Collider* othe
 			m_ColliderPairs[first] = std::vector<Collider*>{ other };
 
 			// TODO: Call OnTriggerEnter or OnCollisionEnter on the colliders
-			if (firstGameObject)
+			if (!first->IsTrigger())
 			{
 				firstGameObject->OnCollisionEnter(other);
 			}
 			else
 			{
-				first->GetGameObject()->OnTriggerEnter(other);
+				firstGameObject->OnTriggerEnter(other);
 			}
 		}
 		else
@@ -125,13 +140,13 @@ void Engine::PhysicsSystem::HandleColldingEvents(Collider* first, Collider* othe
 			if (std::find(colliders.begin(), std::end(colliders), other) != colliders.end())
 			{
 				// TODO: Call OnTriggerStay or OnCollisionStay on the colliders
-				if (firstGameObject)
+				if (!first->IsTrigger())
 				{
 					firstGameObject->OnCollisionStay(other);
 				}
 				else
 				{
-					first->GetGameObject()->OnTriggerStay(other);
+					firstGameObject->OnTriggerStay(other);
 				}
 			}
 			else
@@ -139,13 +154,13 @@ void Engine::PhysicsSystem::HandleColldingEvents(Collider* first, Collider* othe
 				m_ColliderPairs[first].emplace_back(other);
 
 				// TODO: Call OnTriggerEnter or OnCollisionEnter on the colliders
-				if (firstGameObject)
+				if (!first->IsTrigger())
 				{
 					firstGameObject->OnCollisionEnter(other);
 				}
 				else
 				{
-					first->GetGameObject()->OnTriggerEnter(other);
+					firstGameObject->OnTriggerEnter(other);
 				}
 			}
 		}
@@ -168,13 +183,13 @@ void Engine::PhysicsSystem::HandleColldingEvents(Collider* first, Collider* othe
 			}
 
 			// TODO: Call OnTriggerExit or OnCollisionExit on the colliders
-			if (firstGameObject)
+			if (!first->IsTrigger())
 			{
 				firstGameObject->OnCollisionExit(other);
 			}
 			else
 			{
-				first->GetGameObject()->OnTriggerExit(other);
+				firstGameObject->OnTriggerExit(other);
 			}
 		}
 	}

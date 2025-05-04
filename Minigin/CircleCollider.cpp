@@ -21,23 +21,26 @@ bool Engine::CircleCollider::IsOverlapping(const Collider* other) const
 
 bool Engine::CircleCollider::IsOverlapping(const BoxCollider2D* other) const
 {
-	auto thisPos = GetGameObject()->GetTransform()->GetWorldLocation();
-	auto otherPos = other->GetGameObject()->GetTransform()->GetWorldLocation();
+	Vector2 circleCenter = GetGameObject()->GetTransform()->GetWorldLocation() + Center;
 
-	const float halfWidth = other->GetSize().x / 2;
-	const float halfHeight = other->GetSize().y / 2;
-	const float closestX = std::clamp(thisPos.x, otherPos.x - halfWidth, otherPos.x + halfWidth);
-	const float closestY = std::clamp(thisPos.y, otherPos.y - halfHeight, otherPos.y + halfHeight);
+	// Box bounds in world space
+	Vector2 boxTopLeft = other->GetGameObject()->GetTransform()->GetWorldLocation() + other->Center;
+	Vector2 boxBottomRight = boxTopLeft + other->GetSize();
 
-	const float sqaureDistanceToClosest = (thisPos - Vector2{ closestX, closestY }).SquaredMagnitude();
-	const float radiusSquare = m_Radius * m_Radius;
-	return sqaureDistanceToClosest <= radiusSquare;
+	float closestX = std::clamp(circleCenter.x, boxTopLeft.x, boxBottomRight.x);
+	float closestY = std::clamp(circleCenter.y, boxTopLeft.y, boxBottomRight.y);
+	Vector2 closestPoint{ closestX, closestY };
+
+	float squaredDistance = (circleCenter - closestPoint).SquaredMagnitude();
+	float radiusSquared = m_Radius * m_Radius;
+
+	return squaredDistance <= radiusSquared;
 }
 
 bool Engine::CircleCollider::IsOverlapping(const CircleCollider* other) const
 {
-	auto thisPos = GetGameObject()->GetTransform()->GetWorldLocation();
-	auto otherPos = other->GetGameObject()->GetTransform()->GetWorldLocation();
+	auto thisPos = GetGameObject()->GetTransform()->GetWorldLocation() + Center;
+	auto otherPos = other->GetGameObject()->GetTransform()->GetWorldLocation() + other->Center;
 
 	const float sqaureDistance = (thisPos - otherPos).SquaredMagnitude();
 	const float radiusSum = m_Radius + other->GetRadius();
@@ -47,7 +50,7 @@ bool Engine::CircleCollider::IsOverlapping(const CircleCollider* other) const
 
 void Engine::CircleCollider::DebugRender()
 {
-	auto pos = GetGameObject()->GetTransform()->GetWorldLocation();
+	auto pos = GetGameObject()->GetTransform()->GetWorldLocation() + Center;
 	const float radius = m_Radius;
 	
 

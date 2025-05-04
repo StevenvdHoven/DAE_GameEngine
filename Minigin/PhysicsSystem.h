@@ -24,7 +24,7 @@ namespace Engine
 		void AddCollider(Collider* pCollider);
 		void RemoveCollider(Collider* pCollider);
 
-		void HandleColldingEvents(Collider* first, Collider* other, bool collided, bool& updateMovement);
+		void HandleCollidingEvents(Collider* first, Collider* other, bool collided, bool& updateMovement);
 
 		void ClearColliders();
 

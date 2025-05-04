@@ -42,7 +42,11 @@ void Engine::Transform::SetWorldLocation(const Engine::Vector2& pos)
 void Engine::Transform::SetWorldLocation(float x, float y)
 {
 	m_WorldPosition = { x,y };
-	m_LocalPosition = m_WorldPosition - m_pParent->GetTransform()->GetWorldLocation();
+
+	if (m_pParent != nullptr)
+		m_LocalPosition = m_WorldPosition - m_pParent->GetTransform()->GetWorldLocation();
+	else
+		m_LocalPosition = m_WorldPosition;
 }
 
 void Engine::Transform::SetLocalPosition(const Engine::Vector2& pos)
@@ -60,7 +64,7 @@ void Engine::Transform::SetLocalPosition(const float x, const float y)
 void Engine::Transform::SetWorldRotation(float angle)
 {
 	m_WorldRotation = angle;
-	if(m_pParent)
+	if (m_pParent)
 		m_LocalRotation = m_WorldRotation - m_pParent->GetTransform()->GetWorldRotation();
 	else
 		m_LocalRotation = m_WorldRotation;

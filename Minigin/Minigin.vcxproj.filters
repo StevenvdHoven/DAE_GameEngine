@@ -147,6 +147,9 @@
     <ClInclude Include="PhysicsSystem.h">
       <Filter>Managers\Services</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsBody.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -250,6 +253,9 @@
     </ClCompile>
     <ClCompile Include="PhysicsSystem.cpp">
       <Filter>Managers\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsBody.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

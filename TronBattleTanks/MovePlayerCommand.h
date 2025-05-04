@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	class Transform;
+	class PhysicsBody;
 }
 
 class MovePlayerCommand : public Engine::GameActorCommand2D
@@ -13,7 +13,7 @@ public:
 	void Execute(const Engine::Vector2& value) override;
 private:
 	float m_Speed;
-	Engine::Transform* m_pTransform;
+	Engine::PhysicsBody* m_pBody;
 };
 
 
