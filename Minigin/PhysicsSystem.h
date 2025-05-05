@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <map>
+#include "Vector2.h"
 
 
 
@@ -24,11 +25,15 @@ namespace Engine
 		void AddCollider(Collider* pCollider);
 		void RemoveCollider(Collider* pCollider);
 
-		void HandleCollidingEvents(Collider* first, Collider* other, bool collided, bool& updateMovement);
+		bool BoxCast(const Engine::Vector2& location, const Engine::Vector2& size,const Collider* ignore) const;
 
+		
 		void ClearColliders();
 
 	private:
+		void HandleCollidingEvents(Collider* first, Collider* other, bool collided, bool& updateMovement);
+
+
 		bool m_RenderDebugColliders{ true };
 
 		std::vector<Collider*> m_Colliders;

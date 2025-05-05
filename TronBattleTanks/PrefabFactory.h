@@ -2,9 +2,14 @@
 #include "GameObject.h"
 #include <memory>
 
+namespace Engine
+{
+	class Scene;
+}
+
 class PrefabFactory
 {
 public:
-	static std::unique_ptr<Engine::GameObject> CreatePlayer();
+	static void AddPlayer(Engine::Scene* const scene);
 };
 

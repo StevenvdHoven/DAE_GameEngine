@@ -52,6 +52,40 @@ bool Engine::BoxCollider2D::IsOverlapping(const CircleCollider* other) const
 	return squaredDistance <= radiusSquared;
 }
 
+bool Engine::BoxCollider2D::IsOverlappingTest(const Vector2& location, const Vector2& size) const
+{
+	auto thisTopLeft = GetGameObject()->GetTransform()->GetWorldLocation() + Center;
+	auto otherTopLeft = location;
+
+	Vector2 thisBottomRight = thisTopLeft + m_Size;
+	Vector2 otherBottomRight = otherTopLeft + size;
+
+
+	bool overlap = !(thisBottomRight.x <= otherTopLeft.x ||
+		thisTopLeft.x >= otherBottomRight.x ||
+		thisBottomRight.y <= otherTopLeft.y ||
+		thisTopLeft.y >= otherBottomRight.y);
+
+	return overlap;
+}
+
+bool Engine::BoxCollider2D::IsOverlappingTest(const Vector2& location, const float radius) const
+{
+	Vector2 boxTopLeft = GetGameObject()->GetTransform()->GetWorldLocation() + Center;
+	Vector2 boxBottomRight = boxTopLeft + m_Size;
+
+	Vector2 circleCenter = location;
+
+	float closestX = std::clamp(circleCenter.x, boxTopLeft.x, boxBottomRight.x);
+	float closestY = std::clamp(circleCenter.y, boxTopLeft.y, boxBottomRight.y);
+
+	Vector2 closestPoint{ closestX, closestY };
+	float squaredDistance = (circleCenter - closestPoint).SquaredMagnitude();
+	float radiusSquared = radius * radius;
+
+	return squaredDistance <= radiusSquared;
+}
+
 void Engine::BoxCollider2D::DebugRender()
 {
 	auto pos = GetGameObject()->GetTransform()->GetWorldLocation() + Center;

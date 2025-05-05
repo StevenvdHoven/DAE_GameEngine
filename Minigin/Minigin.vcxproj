@@ -236,6 +236,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputP
     <ClInclude Include="ImageRenderer.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="Matrix3x3.h" />
     <ClInclude Include="Observers.h" />
     <ClInclude Include="PhysicsBody.h" />
     <ClInclude Include="PhysicsSystem.h" />
@@ -274,6 +275,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputP
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="ImageRenderer.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Matrix3x3.cpp" />
     <ClCompile Include="Observers.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="PhysicsBody.cpp" />

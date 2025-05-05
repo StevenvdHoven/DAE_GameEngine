@@ -32,13 +32,18 @@ namespace Engine
 		void SetParent(GameObject* pParent, bool keepWorldPosition = false);
 	private:
 		void SetPositionDirty(bool flag = true);
+		void SetRotationDirty(bool flag = true);
+
 		void CaculateWorldPosition();
+		void CaculateWorldRotation();
 
 		void AddChild(GameObject* pChild);
 		void RemoveChild(GameObject* pChild);
 		bool IsChild(GameObject* pChild) const;
 
 		bool m_PositionIsDirty;
+		bool m_RotationIsDirty;
+
 		Engine::Vector2 m_LocalPosition;
 		Engine::Vector2 m_WorldPosition;
 

@@ -14,6 +14,9 @@ namespace Engine
 		virtual bool IsOverlapping(const BoxCollider2D* other) const override;
 		virtual bool IsOverlapping(const CircleCollider* other) const override;
 
+		virtual bool IsOverlappingTest(const Vector2& location, const Vector2& size) const override;
+		virtual bool IsOverlappingTest(const Vector2& location, const float radius) const override;
+
 		virtual void DebugRender() override;
 
 		float GetRadius() const { return m_Radius; }

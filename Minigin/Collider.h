@@ -18,6 +18,9 @@ namespace Engine
 		virtual bool IsOverlapping(const BoxCollider2D* other) const { return other != nullptr; };
 		virtual bool IsOverlapping(const CircleCollider* other) const { return other != nullptr; };
 
+		virtual bool IsOverlappingTest(const Vector2& location, const Vector2& size) const { return location != size; }
+		virtual bool IsOverlappingTest(const Vector2& location, const float radius) const { return location != Vector2{radius,radius}; }
+
 		virtual void DebugRender() {};
 
 		void SetIsTrigger(bool isTrigger) { m_IsTrigger = isTrigger; }

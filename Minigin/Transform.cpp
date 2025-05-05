@@ -1,5 +1,6 @@
 #include "Transform.h"
 #include "GameObject.h"
+#include "Matrix3x3.h"
 
 using namespace Engine;
 
@@ -8,7 +9,8 @@ Engine::Transform::Transform(GameObject* pOwner) :
 	m_LocalPosition{},
 	m_WorldPosition{},
 	m_pParent{ nullptr },
-	m_PositionIsDirty{ false }
+	m_PositionIsDirty{ false },
+	m_RotationIsDirty{ false }
 {
 
 }
@@ -31,6 +33,7 @@ void Engine::Transform::Update()
 {
 
 	CaculateWorldPosition();
+	CaculateWorldRotation();
 
 }
 
@@ -43,10 +46,15 @@ void Engine::Transform::SetWorldLocation(float x, float y)
 {
 	m_WorldPosition = { x,y };
 
-	if (m_pParent != nullptr)
+	if (m_pParent)
 		m_LocalPosition = m_WorldPosition - m_pParent->GetTransform()->GetWorldLocation();
 	else
 		m_LocalPosition = m_WorldPosition;
+
+	for (auto pChild : m_pChildren)
+	{
+		pChild->GetTransform()->SetPositionDirty();
+	}
 }
 
 void Engine::Transform::SetLocalPosition(const Engine::Vector2& pos)
@@ -69,15 +77,17 @@ void Engine::Transform::SetWorldRotation(float angle)
 	else
 		m_LocalRotation = m_WorldRotation;
 
+	for (auto pChild : m_pChildren)
+	{
+		pChild->GetTransform()->SetRotationDirty();
+	}
+
 }
 
 void Engine::Transform::SetLocalRotation(float angle)
 {
 	m_LocalRotation = angle;
-	if (m_pParent)
-		m_WorldRotation = m_LocalRotation + m_pParent->GetTransform()->GetWorldRotation();
-	else
-		m_WorldRotation = m_LocalRotation;
+	SetRotationDirty();
 }
 
 void Engine::Transform::SetParent(GameObject* pParent, bool keepWorldPosition)
@@ -108,6 +118,16 @@ void Engine::Transform::SetPositionDirty(bool flag)
 
 }
 
+void Engine::Transform::SetRotationDirty(bool flag)
+{
+	m_RotationIsDirty = flag;
+
+	for (auto pChild : m_pChildren)
+	{
+		pChild->GetTransform()->SetRotationDirty(flag);
+	}
+}
+
 void Engine::Transform::CaculateWorldPosition()
 {
 	if (m_PositionIsDirty)
@@ -115,10 +135,27 @@ void Engine::Transform::CaculateWorldPosition()
 		if (m_pParent == nullptr)
 			m_WorldPosition = m_LocalPosition;
 		else
-			m_WorldPosition = m_pParent->GetTransform()->GetWorldLocation() + m_LocalPosition;
+		{
+			Matrix3x3 rotationMatrix = Matrix3x3::CreateRotationMatrix(m_pParent->GetTransform()->GetWorldRotation());
+			Vector2 rotatedPosition = rotationMatrix * m_LocalPosition;
+			m_WorldPosition = m_pParent->GetTransform()->GetWorldLocation() + rotatedPosition;
+		}
+			
 	}
 	m_PositionIsDirty = false;
 
+}
+
+void Engine::Transform::CaculateWorldRotation()
+{
+	if (m_RotationIsDirty)
+	{
+		if (m_pParent == nullptr)
+			m_WorldRotation = m_LocalRotation;
+		else
+			m_WorldRotation = m_pParent->GetTransform()->GetWorldRotation() + m_LocalRotation;
+	}
+	m_RotationIsDirty = false;
 }
 
 void Engine::Transform::AddChild(GameObject* pChild)

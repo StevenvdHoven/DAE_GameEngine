@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include "EngineTime.h"
 #include "GameObject.h"
+#include "BoxCollider2D.h"
 
 using namespace Engine;
 
@@ -109,6 +110,21 @@ void Engine::PhysicsSystem::RemoveCollider(Collider* pCollider)
 			m_Colliders.erase(it);
 		}
 	}
+}
+
+bool Engine::PhysicsSystem::BoxCast(const Engine::Vector2& location, const Engine::Vector2& size, const Collider* ignore) const
+{
+
+	for (const auto& pOther : m_Colliders)
+	{
+		if (pOther == ignore) continue;
+
+		if (pOther->IsOverlappingTest(location,size))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void Engine::PhysicsSystem::HandleCollidingEvents(Collider* first, Collider* other, bool collided, bool& updateMovement)

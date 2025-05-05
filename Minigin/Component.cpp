@@ -30,17 +30,17 @@ Engine::Component::Component(GameObject* pOwner):
 
 void Engine::Component::OnCollisionEnter(Component* other)
 {
-	std::cout << "Collision Enter" << other << std::endl;
+	std::cout << "Collision Enter " << other << std::endl;
 }
 
 void Engine::Component::OnCollisionStay(Component* other)
 {
-	std::cout << "Collision Stay" << other << std::endl;
+	std::cout << "Collision Stay " << other << std::endl;
 }
 
 void Engine::Component::OnCollisionExit(Component* other)
 {
-	std::cout << "Collision Exit" << other << std::endl;
+	std::cout << "Collision Exit " << other << std::endl;
 
 }
 
@@ -51,10 +51,10 @@ void Engine::Component::OnTriggerEnter(Component* other)
 
 void Engine::Component::OnTriggerStay(Component* other)
 {
-	std::cout << "Trigger Stay" << other << std::endl;
+	std::cout << "Trigger Stay " << other << std::endl;
 }
 
 void Engine::Component::OnTriggerExit(Component* other)
 {
-	std::cout << "Trigger Exit" << other << std::endl;
+	std::cout << "Trigger Exit " << other << std::endl;
 }

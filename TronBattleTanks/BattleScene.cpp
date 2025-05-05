@@ -17,13 +17,9 @@ void BattleScene::CreateScene()
 	backgroundObject->AddComponent<ImageRenderer>("gameBackground.png");
 	scene->Add(std::move(backgroundObject));
 
-	auto player1{ PrefabFactory::CreatePlayer() };
-	auto player1Transform{ player1->GetTransform() };
-	player1Transform->SetLocalPosition(100, 100);
+	PrefabFactory::AddPlayer(scene);
 
 	AddWorldColliders(scene);
-
-	scene->Add(std::move(player1));
 }
 
 void BattleScene::AddWorldColliders(Scene* const pScene)

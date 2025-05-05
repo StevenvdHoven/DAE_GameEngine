@@ -1,6 +1,7 @@
 #pragma once
 #include <cmath>
 
+
 namespace Engine
 {
 	struct Vector2
@@ -101,6 +102,8 @@ namespace Engine
 		{
 			return *this - normal * 2 * Dot(normal);
 		}
+
+		
 
 		static Vector2 Lerp(const Vector2& a, const Vector2& b, float t)
 		{

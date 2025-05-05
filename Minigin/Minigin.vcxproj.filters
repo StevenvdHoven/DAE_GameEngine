@@ -150,6 +150,9 @@
     <ClInclude Include="PhysicsBody.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Matrix3x3.h">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -256,6 +259,9 @@
     </ClCompile>
     <ClCompile Include="PhysicsBody.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix3x3.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

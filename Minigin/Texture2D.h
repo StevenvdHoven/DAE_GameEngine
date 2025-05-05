@@ -10,6 +10,7 @@ struct SDL_Texture;
 
 namespace Engine
 {
+	struct Vector2;
 	class Texture2D final
 	{
 	public:
@@ -19,6 +20,7 @@ namespace Engine
 		~Texture2D();
 
 		glm::ivec2 GetSize() const;
+		void GetSize(Vector2& out_size) const;
 
 		Texture2D(const Texture2D&) = delete;
 		Texture2D(Texture2D&&) = delete;

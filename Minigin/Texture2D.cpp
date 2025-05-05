@@ -18,6 +18,14 @@ glm::ivec2 Engine::Texture2D::GetSize() const
 	return { dst.w,dst.h };
 }
 
+void Engine::Texture2D::GetSize(Vector2& out_size) const
+{
+	SDL_Rect dst;
+	SDL_QueryTexture(GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
+	out_size.x = static_cast<float>(dst.w);
+	out_size.y = static_cast<float>(dst.h);
+}
+
 SDL_Texture* Engine::Texture2D::GetSDLTexture() const
 {
 	return m_texture;

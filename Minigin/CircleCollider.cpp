@@ -48,6 +48,35 @@ bool Engine::CircleCollider::IsOverlapping(const CircleCollider* other) const
 	return sqaureDistance <= radiusSum * radiusSum;
 }
 
+bool Engine::CircleCollider::IsOverlappingTest(const Vector2& location, const Vector2& size) const
+{
+	Vector2 circleCenter = GetGameObject()->GetTransform()->GetWorldLocation() + Center;
+
+	// Box bounds in world space
+	Vector2 boxTopLeft = location;
+	Vector2 boxBottomRight = boxTopLeft + size;
+
+	float closestX = std::clamp(circleCenter.x, boxTopLeft.x, boxBottomRight.x);
+	float closestY = std::clamp(circleCenter.y, boxTopLeft.y, boxBottomRight.y);
+	Vector2 closestPoint{ closestX, closestY };
+
+	float squaredDistance = (circleCenter - closestPoint).SquaredMagnitude();
+	float radiusSquared = m_Radius * m_Radius;
+
+	return squaredDistance <= radiusSquared;
+}
+
+bool Engine::CircleCollider::IsOverlappingTest(const Vector2& location, const float radius) const
+{
+	auto thisPos = GetGameObject()->GetTransform()->GetWorldLocation() + Center;
+	auto otherPos = location;
+
+	const float sqaureDistance = (thisPos - otherPos).SquaredMagnitude();
+	const float radiusSum = m_Radius + radius;
+
+	return sqaureDistance <= radiusSum * radiusSum;
+}
+
 void Engine::CircleCollider::DebugRender()
 {
 	auto pos = GetGameObject()->GetTransform()->GetWorldLocation() + Center;
