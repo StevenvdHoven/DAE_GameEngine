@@ -90,6 +90,18 @@ void Engine::Transform::SetLocalRotation(float angle)
 	SetRotationDirty();
 }
 
+Engine::Vector2 Engine::Transform::GetForward() const
+{
+	Matrix3x3 rotationMatrix = Matrix3x3::CreateRotationMatrix(m_WorldRotation);
+	return rotationMatrix * Engine::Vector2(0, 1);
+}
+
+Engine::Vector2 Engine::Transform::GetRight() const
+{
+	Matrix3x3 rotationMatrix = Matrix3x3::CreateRotationMatrix(m_WorldRotation);
+	return rotationMatrix * Engine::Vector2(1, 0);
+}
+
 void Engine::Transform::SetParent(GameObject* pParent, bool keepWorldPosition)
 {
 	if (IsChild(pParent) || pParent == GetGameObject() || m_pParent == pParent)

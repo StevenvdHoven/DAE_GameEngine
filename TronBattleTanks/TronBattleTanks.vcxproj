@@ -162,6 +162,7 @@
     <ClCompile Include="MovePlayerCommand.cpp" />
     <ClCompile Include="PlayerDamageCommand.cpp" />
     <ClCompile Include="PlayerHealthComponent.cpp" />
+    <ClCompile Include="PlayerShootCommand.cpp" />
     <ClCompile Include="PrefabFactory.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="MovePlayerCommand.h" />
     <ClInclude Include="PlayerDamageCommand.h" />
     <ClInclude Include="PlayerHealthComponent.h" />
+    <ClInclude Include="PlayerShootCommand.h" />
     <ClInclude Include="PrefabFactory.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreComponent.h" />

@@ -28,6 +28,9 @@ namespace Engine
 		void SetWorldRotation(float angle);
 		void SetLocalRotation(float angle);
 
+		Engine::Vector2 GetForward() const;
+		Engine::Vector2 GetRight() const;
+
 
 		void SetParent(GameObject* pParent, bool keepWorldPosition = false);
 	private:
