@@ -72,7 +72,7 @@ void Engine::GameObject::Render() const
 	}
 }
 
-void Engine::GameObject::OnCollisionEnter(Component* other)
+void Engine::GameObject::OnCollisionEnter(GameObject* other)
 {
 	for (auto& pComponent : m_Components)
 	{
@@ -81,7 +81,7 @@ void Engine::GameObject::OnCollisionEnter(Component* other)
 	}
 }
 
-void Engine::GameObject::OnCollisionStay(Component* other)
+void Engine::GameObject::OnCollisionStay(GameObject* other)
 {
 	for (auto& pComponent : m_Components)
 	{
@@ -90,7 +90,7 @@ void Engine::GameObject::OnCollisionStay(Component* other)
 	}
 }
 
-void Engine::GameObject::OnCollisionExit(Component* other)
+void Engine::GameObject::OnCollisionExit(GameObject* other)
 {
 	for (auto& pComponent : m_Components)
 	{
@@ -99,7 +99,7 @@ void Engine::GameObject::OnCollisionExit(Component* other)
 	}
 }
 
-void Engine::GameObject::OnTriggerEnter(Component* other)
+void Engine::GameObject::OnTriggerEnter(GameObject* other)
 {
 	for (auto& pComponent : m_Components)
 	{
@@ -108,7 +108,7 @@ void Engine::GameObject::OnTriggerEnter(Component* other)
 	}
 }
 
-void Engine::GameObject::OnTriggerStay(Component* other)
+void Engine::GameObject::OnTriggerStay(GameObject* other)
 {
 	for (auto& pComponent : m_Components)
 	{
@@ -117,7 +117,7 @@ void Engine::GameObject::OnTriggerStay(Component* other)
 	}
 }
 
-void Engine::GameObject::OnTriggerExit(Component* other)
+void Engine::GameObject::OnTriggerExit(GameObject* other)
 {
 	for (auto& pComponent : m_Components)
 	{

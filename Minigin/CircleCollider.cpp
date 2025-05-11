@@ -79,10 +79,10 @@ bool Engine::CircleCollider::IsOverlappingTest(const Vector2& location, const fl
 
 void Engine::CircleCollider::DebugRender()
 {
-	auto pos = GetGameObject()->GetTransform()->GetWorldLocation() + Center;
+
 	const float radius = m_Radius;
-	
+	auto pos = GetGameObject()->GetTransform()->GetWorldLocation() + Center - Vector2{ radius / 2.f,radius / 2.f };
 
 	Renderer::GetInstance().SetColor({ 255, 0, 0, 255 });
-	Renderer::GetInstance().RenderOval(pos, radius, radius);
+	Renderer::GetInstance().RenderRectangle(pos, radius, radius);
 }

@@ -21,9 +21,9 @@ void Engine::PhysicsSystem::FixedUpdate()
 	{
 		if (!physicsBody->IsEnabled) continue;
 
-		
-
 		auto* gameObject = physicsBody->GetGameObject();
+		if (gameObject == nullptr || gameObject->IsDestroyed()) continue;
+		
 		auto* bodyCollider = gameObject->GetComponent<Collider>();
 		if (!bodyCollider || !bodyCollider->IsEnabled) continue;
 
@@ -143,11 +143,11 @@ void Engine::PhysicsSystem::HandleCollidingEvents(Collider* first, Collider* oth
 			// TODO: Call OnTriggerEnter or OnCollisionEnter on the colliders
 			if (!first->IsTrigger())
 			{
-				firstGameObject->OnCollisionEnter(other);
+				firstGameObject->OnCollisionEnter(other->GetGameObject());
 			}
 			else
 			{
-				firstGameObject->OnTriggerEnter(other);
+				firstGameObject->OnTriggerEnter(other->GetGameObject());
 			}
 		}
 		else
@@ -158,11 +158,11 @@ void Engine::PhysicsSystem::HandleCollidingEvents(Collider* first, Collider* oth
 				// TODO: Call OnTriggerStay or OnCollisionStay on the colliders
 				if (!first->IsTrigger())
 				{
-					firstGameObject->OnCollisionStay(other);
+					firstGameObject->OnCollisionStay(other->GetGameObject());
 				}
 				else
 				{
-					firstGameObject->OnTriggerStay(other);
+					firstGameObject->OnTriggerStay(other->GetGameObject());
 				}
 			}
 			else
@@ -172,11 +172,11 @@ void Engine::PhysicsSystem::HandleCollidingEvents(Collider* first, Collider* oth
 				// TODO: Call OnTriggerEnter or OnCollisionEnter on the colliders
 				if (!first->IsTrigger())
 				{
-					firstGameObject->OnCollisionEnter(other);
+					firstGameObject->OnCollisionEnter(other->GetGameObject());
 				}
 				else
 				{
-					firstGameObject->OnTriggerEnter(other);
+					firstGameObject->OnTriggerEnter(other->GetGameObject());
 				}
 			}
 		}
@@ -201,11 +201,11 @@ void Engine::PhysicsSystem::HandleCollidingEvents(Collider* first, Collider* oth
 			// TODO: Call OnTriggerExit or OnCollisionExit on the colliders
 			if (!first->IsTrigger())
 			{
-				firstGameObject->OnCollisionExit(other);
+				firstGameObject->OnCollisionExit(other->GetGameObject());
 			}
 			else
 			{
-				firstGameObject->OnTriggerExit(other);
+				firstGameObject->OnTriggerExit(other->GetGameObject());
 			}
 		}
 	}

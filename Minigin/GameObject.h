@@ -20,13 +20,13 @@ namespace Engine
 		void LateUpdate();
 		void Render() const;
 
-		void OnCollisionEnter(Component* other);
-		void OnCollisionStay(Component* other);
-		void OnCollisionExit(Component* other);
+		void OnCollisionEnter(GameObject* other);
+		void OnCollisionStay(GameObject* other);
+		void OnCollisionExit(GameObject* other);
 
-		void OnTriggerEnter(Component* other);
-		void OnTriggerStay(Component* other);
-		void OnTriggerExit(Component* other);
+		void OnTriggerEnter(GameObject* other);
+		void OnTriggerStay(GameObject* other);
+		void OnTriggerExit(GameObject* other);
 
 		GameObject();
 		~GameObject();

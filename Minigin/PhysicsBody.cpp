@@ -10,3 +10,8 @@ Engine::PhysicsBody::PhysicsBody(GameObject* pOwner):
 {
 	ServiceLocator::GetPhysicsSystem().AddPhysicsBody(this);
 }
+
+Engine::PhysicsBody::~PhysicsBody()
+{
+	ServiceLocator::GetPhysicsSystem().RemovePhysicsBody(this);
+}

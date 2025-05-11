@@ -25,13 +25,13 @@ namespace Engine
         virtual void LateUpdate() {};
         virtual void Render() const {};
 
-        virtual void OnCollisionEnter(Component* other);
-        virtual void OnCollisionStay(Component* other);
-        virtual void OnCollisionExit(Component* other);
+        virtual void OnCollisionEnter(GameObject* other);
+        virtual void OnCollisionStay(GameObject* other);
+        virtual void OnCollisionExit(GameObject* other);
 
-        virtual void OnTriggerEnter(Component* other);
-        virtual void OnTriggerStay(Component* other);
-        virtual void OnTriggerExit(Component* other);
+        virtual void OnTriggerEnter(GameObject* other);
+        virtual void OnTriggerStay(GameObject* other);
+        virtual void OnTriggerExit(GameObject* other);
 
         void Destroy(GameObject* pGameObject);
         void Destroy(Component* pComponent);

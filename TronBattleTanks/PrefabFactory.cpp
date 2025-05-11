@@ -2,16 +2,19 @@
 #include "ImageRenderer.h"
 #include "PlayerHealthComponent.h"
 #include "BoxCollider2D.h"
+#include "CircleCollider.h"
 #include "PhysicsBody.h"
 #include "Vector2.h"
 #include "Scene.h"
+#include "Projectile.h"
 
 #include "InputManager.h"
 #include "MovePlayerCommand.h"
+#include "PlayerShootCommand.h"
 
 using namespace Engine;
 
-void PrefabFactory::AddPlayer(Scene* const scene)
+Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene)
 {
 	auto player{ std::make_unique<GameObject>() };
 	player->GetTransform()->SetLocalPosition(100, 100);
@@ -47,8 +50,30 @@ void PrefabFactory::AddPlayer(Scene* const scene)
 	playerGun->GetTransform()->SetParent(player.get());
 	playerGun->GetTransform()->SetLocalPosition(Vector2{ 0.f, 0.f });
 
+	// Bind Input
+	auto shootCommand = std::make_unique<PlayerShootCommand>(playerGun.get(), [scene]() { return AddPlayerBullet(scene); });
+	shootCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
+	shootCommand->SetTriggerState(TriggerState::PRESSED);
+	InputManager::GetInstance().BindButton(0,0x4000,std::move(shootCommand));
 
-
+	auto rawPtr = player.get();
 	scene->Add(std::move(player));
 	scene->Add(std::move(playerGun));
+	return rawPtr;
+}
+
+Engine::GameObject* PrefabFactory::AddPlayerBullet(Engine::Scene* const scene)
+{
+	auto bullet{ std::make_unique<GameObject>() };
+	bullet->GetTransform()->SetLocalPosition(0, 0);
+	auto imageRender{ bullet->AddComponent<ImageRenderer>("player_bullet.png") };
+	imageRender->ChangeImageAllignment(ImageAllignment::Centre);
+
+	bullet->AddComponent<CircleCollider>(5.f,true);
+	bullet->AddComponent<PhysicsBody>();
+	bullet->AddComponent<Projectile>(1, 500.f, 3);
+
+	auto rawPtr = bullet.get();
+	scene->Add(std::move(bullet));
+	return rawPtr;
 }

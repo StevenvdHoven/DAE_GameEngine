@@ -10,7 +10,7 @@ namespace Engine
 	{
 	public:
 		PhysicsBody(GameObject* pOwner);
-		virtual ~PhysicsBody() override = default;
+		virtual ~PhysicsBody();
 
 
 		Vector2 Velocity{ 0.f, 0.f };

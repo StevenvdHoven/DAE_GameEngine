@@ -116,7 +116,6 @@ public:
 	{
 		for (auto& binding : m_ButtonBindings)
 		{
-
 			const auto triggerState{ binding->pCommand->GetTriggerState() };
 
 			bool pressed{ binding->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Pressed(binding->InputMask) : Is_KeyPressed(binding->InputMask) };
