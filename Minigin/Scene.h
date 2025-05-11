@@ -23,6 +23,8 @@ namespace Engine
 		void LateUpdate();
 		void Render() const;
 
+		void MoveScene(const Vector2& delta);
+
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;

@@ -2,11 +2,7 @@
 #include <memory>
 #include "Component.h"
 #include "Observers.h"
-
-namespace Engine
-{
-	class TextRenderer;
-}
+#include "TextRenderer.h"
 
 class ScoreComponent final : public Engine::Component
 {

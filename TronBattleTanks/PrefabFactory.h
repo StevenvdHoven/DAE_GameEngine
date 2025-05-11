@@ -13,5 +13,8 @@ public:
 	static Engine::GameObject* AddPlayer(Engine::Scene* const scene);
 
 	static Engine::GameObject* AddPlayerBullet(Engine::Scene* const scene);
+
+	static Engine::GameObject* Map1Parent(Engine::Scene* const scene);
+
 };
 

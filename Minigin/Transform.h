@@ -29,10 +29,13 @@ namespace Engine
 		void SetLocalRotation(float angle);
 
 		Engine::Vector2 GetForward() const;
-		Engine::Vector2 GetRight() const;
+		Engine::Vector2 GetUp() const;
+		
 
 
 		void SetParent(GameObject* pParent, bool keepWorldPosition = false);
+		const GameObject* GetParent() const { return m_pParent; }
+		const std::vector<GameObject*>& GetChildren() const { return m_pChildren; }
 	private:
 		void SetPositionDirty(bool flag = true);
 		void SetRotationDirty(bool flag = true);

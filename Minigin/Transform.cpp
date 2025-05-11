@@ -93,13 +93,13 @@ void Engine::Transform::SetLocalRotation(float angle)
 Engine::Vector2 Engine::Transform::GetForward() const
 {
 	Matrix3x3 rotationMatrix = Matrix3x3::CreateRotationMatrix(m_WorldRotation);
-	return rotationMatrix * Engine::Vector2(0, 1);
+	return rotationMatrix * Engine::Vector2(1, 0);
 }
 
-Engine::Vector2 Engine::Transform::GetRight() const
+Engine::Vector2 Engine::Transform::GetUp() const
 {
 	Matrix3x3 rotationMatrix = Matrix3x3::CreateRotationMatrix(m_WorldRotation);
-	return rotationMatrix * Engine::Vector2(1, 0);
+	return rotationMatrix * Engine::Vector2(0, 1);
 }
 
 void Engine::Transform::SetParent(GameObject* pParent, bool keepWorldPosition)

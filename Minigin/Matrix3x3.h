@@ -6,6 +6,9 @@ namespace Engine
 {
 	struct Matrix3x3
 	{
+#define TO_RADIAN(x) x * (3.14f / 180.0f)
+
+
 		float matrix[3][3];
 		Matrix3x3()
 		{
@@ -54,8 +57,8 @@ namespace Engine
 
 		static Matrix3x3 CreateRotationMatrix(float angle)
 		{
-			float cosTheta = std::cos(angle);
-			float sinTheta = std::sin(angle);
+			float cosTheta = std::cos(TO_RADIAN(angle));
+			float sinTheta = std::sin(TO_RADIAN(angle));
 			return Matrix3x3(cosTheta, -sinTheta, 0,
 				sinTheta, cosTheta, 0,
 				0, 0, 1);

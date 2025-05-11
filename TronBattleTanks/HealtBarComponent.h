@@ -20,7 +20,7 @@ public:
 	void Start() override;
 
 	// Inherited via IObserver
-	void OnNotify() override;
+	void OnNotify(Engine::Component* sender) override;
 private:
 	Engine::TextRenderer* m_pTextComponent;
 	PlayerHealthComponent* m_pHealthComponent;

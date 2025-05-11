@@ -25,8 +25,9 @@ void HealtBarComponent::Start()
 	m_pTextComponent = GetGameObject()->GetComponent<TextRenderer>();
 }
 
-void HealtBarComponent::OnNotify()
+void HealtBarComponent::OnNotify(Engine::Component* sender)
 {
+	if (sender != nullptr) return;
 	if (m_pTextComponent)
 	{
 		m_pTextComponent->SetText("Health: " + std::to_string(m_pHealthComponent->GetHealth()));

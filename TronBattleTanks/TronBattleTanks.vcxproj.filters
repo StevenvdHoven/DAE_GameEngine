@@ -87,6 +87,9 @@
     <ClCompile Include="Projectile.cpp">
       <Filter>Game\Projectiles</Filter>
     </ClCompile>
+    <ClCompile Include="GameLoop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Achievements.h">
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="Projectile.h">
       <Filter>Game\Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLoop.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

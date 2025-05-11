@@ -5,6 +5,7 @@
 namespace Engine
 {
 	class GameObject;
+	class Component;
 }
 
 class ScoreComponent;
@@ -28,7 +29,7 @@ public:
 	WinGameAchievement(int id, Engine::GameObject* pPlayer);
 
 	// Inherited via IObserver
-	void OnNotify() override;
+	void OnNotify(Engine::Component* sender) override;
 
 	bool Validate() const override { return false; }
 	

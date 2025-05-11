@@ -76,3 +76,15 @@ void Engine::Scene::Render() const
 	}
 }
 
+void Engine::Scene::MoveScene(const Vector2& delta)
+{
+	for (auto& object : m_objects)
+	{
+		if (object->GetTransform()->GetParent() != nullptr) continue;
+
+		auto location{ object->GetTransform()->GetLocalPosition() };
+		auto futureLocation{ location + delta };
+		object->GetTransform()->SetLocalPosition(futureLocation);
+	}
+}
+

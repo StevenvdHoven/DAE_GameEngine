@@ -12,8 +12,10 @@ WinGameAchievement::WinGameAchievement(int id, GameObject* pPlayer) :
 	m_pScoreComponent->GetOnScoreChange()->AddObserver(this);
 }
 
-void WinGameAchievement::OnNotify()
+void WinGameAchievement::OnNotify(Engine::Component* sender)
 {
+	if (sender != nullptr) return;
+
 	bool m_bAchieved = false;
 	//SteamUserStats()->GetAchievement("ACH_WIN_ONE_GAME", &m_bAchieved);
 	if (m_bAchieved)

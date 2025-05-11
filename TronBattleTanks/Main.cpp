@@ -20,7 +20,7 @@ void load()
 
 int main(int, char* []) {
 
-	GameEngine engine("../Data/",480,440);
+	GameEngine engine("../Data/",480,512);
 	engine.Run(load);
 
 	return 0;

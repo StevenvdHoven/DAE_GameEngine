@@ -40,8 +40,8 @@ void MovePlayerCommand::Execute(const Engine::Vector2& value)
 
 		const Vector2 futureVelocity = filterValue * m_Speed;
 
-		const Vector2 boxPosition = m_pTransform->GetWorldLocation() + filterValue * 5 + Vector2{ 2,2 };
-		const Vector2 boxSize{ 30,30 };
+		const Vector2 boxPosition = m_pTransform->GetWorldLocation() + filterValue * 5 + Vector2{ -13.f, -13.f };
+		const Vector2 boxSize{ 28,28 };
 
 		if (m_pCollider && m_pCollider->IsEnabled)
 		{

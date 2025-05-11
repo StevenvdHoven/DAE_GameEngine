@@ -18,10 +18,10 @@ void Subject::RemoveObserver(IObserver* observer)
 	m_Observers.erase(it);
 }
 
-void Subject::Notify()
+void Subject::Notify(Component* sender)
 {
 	for (auto observer : m_Observers)
 	{
-		observer->OnNotify();
+		observer->OnNotify(sender);
 	}
 }
