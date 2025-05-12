@@ -12,18 +12,19 @@
 #include "InputManager.h"
 #include "MovePlayerCommand.h"
 #include "PlayerShootCommand.h"
+#include "PlayerDamageCommand.h"
 
 using namespace Engine;
 
 Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene)
 {
 	auto player{ std::make_unique<GameObject>() };
-	player->GetTransform()->SetLocalPosition(128, 116);
+	
 
 	auto playerImageRender{ player->AddComponent<ImageRenderer>("player_body.png") };
 	playerImageRender->ChangeImageAllignment(ImageAllignment::Centre);
 
-	player->AddComponent<PlayerHealthComponent>(3);
+	player->AddComponent<PlayerHealthComponent>(1);
 
 	auto collider{ player->AddComponent<BoxCollider2D>(Vector2{ 28, 28 }, false) };
 	collider->Center = Vector2{ -13.f, -13.f };
@@ -43,10 +44,15 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene)
 	auto stopCommandController = std::make_unique<MovePlayerCommand>(player.get(), Engine::ValueCommand<Vector2>::InputType2D::D_PAD, 0.f);
 	stopCommandController->SetTriggerState(TriggerState::RELEASED);
 
+	auto playerDamageCommand = std::make_unique<PlayerDamageCommand>(player.get());
+	playerDamageCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
+	playerDamageCommand->SetTriggerState(TriggerState::PRESSED);
+
 	InputManager::GetInstance().Bind2DValue(0, std::move(moveCommand));
 	InputManager::GetInstance().Bind2DValue(0, std::move(stopCommand));
 	InputManager::GetInstance().Bind2DValue(0, std::move(moveCommandController));
 	InputManager::GetInstance().Bind2DValue(0, std::move(stopCommandController));
+	InputManager::GetInstance().BindButton(0, 0x1000, std::move(playerDamageCommand)); // A button
 
 	auto playerGun{ std::make_unique<GameObject>() };
 	auto gunRenderer{ playerGun->AddComponent<ImageRenderer>("player_gun.png") };
@@ -86,7 +92,6 @@ Engine::GameObject* PrefabFactory::AddPlayerBullet(Engine::Scene* const scene)
 Engine::GameObject* PrefabFactory::Map1Parent(Engine::Scene* const scene)
 {
 	auto MapParent{ std::make_unique<GameObject>() };
-	MapParent->GetTransform()->SetWorldLocation(Vector2{0, 512 - 440});
 
 	auto pLeftWall{ std::make_unique<GameObject>() };
 	pLeftWall->GetTransform()->SetLocalPosition(0, 0);

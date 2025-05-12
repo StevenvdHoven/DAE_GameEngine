@@ -22,7 +22,7 @@ int PlayerHealthComponent::GetHealth() const
 void PlayerHealthComponent::TakeDamage(int damage)
 {
 	m_Health -= damage;
-	m_OnTakeDamage->Notify();
+	m_OnTakeDamage->Notify(this);
 }
 
 void PlayerHealthComponent::Heal(int heal)

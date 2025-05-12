@@ -8,6 +8,12 @@ using namespace Engine;
 void Engine::Component::Destroy(GameObject* pGameObject)
 {
 	SceneManager::GetInstance().GetActiveScene()->Remove(pGameObject);
+
+	auto childeren = pGameObject->GetTransform()->GetChildren();
+	for (auto& child : childeren)
+	{
+		SceneManager::GetInstance().GetActiveScene()->Remove(child);
+	}
 }
 
 void Engine::Component::Destroy(Component* pComponent)

@@ -6,6 +6,7 @@ class PlayerDamageCommand final : public Engine::GameActorCommand
 {
 public:
 	PlayerDamageCommand(Engine::GameObject* pActor);
+	virtual ~PlayerDamageCommand() {};
 	// Inherited via Command
 	void Execute() override;
 

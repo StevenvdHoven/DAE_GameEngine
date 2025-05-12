@@ -8,6 +8,8 @@
 #include "BoxCollider2D.h"
 #include "GameLoop.h"
 #include "ScoreComponent.h"
+#include "StartGameCommand.h"
+#include "InputManager.h"
 #include "Scene.h"
 
 using namespace Engine;
@@ -20,11 +22,8 @@ void BattleScene::CreateScene()
 	backgroundObject->AddComponent<ImageRenderer>("gameBackground.png");
 	scene->Add(std::move(backgroundObject));
 
-	 PrefabFactory::AddPlayer(scene);
 
-	auto Map{ PrefabFactory::Map1Parent(scene) };
-
-	float differenceHeight = 512 - 440;
+	float differenceHeight = 72;
 	scene->MoveScene(Vector2{ 0, differenceHeight });
 
 	// Score 
@@ -33,11 +32,15 @@ void BattleScene::CreateScene()
 	scoreTextObject->AddComponent<TextRenderer>("",pFont);
 	auto scoreComponent{ scoreTextObject->AddComponent<ScoreComponent>() };
 	scene->Add(std::move(scoreTextObject));
-	
-
 
 	auto GameloopObject{ std::make_unique<GameObject>() };
-	GameloopObject->AddComponent<GameLoop>(scoreComponent,Map);
+	auto gameloop{ GameloopObject->AddComponent<GameLoop>(scoreComponent) };
+
+	auto startGameCommand{ std::make_unique<StartGameCommand>(gameloop) };
+	startGameCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
+	startGameCommand->SetTriggerState(Engine::TriggerState::PRESSED);
+	InputManager::GetInstance().BindButton(0, 0x010, std::move(startGameCommand)); // Start button
+
 	scene->Add(std::move(GameloopObject));
 }
 

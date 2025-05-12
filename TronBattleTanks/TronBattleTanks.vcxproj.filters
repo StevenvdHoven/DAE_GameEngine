@@ -88,6 +88,9 @@
       <Filter>Game\Projectiles</Filter>
     </ClCompile>
     <ClCompile Include="GameLoop.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="StartGameCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -141,6 +144,9 @@
       <Filter>Game\Projectiles</Filter>
     </ClInclude>
     <ClInclude Include="GameLoop.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="StartGameCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
