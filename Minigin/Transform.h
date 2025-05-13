@@ -34,7 +34,7 @@ namespace Engine
 
 
 		void SetParent(GameObject* pParent, bool keepWorldPosition = false);
-		const GameObject* GetParent() const { return m_pParent; }
+		GameObject* GetParent() const { return m_pParent; }
 		const std::vector<GameObject*>& GetChildren() const { return m_pChildren; }
 	private:
 		void SetPositionDirty(bool flag = true);

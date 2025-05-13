@@ -1,25 +1,29 @@
 #include "PlayerShootCommand.h"
 #include "Projectile.h"
+#include "GameObject.h"
+#include "Transform.h"
 
 using namespace Engine;
 
-PlayerShootCommand::PlayerShootCommand(Engine::GameObject* pOwner, std::function<Engine::GameObject*()> projectileFunction) :
+PlayerShootCommand::PlayerShootCommand(Engine::GameObject* pOwner, const Engine::Vector2& offset, std::function<Engine::GameObject*()> projectileFunction) :
 	GameActorCommand(pOwner),
-	m_ProjectileFactoryFunction(projectileFunction)
+	m_Offset{offset},
+	m_ProjectileFactoryFunction{ projectileFunction }
 {
 }
 
 void PlayerShootCommand::Execute()
 {
 	auto projectile{ m_ProjectileFactoryFunction() };
+	Vector2 offset{ GetActor()->GetTransform()->GetForward() * m_Offset.x + GetActor()->GetTransform()->GetUp() * m_Offset.y };
 	Vector2 spawnLocation{ GetActor()->GetTransform()->GetWorldLocation() };
 
-	projectile->GetTransform()->SetWorldLocation(spawnLocation);
+	projectile->GetTransform()->SetWorldLocation(spawnLocation + offset);
 
 	Projectile* projectileComponent{ projectile->GetComponent<Projectile>() };
 	if (projectileComponent)
 	{
-		Vector2 direction{ GetActor()->GetTransform()->GetForward() };
-		projectileComponent->Launch(GetActor(), direction);
+		Vector2 direction{ GetActor()->GetTransform()->GetForward()};
+		projectileComponent->Launch(GetActor()->GetTransform()->GetParent(), direction);
 	}
 }

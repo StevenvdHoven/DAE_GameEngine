@@ -7,10 +7,19 @@ namespace Engine
 	class BoxCollider2D;
 	class CircleCollider;
 
+	enum struct LayerMask
+	{
+		Default = 0,
+		Player = 1 << 0,
+		Enemy = 1 << 1,
+		Projectile = 1 << 2,
+		Wall = 1 << 3,
+	};
+
 	class Collider : public Component
 	{
 	public:
-		Collider(GameObject* pOwner);
+		Collider(GameObject* pOwner, LayerMask mask);
 		
 		virtual ~Collider();
 
@@ -28,8 +37,12 @@ namespace Engine
 
 		Vector2 Center{ 0.f, 0.f };
 
+		void SetLayerMask(LayerMask layerMask) { m_LayerMask = layerMask; }
+		const LayerMask& GetLayerMask() const { return m_LayerMask; }
+
 	private:
-		bool m_IsTrigger{ false };
+		bool m_IsTrigger;
+		LayerMask m_LayerMask;
 	};
 }
 

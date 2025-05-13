@@ -7,7 +7,7 @@ namespace Engine
 	class CircleCollider : public Collider
 	{
 	public:
-		CircleCollider(GameObject* pOwner,float radius,bool isTrigger);
+		CircleCollider(GameObject* pOwner, float radius, bool isTrigger = false, LayerMask mask = LayerMask::Default);
 		virtual ~CircleCollider() override = default;
 
 		virtual bool IsOverlapping(const Collider* other) const override;

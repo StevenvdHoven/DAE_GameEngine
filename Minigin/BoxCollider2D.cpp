@@ -6,8 +6,8 @@
 
 using namespace Engine;
 
-BoxCollider2D::BoxCollider2D(GameObject* pOwner, const Vector2& size, bool isTrigger):
-	Collider(pOwner),
+BoxCollider2D::BoxCollider2D(GameObject* pOwner, const Vector2& size, bool isTrigger, LayerMask mask):
+	Collider(pOwner,mask),
 	m_Size(size)
 {
 	SetIsTrigger(isTrigger);

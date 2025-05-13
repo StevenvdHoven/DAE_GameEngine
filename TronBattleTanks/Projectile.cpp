@@ -31,13 +31,11 @@ void Projectile::Launch(Engine::GameObject* pSender, const Engine::Vector2& dire
 
 void Projectile::OnTriggerEnter(Engine::GameObject* other)
 {
-	if (other != m_pSender)
+	if (other == m_pSender)
 	{
-
-
-
-
+		return;
 	}
+
 
 	m_Bounces--;
 	if (m_Bounces <= 0)

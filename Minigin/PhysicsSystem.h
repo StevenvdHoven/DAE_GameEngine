@@ -9,6 +9,7 @@ namespace Engine
 {
 	class Collider;
 	class PhysicsBody;
+	enum struct LayerMask;
 	class PhysicsSystem
 	{
 	public:
@@ -25,7 +26,8 @@ namespace Engine
 		void AddCollider(Collider* pCollider);
 		void RemoveCollider(Collider* pCollider);
 
-		bool BoxCast(const Engine::Vector2& location, const Engine::Vector2& size,const Collider* ignore) const;
+		bool BoxCast(const Engine::Vector2& location, const Engine::Vector2& size, const Collider* ignore, std::vector<LayerMask> layermask = {}) const;
+		
 
 		
 		void ClearColliders();

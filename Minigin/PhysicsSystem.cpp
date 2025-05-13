@@ -112,12 +112,23 @@ void Engine::PhysicsSystem::RemoveCollider(Collider* pCollider)
 	}
 }
 
-bool Engine::PhysicsSystem::BoxCast(const Engine::Vector2& location, const Engine::Vector2& size, const Collider* ignore) const
+bool Engine::PhysicsSystem::BoxCast(const Engine::Vector2& location, const Engine::Vector2& size, const Collider* ignore, std::vector<LayerMask> layermask) const
 {
 
 	for (const auto& pOther : m_Colliders)
 	{
+		// Check if the collider is enabled and not the one we are ignoring
+		if (!pOther->IsEnabled) continue;
+
+		// Check if the collider is in the specified layer mask
 		if (pOther == ignore) continue;
+
+
+		if (!layermask.empty())
+		{
+			auto it{ std::find(layermask.begin(), layermask.end(), pOther->GetLayerMask()) };
+			if (it != layermask.end()) continue;
+		}
 
 		if (pOther->IsOverlappingTest(location,size))
 		{
@@ -144,10 +155,12 @@ void Engine::PhysicsSystem::HandleCollidingEvents(Collider* first, Collider* oth
 			if (!first->IsTrigger())
 			{
 				firstGameObject->OnCollisionEnter(other->GetGameObject());
+				other->GetGameObject()->OnCollisionEnter(firstGameObject);
 			}
 			else
 			{
 				firstGameObject->OnTriggerEnter(other->GetGameObject());
+				other->GetGameObject()->OnTriggerEnter(firstGameObject);
 			}
 		}
 		else
@@ -159,10 +172,12 @@ void Engine::PhysicsSystem::HandleCollidingEvents(Collider* first, Collider* oth
 				if (!first->IsTrigger())
 				{
 					firstGameObject->OnCollisionStay(other->GetGameObject());
+					other->GetGameObject()->OnCollisionStay(firstGameObject);
 				}
 				else
 				{
 					firstGameObject->OnTriggerStay(other->GetGameObject());
+					other->GetGameObject()->OnTriggerStay(firstGameObject);
 				}
 			}
 			else
@@ -173,10 +188,12 @@ void Engine::PhysicsSystem::HandleCollidingEvents(Collider* first, Collider* oth
 				if (!first->IsTrigger())
 				{
 					firstGameObject->OnCollisionEnter(other->GetGameObject());
+					other->GetGameObject()->OnCollisionEnter(firstGameObject);
 				}
 				else
 				{
 					firstGameObject->OnTriggerEnter(other->GetGameObject());
+					other->GetGameObject()->OnTriggerEnter(firstGameObject);
 				}
 			}
 		}
@@ -202,10 +219,12 @@ void Engine::PhysicsSystem::HandleCollidingEvents(Collider* first, Collider* oth
 			if (!first->IsTrigger())
 			{
 				firstGameObject->OnCollisionExit(other->GetGameObject());
+				other->GetGameObject()->OnCollisionExit(firstGameObject);
 			}
 			else
 			{
 				firstGameObject->OnTriggerExit(other->GetGameObject());
+				other->GetGameObject()->OnTriggerExit(firstGameObject);
 			}
 		}
 	}

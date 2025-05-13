@@ -7,7 +7,7 @@ namespace Engine
 	class BoxCollider2D : public Collider
 	{
 	public:
-		BoxCollider2D(GameObject* pOwner,const Vector2& size, bool isTrigger = false);
+		BoxCollider2D(GameObject* pOwner,const Vector2& size, bool isTrigger = false, LayerMask mask = LayerMask::Default);
 		virtual ~BoxCollider2D() = default;
 
 		virtual bool IsOverlapping(const Collider* other) const override;

@@ -45,7 +45,7 @@ void MovePlayerCommand::Execute(const Engine::Vector2& value)
 
 		if (m_pCollider && m_pCollider->IsEnabled)
 		{
-			if (ServiceLocator::GetPhysicsSystem().BoxCast(boxPosition, boxSize, m_pCollider))
+			if (ServiceLocator::GetPhysicsSystem().BoxCast(boxPosition, boxSize, m_pCollider,{LayerMask::Wall}))
 			{
 				return;
 			}
