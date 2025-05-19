@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Vector2.h"
+#include <unordered_set>
 
 namespace Engine
 {
@@ -39,10 +40,13 @@ namespace Engine
 
 		void SetLayerMask(LayerMask layerMask) { m_LayerMask = layerMask; }
 		const LayerMask& GetLayerMask() const { return m_LayerMask; }
+		std::unordered_set<Collider*>& GetOverlappingColliders() { return m_OverlappingColliders; }
 
 	private:
 		bool m_IsTrigger;
 		LayerMask m_LayerMask;
+
+		std::unordered_set<Collider*> m_OverlappingColliders;
 	};
 }
 

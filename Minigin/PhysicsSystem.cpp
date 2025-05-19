@@ -7,6 +7,7 @@
 #include "EngineTime.h"
 #include "GameObject.h"
 #include "BoxCollider2D.h"
+#include <unordered_set>
 
 using namespace Engine;
 
@@ -21,42 +22,112 @@ void Engine::PhysicsSystem::FixedUpdate()
 	{
 		if (!physicsBody->IsEnabled) continue;
 
-		auto* gameObject = physicsBody->GetGameObject();
-		if (gameObject == nullptr || gameObject->IsDestroyed()) continue;
-
-		auto* bodyCollider = gameObject->GetComponent<Collider>();
-		if (!bodyCollider || !bodyCollider->IsEnabled) continue;
-
-		auto* bodyTransform = gameObject->GetTransform();
+		auto* bodyTransform = physicsBody->GetGameObject()->GetTransform();
 		const Vector2 perviousPosition = bodyTransform->GetWorldLocation();
 
 		Vector2& bodyVelocity = physicsBody->Velocity;
 		const auto worldPosition = bodyTransform->GetWorldLocation();
 		bodyTransform->SetWorldLocation(worldPosition + bodyVelocity * fixedDeltaTime);
 
-		bool updateMovement = true;
+		auto* bodyCollider = physicsBody->GetGameObject()->GetComponent<Collider>();
+		if (!bodyCollider || !bodyCollider->IsEnabled) continue;
 
-		for (auto* collider : m_Colliders)
-		{
-			if (!collider->IsEnabled || collider == bodyCollider) continue;
-
-			bool isOverlapping = bodyCollider->IsOverlapping(collider);
-
-			bool resultMovement;
-			HandleCollidingEvents(bodyCollider, collider, isOverlapping, resultMovement);
-
-			if (!resultMovement)
-			{
-x				updateMovement = false;
-			}
-		}
-
-		if (!updateMovement)
+		if (CheckCollisions(bodyCollider))
 		{
 			bodyTransform->SetWorldLocation(perviousPosition);
 		}
 	}
 }
+
+bool Engine::PhysicsSystem::CheckCollisions(Collider* collider)
+{
+	bool collided = false;
+	std::for_each(m_Colliders.begin(), m_Colliders.end(), [&](Collider* pOther)
+		{
+			if (pOther == collider) return;
+
+			if (!pOther->IsEnabled) return;
+
+			if (pOther->IsOverlapping(collider))
+			{
+				EvaluteOverlappingColliders(collider, pOther, true);
+				if (!pOther->IsTrigger() && !collider->IsTrigger())
+					collided = true;
+			}
+			else
+			{
+				EvaluteOverlappingColliders(collider, pOther, false);
+			}
+		});
+
+	if (collider->IsTrigger())
+		return false;
+
+	return collided;
+}
+
+void Engine::PhysicsSystem::EvaluteOverlappingColliders(Collider* first, Collider* other, bool collided)
+{
+	std::unordered_set<Collider*>& overlappingColliders = first->GetOverlappingColliders();
+	std::unordered_set<Collider*>& otherOverlappingColliders = other->GetOverlappingColliders();
+	if (collided)
+	{
+		if (overlappingColliders.insert(other).second)
+		{
+			FireCollisionEvents(first->GetGameObject(), other->GetGameObject(), first->IsTrigger(), CollisionType::Begin);
+			otherOverlappingColliders.insert(first);
+		}
+		else
+		{
+			FireCollisionEvents(first->GetGameObject(), other->GetGameObject(), first->IsTrigger(), CollisionType::Stay);
+		}
+	}
+	else
+	{
+		if (overlappingColliders.erase(other) > 0)
+		{
+			FireCollisionEvents(first->GetGameObject(), other->GetGameObject(), first->IsTrigger(), CollisionType::End);
+		}
+		if (otherOverlappingColliders.erase(first) > 0)
+		{
+			FireCollisionEvents(other->GetGameObject(), first->GetGameObject(), other->IsTrigger(), CollisionType::End);
+		}
+	}
+}
+
+void Engine::PhysicsSystem::FireCollisionEvents(GameObject* firstGameObject, GameObject* other, bool isTrigger, CollisionType eventType)
+{
+	switch (eventType)
+	{
+	case Engine::PhysicsSystem::CollisionType::Begin:
+		if (isTrigger)
+			firstGameObject->OnTriggerEnter(other);
+		else
+			firstGameObject->OnCollisionEnter(other);
+		break;
+	case Engine::PhysicsSystem::CollisionType::End:
+		if (isTrigger)
+			firstGameObject->OnTriggerExit(other);
+		else
+			firstGameObject->OnCollisionExit(other);
+		break;
+	case Engine::PhysicsSystem::CollisionType::Stay:
+		if (isTrigger)
+			firstGameObject->OnTriggerStay(other);
+		else
+			firstGameObject->OnCollisionStay(other);
+		break;
+	}
+}
+
+bool Engine::PhysicsSystem::AlreadyCollided(Collider* first, Collider* other) const
+{
+	auto overlappingColliders = first->GetOverlappingColliders();
+	auto it = std::find(overlappingColliders.begin(), overlappingColliders.end(), other);
+
+	return it != overlappingColliders.end();
+}
+
 
 
 void Engine::PhysicsSystem::Render()
@@ -137,97 +208,6 @@ bool Engine::PhysicsSystem::BoxCast(const Engine::Vector2& location, const Engin
 	}
 	return false;
 }
-
-void Engine::PhysicsSystem::HandleCollidingEvents(Collider* first, Collider* other, bool collided, bool& updateMovement)
-{
-	if (!first || !other || (first == other)) return;
-
-	updateMovement = !collided || (first->IsTrigger() || other->IsTrigger());
-
-	auto firstGameObject{ first->GetGameObject() };
-	auto colliderPairIt{ m_ColliderPairs.find(first) };
-	if (collided)
-	{
-		if (colliderPairIt == m_ColliderPairs.end())
-		{
-			m_ColliderPairs[first] = std::vector<Collider*>();
-		}
-
-		if (AreAlreadyColliding(first, other))
-		{
-			if (!first->IsTrigger())
-			{
-				firstGameObject->OnCollisionStay(other->GetGameObject());
-			}
-			else
-			{
-				firstGameObject->OnTriggerStay(other->GetGameObject());
-			}
-		}
-		else
-		{
-			m_ColliderPairs[first].emplace_back(other);
-
-			// TODO: Call OnTriggerEnter or OnCollisionEnter on the colliders
-			if (!first->IsTrigger())
-			{
-				firstGameObject->OnCollisionEnter(other->GetGameObject());
-			}
-			else
-			{
-				firstGameObject->OnTriggerEnter(other->GetGameObject());
-			}
-			
-		}
-		return;
-	}
-	else
-	{
-		if (colliderPairIt == m_ColliderPairs.end())
-		{
-			return;
-		}
-
-		std::vector<Collider*>& colliders = m_ColliderPairs[first];
-		auto it = std::find(colliders.begin(), colliders.end(), other);
-		if (it != colliders.end())
-		{
-			colliders.erase(it);
-			if (colliders.empty())
-			{
-				m_ColliderPairs.erase(first);
-			}
-
-			if (!first->IsTrigger())
-			{
-				firstGameObject->OnCollisionExit(other->GetGameObject());
-			}
-			else
-			{
-				firstGameObject->OnTriggerExit(other->GetGameObject());
-			}
-		}
-	}
-
-}
-
-bool Engine::PhysicsSystem::AreAlreadyColliding(Collider* first, Collider* other) const
-{
-	if (!first || !other || (first == other)) return false;
-
-	auto colliderPairIt{ m_ColliderPairs.find(first) };
-	if (colliderPairIt != m_ColliderPairs.end())
-	{
-		const std::vector<Collider*>& colliders = colliderPairIt->second;
-		if (std::find(colliders.begin(), colliders.end(), other) != colliders.end())
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-
 
 void Engine::PhysicsSystem::ClearColliders()
 {

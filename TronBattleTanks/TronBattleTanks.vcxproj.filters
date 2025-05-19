@@ -93,6 +93,9 @@
     <ClCompile Include="StartGameCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ColliderTestScene.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Achievements.h">
@@ -148,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="StartGameCommand.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderTestScene.h">
+      <Filter>Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

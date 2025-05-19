@@ -8,6 +8,7 @@
 #include <iostream>
 #include "TestScene.h"
 #include "BattleScene.h"
+#include "ColliderTestScene.h"
 #include "GameEngine.h"
 
 using namespace Engine;
@@ -16,6 +17,7 @@ void load()
 {
 	//TestScene::CreateScene();
 	BattleScene::CreateScene();
+	//ColliderTestScene::CreateScene();
 }
 
 int main(int, char* []) {

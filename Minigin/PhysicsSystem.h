@@ -10,6 +10,7 @@ namespace Engine
 	class Collider;
 	class PhysicsBody;
 	enum struct LayerMask;
+	class GameObject;
 	class PhysicsSystem
 	{
 	public:
@@ -33,16 +34,25 @@ namespace Engine
 		void ClearColliders();
 
 	private:
-		void HandleCollidingEvents(Collider* first, Collider* other, bool collided, bool& updateMovement);
-		bool AreAlreadyColliding(Collider* first, Collider* other) const;
+		enum struct CollisionType
+		{
+			Begin,
+			End,
+			Stay
+		};
 
+
+		bool CheckCollisions(Collider* collider);
+
+		void EvaluteOverlappingColliders(Collider* first, Collider* other, bool collided);
+		void FireCollisionEvents(GameObject* firstGameObject, GameObject* other, bool isTrigger, CollisionType eventType);
+		
+		bool AlreadyCollided(Collider* first, Collider* other) const;
 
 		bool m_RenderDebugColliders{ true };
 
 		std::vector<Collider*> m_Colliders;
 		std::vector<PhysicsBody*> m_PhysicsBodies;
-
-		std::map<Collider*, std::vector<Collider*>> m_ColliderPairs;
 	};
 }
 
