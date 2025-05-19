@@ -34,6 +34,7 @@ namespace Engine
 
 	private:
 		void HandleCollidingEvents(Collider* first, Collider* other, bool collided, bool& updateMovement);
+		bool AreAlreadyColliding(Collider* first, Collider* other) const;
 
 
 		bool m_RenderDebugColliders{ true };

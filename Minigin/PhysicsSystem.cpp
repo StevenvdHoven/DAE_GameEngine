@@ -23,7 +23,7 @@ void Engine::PhysicsSystem::FixedUpdate()
 
 		auto* gameObject = physicsBody->GetGameObject();
 		if (gameObject == nullptr || gameObject->IsDestroyed()) continue;
-		
+
 		auto* bodyCollider = gameObject->GetComponent<Collider>();
 		if (!bodyCollider || !bodyCollider->IsEnabled) continue;
 
@@ -47,7 +47,7 @@ void Engine::PhysicsSystem::FixedUpdate()
 
 			if (!resultMovement)
 			{
-				updateMovement = false;
+x				updateMovement = false;
 			}
 		}
 
@@ -130,7 +130,7 @@ bool Engine::PhysicsSystem::BoxCast(const Engine::Vector2& location, const Engin
 			if (it != layermask.end()) continue;
 		}
 
-		if (pOther->IsOverlappingTest(location,size))
+		if (pOther->IsOverlappingTest(location, size))
 		{
 			return true;
 		}
@@ -145,62 +145,45 @@ void Engine::PhysicsSystem::HandleCollidingEvents(Collider* first, Collider* oth
 	updateMovement = !collided || (first->IsTrigger() || other->IsTrigger());
 
 	auto firstGameObject{ first->GetGameObject() };
+	auto colliderPairIt{ m_ColliderPairs.find(first) };
 	if (collided)
 	{
-		if (m_ColliderPairs.find(first) == m_ColliderPairs.end())
+		if (colliderPairIt == m_ColliderPairs.end())
 		{
-			m_ColliderPairs[first] = std::vector<Collider*>{ other };
+			m_ColliderPairs[first] = std::vector<Collider*>();
+		}
+
+		if (AreAlreadyColliding(first, other))
+		{
+			if (!first->IsTrigger())
+			{
+				firstGameObject->OnCollisionStay(other->GetGameObject());
+			}
+			else
+			{
+				firstGameObject->OnTriggerStay(other->GetGameObject());
+			}
+		}
+		else
+		{
+			m_ColliderPairs[first].emplace_back(other);
 
 			// TODO: Call OnTriggerEnter or OnCollisionEnter on the colliders
 			if (!first->IsTrigger())
 			{
 				firstGameObject->OnCollisionEnter(other->GetGameObject());
-				other->GetGameObject()->OnCollisionEnter(firstGameObject);
 			}
 			else
 			{
 				firstGameObject->OnTriggerEnter(other->GetGameObject());
-				other->GetGameObject()->OnTriggerEnter(firstGameObject);
 			}
+			
 		}
-		else
-		{
-			std::vector<Collider*>& colliders = m_ColliderPairs[first];
-			if (std::find(colliders.begin(), std::end(colliders), other) != colliders.end())
-			{
-				// TODO: Call OnTriggerStay or OnCollisionStay on the colliders
-				if (!first->IsTrigger())
-				{
-					firstGameObject->OnCollisionStay(other->GetGameObject());
-					other->GetGameObject()->OnCollisionStay(firstGameObject);
-				}
-				else
-				{
-					firstGameObject->OnTriggerStay(other->GetGameObject());
-					other->GetGameObject()->OnTriggerStay(firstGameObject);
-				}
-			}
-			else
-			{
-				m_ColliderPairs[first].emplace_back(other);
-
-				// TODO: Call OnTriggerEnter or OnCollisionEnter on the colliders
-				if (!first->IsTrigger())
-				{
-					firstGameObject->OnCollisionEnter(other->GetGameObject());
-					other->GetGameObject()->OnCollisionEnter(firstGameObject);
-				}
-				else
-				{
-					firstGameObject->OnTriggerEnter(other->GetGameObject());
-					other->GetGameObject()->OnTriggerEnter(firstGameObject);
-				}
-			}
-		}
+		return;
 	}
 	else
 	{
-		if (m_ColliderPairs.find(first) == m_ColliderPairs.end())
+		if (colliderPairIt == m_ColliderPairs.end())
 		{
 			return;
 		}
@@ -215,20 +198,33 @@ void Engine::PhysicsSystem::HandleCollidingEvents(Collider* first, Collider* oth
 				m_ColliderPairs.erase(first);
 			}
 
-			// TODO: Call OnTriggerExit or OnCollisionExit on the colliders
 			if (!first->IsTrigger())
 			{
 				firstGameObject->OnCollisionExit(other->GetGameObject());
-				other->GetGameObject()->OnCollisionExit(firstGameObject);
 			}
 			else
 			{
 				firstGameObject->OnTriggerExit(other->GetGameObject());
-				other->GetGameObject()->OnTriggerExit(firstGameObject);
 			}
 		}
 	}
 
+}
+
+bool Engine::PhysicsSystem::AreAlreadyColliding(Collider* first, Collider* other) const
+{
+	if (!first || !other || (first == other)) return false;
+
+	auto colliderPairIt{ m_ColliderPairs.find(first) };
+	if (colliderPairIt != m_ColliderPairs.end())
+	{
+		const std::vector<Collider*>& colliders = colliderPairIt->second;
+		if (std::find(colliders.begin(), colliders.end(), other) != colliders.end())
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 

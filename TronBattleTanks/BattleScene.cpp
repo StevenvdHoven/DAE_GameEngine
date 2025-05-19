@@ -11,6 +11,7 @@
 #include "StartGameCommand.h"
 #include "InputManager.h"
 #include "Scene.h"
+#include <SDL.h>
 
 using namespace Engine;
 
@@ -40,6 +41,12 @@ void BattleScene::CreateScene()
 	startGameCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
 	startGameCommand->SetTriggerState(Engine::TriggerState::PRESSED);
 	InputManager::GetInstance().BindButton(0, 0x010, std::move(startGameCommand)); // Start button
+
+	// For Debug
+	auto startGameCommandKeyboard{ std::make_unique<StartGameCommand>(gameloop) };
+	startGameCommandKeyboard->ChangeDeviceType(Engine::DeviceType::KEYBOARD);
+	startGameCommandKeyboard->SetTriggerState(Engine::TriggerState::PRESSED);
+	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_X, std::move(startGameCommandKeyboard)); // Enter button
 
 	scene->Add(std::move(GameloopObject));
 }
