@@ -35,6 +35,9 @@ namespace Engine
 		void Render() const;
 		void Destroy();
 
+		void RenderLine(const Vector2& start, const Vector2& end) const;
+		void RenderLine(float startX, float startY, float endX, float endY) const;
+
 		void RenderRectangle(const Vector2& pos, float width, float height) const;
 		void RenderFilledRectangle(const Vector2& pos, float width, float height) const;
 

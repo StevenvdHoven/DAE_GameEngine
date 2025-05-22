@@ -50,7 +50,7 @@ void Engine::Renderer::Render() const
 
 	ServiceLocator::GetPhysicsSystem().Render();
 
-
+	ServiceLocator::GetGraphEditor().Draw();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -69,6 +69,16 @@ void Engine::Renderer::Destroy()
 		SDL_DestroyRenderer(m_renderer);
 		m_renderer = nullptr;
 	}
+}
+
+void Engine::Renderer::RenderLine(const Vector2& start, const Vector2& end) const
+{
+	RenderLine(start.x, start.y, end.x, end.y);
+}
+
+void Engine::Renderer::RenderLine(float startX, float startY, float endX, float endY) const
+{
+	SDL_RenderDrawLine(m_renderer, static_cast<int>(startX), static_cast<int>(startY), static_cast<int>(endX), static_cast<int>(endY));
 }
 
 void Engine::Renderer::RenderRectangle(const Vector2& pos, float width, float height) const

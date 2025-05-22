@@ -34,6 +34,12 @@
     <Filter Include="Managers\Services">
       <UniqueIdentifier>{59ddf87d-29fe-4dbc-98ca-308bf73d3f9f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCommands">
+      <UniqueIdentifier>{5c249a86-96b1-48d9-82a4-ec190be5b5ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editors">
+      <UniqueIdentifier>{a592a2d4-56c9-42b6-bbad-3aafe1028e60}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -65,9 +71,6 @@
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="GameEngine.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="ImageRenderer.h">
       <Filter>Components</Filter>
@@ -151,6 +154,18 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Matrix3x3.h">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="GrapEditorCommands.h">
+      <Filter>EngineCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphEditor.h">
+      <Filter>Editors</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngine.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
       <Filter>DataTypes</Filter>
     </ClInclude>
   </ItemGroup>
@@ -262,6 +277,12 @@
     </ClCompile>
     <ClCompile Include="Matrix3x3.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GrapEditorCommands.cpp">
+      <Filter>EngineCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphEditor.cpp">
+      <Filter>Editors</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
