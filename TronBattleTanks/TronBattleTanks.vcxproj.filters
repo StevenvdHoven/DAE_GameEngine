@@ -96,6 +96,9 @@
     <ClCompile Include="ColliderTestScene.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerAimCommand.cpp">
+      <Filter>Game\Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Achievements.h">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="ColliderTestScene.h">
       <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAimCommand.h">
+      <Filter>Game\Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

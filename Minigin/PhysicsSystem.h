@@ -41,7 +41,6 @@ namespace Engine
 			Stay
 		};
 
-
 		bool CheckCollisions(Collider* collider);
 
 		void EvaluteOverlappingColliders(Collider* first, Collider* other, bool collided);
