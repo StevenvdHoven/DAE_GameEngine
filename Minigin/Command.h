@@ -8,7 +8,8 @@ namespace Engine
 	{
 		PRESSED,
 		RELEASED,
-		HELD
+		HELD,
+		CONSTANT
 	};
 
 	enum class DeviceType

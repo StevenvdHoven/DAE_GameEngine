@@ -184,6 +184,7 @@ void Engine::GraphEditor::SaveGraph()
 
 	json graphData;
 
+	graphData["graph_offset_index"] = m_Graph->GetIndex();
 	graphData["graph_nodes"] = json::array();
 	for (auto node : nodes)
 	{
@@ -215,8 +216,13 @@ void Engine::GraphEditor::LoadGraph(const std::string& filePath)
 		throw std::runtime_error("Could not open graph file");
 	}
 
+	
+
 	json graphData;
 	file >> graphData;
+	int offsetIndex = graphData["graph_offset_index"];
+
+	std::vector<GraphNode*> nodes;
 
 	for (const auto& nodeData : graphData["graph_nodes"])
 	{
@@ -230,9 +236,10 @@ void Engine::GraphEditor::LoadGraph(const std::string& filePath)
 			node->Connections.push_back(connection);
 		}
 
-		m_Graph->AddNode(node);
+		nodes.emplace_back(node);
 	}
-
+	m_Graph = std::make_unique<Graph>(offsetIndex,nodes);
+	
 }
 
 void Engine::GraphEditor::DrawNodes()

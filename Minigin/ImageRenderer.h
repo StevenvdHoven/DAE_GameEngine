@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Component.h"
+#include "Vector2.h"
 
 namespace Engine
 {
@@ -13,7 +14,12 @@ namespace Engine
 		TopRight,
 		BottomLeft,
 		BottomRight,
-		Centre
+		Left,
+		Right,
+		Top,
+		Bottom,
+		Centre,
+		Custom,
 	};
 
 	class ImageRenderer final : public Component
@@ -25,11 +31,12 @@ namespace Engine
 		void Render() const override;
 
 		void ChangeImageAllignment(ImageAllignment allignment) { m_ImageAllignment = allignment; }
-
+		void SetPivot(const Vector2& pivot) { m_Pivot = pivot; }
 
 	private:
 		Texture2D* m_pTexture;
 		ImageAllignment m_ImageAllignment;
+		Vector2 m_Pivot;
 	};
 }
 

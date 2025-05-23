@@ -166,13 +166,13 @@ void Engine::Renderer::RenderTexture(const Texture2D& texture, const float x, co
 
 }
 
-void Engine::Renderer::RenderTexture(const Texture2D& texture, float x, float y, float angle) const
+void Engine::Renderer::RenderTexture(const Texture2D& texture, float x, float y, float angle, SDL_Point* pivot) const
 {
 	SDL_Rect dst{};
 	dst.x = static_cast<int>(x);
 	dst.y = static_cast<int>(y);
 	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
-	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst, angle, nullptr, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst, angle, pivot, SDL_FLIP_NONE);
 }
 
 void Engine::Renderer::RenderTexture(const Texture2D& texture, float x, float y, float width, float height, float angle) const

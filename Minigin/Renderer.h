@@ -47,7 +47,7 @@ namespace Engine
 		void RenderTexture(const Texture2D& texture, float x, float y) const;
 		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
 
-		void RenderTexture(const Texture2D& texture, float x, float y, float angle) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, float angle, SDL_Point* pivot = nullptr) const;
 		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height, float angle) const;
 
 		SDL_Renderer* GetSDLRenderer() const;

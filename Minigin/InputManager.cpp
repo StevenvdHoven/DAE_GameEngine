@@ -195,6 +195,8 @@ public:
 				binding->pCommand->Execute(value);
 			if (released && triggerState == Engine::TriggerState::RELEASED)
 				binding->pCommand->Execute(Engine::Vector2{});
+			if (triggerState == Engine::TriggerState::CONSTANT)
+				binding->pCommand->Execute(value);
 		}
 	}
 

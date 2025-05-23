@@ -13,6 +13,7 @@
 #include "MovePlayerCommand.h"
 #include "PlayerShootCommand.h"
 #include "PlayerDamageCommand.h"
+#include "PlayerAimCommand.h"
 
 using namespace Engine;
 
@@ -55,12 +56,25 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene)
 	InputManager::GetInstance().Bind2DValue(0, std::move(stopCommandController));
 	InputManager::GetInstance().BindButton(0, 0x1000, std::move(playerDamageCommand)); // A button
 
+	// Rotator
+	auto playerGunRotator{ std::make_unique<GameObject>() };
+	playerGunRotator->GetTransform()->SetLocalPosition(Vector2{ -1.f, 0.f });
+	playerGunRotator->GetTransform()->SetParent(player.get());
+
+	// Bind Input
+	auto aimCommand = std::make_unique<PlayerAimCommand>(playerGunRotator.get());
+	aimCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
+	aimCommand->SetTriggerState(TriggerState::CONSTANT);
+	InputManager::GetInstance().Bind2DValue(0, std::move(aimCommand));
+
+	//Gun
 	auto playerGun{ std::make_unique<GameObject>() };
 	auto gunRenderer{ playerGun->AddComponent<ImageRenderer>("player_gun.png") };
 	gunRenderer->ChangeImageAllignment(ImageAllignment::Centre);
+	gunRenderer->SetPivot(Vector2{ 0.f, 0.f });
 
-	playerGun->GetTransform()->SetParent(player.get());
-	playerGun->GetTransform()->SetLocalPosition(Vector2{ 5.f, 0.f });
+	playerGun->GetTransform()->SetParent(playerGunRotator.get());
+	playerGun->GetTransform()->SetLocalPosition(Vector2{ 8.f, 0.f });
 
 	// Bind Input
 	auto shootCommand = std::make_unique<PlayerShootCommand>(playerGun.get(),Vector2{20,0}, [scene]() { return AddPlayerBullet(scene); });
@@ -68,8 +82,11 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene)
 	shootCommand->SetTriggerState(TriggerState::PRESSED);
 	InputManager::GetInstance().BindButton(0,0x4000,std::move(shootCommand));
 
+	
+
 	auto rawPtr = player.get();
 	scene->Add(std::move(player));
+	scene->Add(std::move(playerGunRotator));
 	scene->Add(std::move(playerGun));
 	return rawPtr;
 }
