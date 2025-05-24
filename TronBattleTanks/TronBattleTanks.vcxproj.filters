@@ -34,6 +34,9 @@
     <Filter Include="Game\Projectiles">
       <UniqueIdentifier>{d4f29986-1570-45e5-a495-277428d03e22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Menu">
+      <UniqueIdentifier>{bc41a337-57e7-418c-a593-33eb859ce632}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AchievementHandler.cpp">
@@ -102,6 +105,12 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="MenuMoveCommand.cpp">
+      <Filter>Game\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuComponent.cpp">
+      <Filter>Game\Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Achievements.h">
@@ -166,6 +175,12 @@
     </ClInclude>
     <ClInclude Include="MainMenu.h">
       <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuMoveCommand.h">
+      <Filter>Game\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuComponent.h">
+      <Filter>Game\Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

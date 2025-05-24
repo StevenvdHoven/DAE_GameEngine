@@ -162,6 +162,8 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="MenuComponent.cpp" />
+    <ClCompile Include="MenuMoveCommand.cpp" />
     <ClCompile Include="MovePlayerCommand.cpp" />
     <ClCompile Include="PlayerAimCommand.cpp" />
     <ClCompile Include="PlayerDamageCommand.cpp" />
@@ -185,6 +187,8 @@
     <ClInclude Include="HealtBarComponent.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuComponent.h" />
+    <ClInclude Include="MenuMoveCommand.h" />
     <ClInclude Include="MovePlayerCommand.h" />
     <ClInclude Include="PlayerAimCommand.h" />
     <ClInclude Include="PlayerDamageCommand.h" />
