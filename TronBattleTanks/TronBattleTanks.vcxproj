@@ -160,6 +160,7 @@
     <ClCompile Include="GameLoop.cpp" />
     <ClCompile Include="HealtBarComponent.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MovePlayerCommand.cpp" />
     <ClCompile Include="PlayerAimCommand.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="FPSCounterComponent.h" />
     <ClInclude Include="GameLoop.h" />
     <ClInclude Include="HealtBarComponent.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MovePlayerCommand.h" />
     <ClInclude Include="PlayerAimCommand.h" />

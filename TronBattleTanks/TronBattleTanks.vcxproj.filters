@@ -90,14 +90,17 @@
     <ClCompile Include="GameLoop.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="StartGameCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ColliderTestScene.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="PlayerAimCommand.cpp">
       <Filter>Game\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="StartGameCommand.cpp">
+      <Filter>Game\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Game\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,14 +155,17 @@
     <ClInclude Include="GameLoop.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="StartGameCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ColliderTestScene.h">
       <Filter>Game\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="PlayerAimCommand.h">
       <Filter>Game\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="StartGameCommand.h">
+      <Filter>Game\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

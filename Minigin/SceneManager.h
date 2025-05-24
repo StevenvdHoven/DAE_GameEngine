@@ -19,10 +19,10 @@ namespace Engine
 		void LateUpdate();
 		void Render();
 
-		Scene* GetActiveScene() const { return m_pActiveScene; }
+		Scene* GetActiveScene() const { return m_pActiveScene.get(); }
 	private:
 		
-		Scene* m_pActiveScene{ nullptr };
-		std::vector<std::unique_ptr<Scene>> m_Scenes;
+		std::unique_ptr<Scene> m_pActiveScene{ nullptr };
+		std::unique_ptr<Scene> m_pNextScene{ nullptr };
 	};
 }
