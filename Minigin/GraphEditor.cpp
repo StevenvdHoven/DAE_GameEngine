@@ -62,6 +62,8 @@ void Engine::GraphEditor::GUI()
 	{
 		m_FilePath = buffer;
 	}
+	
+	delete[] buffer;
 
 
 	ImGui::Checkbox("Show Nodes", &m_ShowNodes);

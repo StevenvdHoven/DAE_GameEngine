@@ -40,7 +40,7 @@ void BattleScene::CreateScene()
 	auto startGameCommand{ std::make_unique<StartGameCommand>(gameloop) };
 	startGameCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
 	startGameCommand->SetTriggerState(Engine::TriggerState::PRESSED);
-	InputManager::GetInstance().BindButton(0, 0x010, std::move(startGameCommand)); // Start button
+	InputManager::GetInstance().BindButton(0, 0x0010, std::move(startGameCommand)); // Start button
 
 	// For Debug
 	auto startGameCommandKeyboard{ std::make_unique<StartGameCommand>(gameloop) };

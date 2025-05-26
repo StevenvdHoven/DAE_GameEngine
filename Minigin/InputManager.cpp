@@ -114,7 +114,8 @@ public:
 
 	void CheckBindings()
 	{
-		for (auto& binding : m_ButtonBindings)
+		auto copyBindings{ m_ButtonBindings };
+		for (auto& binding : copyBindings)
 		{
 			const auto triggerState{ binding->pCommand->GetTriggerState() };
 
