@@ -13,6 +13,8 @@
 #include "Scene.h"
 #include <SDL.h>
 
+#define START_BUTTON 0x010
+
 using namespace Engine;
 
 void BattleScene::CreateScene()
@@ -40,13 +42,7 @@ void BattleScene::CreateScene()
 	auto startGameCommand{ std::make_unique<StartGameCommand>(gameloop) };
 	startGameCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
 	startGameCommand->SetTriggerState(Engine::TriggerState::PRESSED);
-	InputManager::GetInstance().BindButton(0, 0x0010, std::move(startGameCommand)); // Start button
-
-	// For Debug
-	auto startGameCommandKeyboard{ std::make_unique<StartGameCommand>(gameloop) };
-	startGameCommandKeyboard->ChangeDeviceType(Engine::DeviceType::KEYBOARD);
-	startGameCommandKeyboard->SetTriggerState(Engine::TriggerState::PRESSED);
-	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_X, std::move(startGameCommandKeyboard)); // Enter button
+	InputManager::GetInstance().BindButton(0, START_BUTTON, std::move(startGameCommand));
 
 	scene->Add(std::move(GameloopObject));
 }

@@ -3,55 +3,50 @@
 
 void Engine::SceneManager::Start()
 {
-	for (auto& scene : m_Scenes)
-	{
-		scene->Start();
-	}
+	m_pActiveScene->Start();
 }
 
 void Engine::SceneManager::Update()
 {
-	for(auto& scene : m_Scenes)
-	{
-		scene->Update();
-	}
+	m_pActiveScene->Update();
 }
 
 void Engine::SceneManager::FixedUpdate()
 {
-	for (auto& scene : m_Scenes)
-	{
-		scene->FixedUpdate();
-	}
+	m_pActiveScene->FixedUpdate();
 }
 
 void Engine::SceneManager::LateUpdate()
 {
-	for (auto& scene : m_Scenes)
+	m_pActiveScene->LateUpdate();
+
+	if (m_pNextScene != nullptr)
 	{
-		scene->LateUpdate();
+		m_pActiveScene->RemoveAll();
+		m_pActiveScene = std::move(m_pNextScene);
+
+		Start();
+		m_pNextScene = nullptr;
 	}
 }
 
 void Engine::SceneManager::Render()
 {
-	for (const auto& scene : m_Scenes)
-	{
-		scene->Render();
-	}
+	m_pActiveScene->Render();
 }
 
 Engine::Scene* Engine::SceneManager::CreateScene(const std::string& name)
 {
-	
-
 	auto scene = std::make_unique<Scene>(name);
 	Scene* rawPtr = scene.get();
-	m_Scenes.push_back(std::move(scene));
-
+	
 	if (m_pActiveScene == nullptr)
 	{
-		m_pActiveScene = rawPtr;
+		m_pActiveScene = std::move(scene);
+	}
+	else
+	{
+		m_pNextScene = std::move(scene);
 	}
 
 	return rawPtr;
