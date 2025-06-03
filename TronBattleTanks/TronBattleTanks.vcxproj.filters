@@ -37,6 +37,9 @@
     <Filter Include="Game\Menu">
       <UniqueIdentifier>{bc41a337-57e7-418c-a593-33eb859ce632}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Enemy">
+      <UniqueIdentifier>{1c752124-1f6c-4c5f-a248-199746e5e182}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AchievementHandler.cpp">
@@ -111,6 +114,18 @@
     <ClCompile Include="MenuComponent.cpp">
       <Filter>Game\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="MultiPlayerTestScene.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticRotaterComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyHealthComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IDamageable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Achievements.h">
@@ -181,6 +196,18 @@
     </ClInclude>
     <ClInclude Include="MenuComponent.h">
       <Filter>Game\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiPlayerTestScene.h">
+      <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticRotaterComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyHealthComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IDamageable.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -10,7 +10,7 @@ namespace Engine
 class PrefabFactory
 {
 public:
-	static Engine::GameObject* AddPlayer(Engine::Scene* const scene);
+	static Engine::GameObject* AddPlayer(Engine::Scene* const scene, int playerIndex = 0);
 
 	static Engine::GameObject* AddPlayerBullet(Engine::Scene* const scene);
 

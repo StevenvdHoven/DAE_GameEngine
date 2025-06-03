@@ -1,6 +1,7 @@
 #include "PrefabFactory.h"
 #include "ImageRenderer.h"
 #include "PlayerHealthComponent.h"
+#include "StaticRotaterComponent.h"
 #include "BoxCollider2D.h"
 #include "CircleCollider.h"
 #include "PhysicsBody.h"
@@ -17,12 +18,12 @@
 
 using namespace Engine;
 
-Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene)
+Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene, int playerIndex)
 {
 	auto player{ std::make_unique<GameObject>() };
 	
-
-	auto playerImageRender{ player->AddComponent<ImageRenderer>("player_body.png") };
+	const auto playerBodyImagePath{ playerIndex == 0 ? "player_body.png" : "player_02_body.png" };
+	auto playerImageRender{ player->AddComponent<ImageRenderer>(playerBodyImagePath) };
 	playerImageRender->ChangeImageAllignment(ImageAllignment::Centre);
 
 	player->AddComponent<PlayerHealthComponent>(1);
@@ -50,14 +51,15 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene)
 	playerDamageCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
 	playerDamageCommand->SetTriggerState(TriggerState::PRESSED);
 
-	InputManager::GetInstance().Bind2DValue(0, std::move(moveCommand));
-	InputManager::GetInstance().Bind2DValue(0, std::move(stopCommand));
-	InputManager::GetInstance().Bind2DValue(0, std::move(moveCommandController));
-	InputManager::GetInstance().Bind2DValue(0, std::move(stopCommandController));
-	InputManager::GetInstance().BindButton(0, 0x1000, std::move(playerDamageCommand)); // A button
+	InputManager::GetInstance().Bind2DValue(playerIndex, std::move(moveCommand));
+	InputManager::GetInstance().Bind2DValue(playerIndex, std::move(stopCommand));
+	InputManager::GetInstance().Bind2DValue(playerIndex, std::move(moveCommandController));
+	InputManager::GetInstance().Bind2DValue(playerIndex, std::move(stopCommandController));
+	InputManager::GetInstance().BindButton(playerIndex, 0x1000, std::move(playerDamageCommand)); // A button
 
 	// Rotator
 	auto playerGunRotator{ std::make_unique<GameObject>() };
+	playerGunRotator->AddComponent<StaticRotaterComponent>(.1f, 2);
 	playerGunRotator->GetTransform()->SetLocalPosition(Vector2{ -1.f, 0.f });
 	playerGunRotator->GetTransform()->SetParent(player.get());
 
@@ -65,11 +67,12 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene)
 	auto aimCommand = std::make_unique<PlayerAimCommand>(playerGunRotator.get());
 	aimCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
 	aimCommand->SetTriggerState(TriggerState::CONSTANT);
-	InputManager::GetInstance().Bind2DValue(0, std::move(aimCommand));
+	InputManager::GetInstance().Bind2DValue(playerIndex, std::move(aimCommand));
 
 	//Gun
+	const auto playerGunImagePath{ playerIndex == 0 ? "player_gun.png" : "player_02_gun.png" };
 	auto playerGun{ std::make_unique<GameObject>() };
-	auto gunRenderer{ playerGun->AddComponent<ImageRenderer>("player_gun.png") };
+	auto gunRenderer{ playerGun->AddComponent<ImageRenderer>(playerGunImagePath) };
 	gunRenderer->ChangeImageAllignment(ImageAllignment::Centre);
 	gunRenderer->SetPivot(Vector2{ 0.f, 0.f });
 
@@ -80,7 +83,7 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene)
 	auto shootCommand = std::make_unique<PlayerShootCommand>(playerGun.get(),Vector2{20,0}, [scene]() { return AddPlayerBullet(scene); });
 	shootCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
 	shootCommand->SetTriggerState(TriggerState::PRESSED);
-	InputManager::GetInstance().BindButton(0,0x4000,std::move(shootCommand));
+	InputManager::GetInstance().BindButton(playerIndex,0x4000,std::move(shootCommand));
 
 	
 
@@ -101,7 +104,7 @@ Engine::GameObject* PrefabFactory::AddPlayerBullet(Engine::Scene* const scene)
 	auto bulletCollider = bullet->AddComponent<CircleCollider>(5.f,true);
 	bulletCollider->SetLayerMask(LayerMask::Projectile);
 	bullet->AddComponent<PhysicsBody>();
-	bullet->AddComponent<Projectile>(1, 3000.f, 3);
+	bullet->AddComponent<Projectile>(1, 6000.f, 3, LayerMask::Player);
 
 	auto rawPtr = bullet.get();
 	scene->Add(std::move(bullet));

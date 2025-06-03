@@ -9,6 +9,7 @@
 #include "TestScene.h"
 #include "BattleScene.h"
 #include "MainMenu.h"
+#include "MultiPlayerTestScene.h"
 #include "ColliderTestScene.h"
 #include "GameEngine.h"
 
@@ -18,8 +19,9 @@ void load()
 {
 	//TestScene::CreateScene();
 	//BattleScene::CreateScene();
-	MainMenu::CreateScene();
+	//MainMenu::CreateScene();
 	//ColliderTestScene::CreateScene();
+	MultiPlayerTestScene::CreateScene();
 }
 
 int main(int, char* []) {
