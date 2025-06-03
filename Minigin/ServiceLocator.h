@@ -3,6 +3,7 @@
 #include "SoundSystem.h"
 #include "PhysicsSystem.h"
 #include "GraphEditor.h"
+#include "PathFinding.h"
 
 namespace Engine
 {
@@ -11,6 +12,7 @@ namespace Engine
 		static std::unique_ptr<SoundSystem> m_SoundSystem;
 		static std::unique_ptr<PhysicsSystem> m_PhysicsSystem;
 		static std::unique_ptr<GraphEditor> m_GraphEditor;
+		static std::unique_ptr<PathFinding> m_PathFinding;
 	public:
 
 		static SoundSystem& GetSoundSystem()
@@ -26,6 +28,11 @@ namespace Engine
 			return *m_GraphEditor;
 		}
 
+		static PathFinding& GetPathFinding() 
+		{
+			return *m_PathFinding;
+		}
+
 		static void RegisterSoundSystem(std::unique_ptr<SoundSystem>&& soundSystem)
 		{
 			m_SoundSystem = std::move(soundSystem);
@@ -37,6 +44,10 @@ namespace Engine
 		static void RegisterGraphEditor(std::unique_ptr<GraphEditor>&& graphEditor)
 		{
 			m_GraphEditor = std::move(graphEditor);
+		}
+		static void RegisterPathFindingService(std::unique_ptr<PathFinding>&& pathFinding)
+		{
+			m_PathFinding = std::move(pathFinding);
 		}
 	};
 }

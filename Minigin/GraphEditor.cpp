@@ -212,36 +212,7 @@ void Engine::GraphEditor::SaveGraph()
 
 void Engine::GraphEditor::LoadGraph(const std::string& filePath)
 {
-	std::ifstream file(filePath);
-	if (!file.is_open())
-	{
-		throw std::runtime_error("Could not open graph file");
-	}
-
-	
-
-	json graphData;
-	file >> graphData;
-	int offsetIndex = graphData["graph_offset_index"];
-
-	std::vector<GraphNode*> nodes;
-
-	for (const auto& nodeData : graphData["graph_nodes"])
-	{
-		auto node = new GraphNode();
-		node->Index = nodeData["node_index"];
-		node->Position.x = nodeData["node_position"][0];
-		node->Position.y = nodeData["node_position"][1];
-
-		for (const auto& connection : nodeData["node_connections"])
-		{
-			node->Connections.push_back(connection);
-		}
-
-		nodes.emplace_back(node);
-	}
-	m_Graph = std::make_unique<Graph>(offsetIndex,nodes);
-	
+	m_Graph = Graph::LoadGraph(filePath);	
 }
 
 void Engine::GraphEditor::DrawNodes()
@@ -408,4 +379,35 @@ Engine::GraphNode* Engine::Graph::GetNodeByIndex(int index)
 {
 	auto  it = std::find_if(m_Nodes.begin(), m_Nodes.end(), [index](GraphNode* node) { return node->Index == index; });
 	return (it != m_Nodes.end()) ? *it : nullptr;
+}
+
+std::unique_ptr<Engine::Graph> Engine::Graph::LoadGraph(const std::string& filePath)
+{
+	std::ifstream file(filePath);
+	if (!file.is_open())
+	{
+		throw std::runtime_error("Could not open graph file");
+	}
+
+	json graphData;
+	file >> graphData;
+	int offsetIndex = graphData["graph_offset_index"];
+
+	std::vector<GraphNode*> nodes;
+
+	for (const auto& nodeData : graphData["graph_nodes"])
+	{
+		auto node = new GraphNode();
+		node->Index = nodeData["node_index"];
+		node->Position.x = nodeData["node_position"][0];
+		node->Position.y = nodeData["node_position"][1];
+
+		for (const auto& connection : nodeData["node_connections"])
+		{
+			node->Connections.push_back(connection);
+		}
+
+		nodes.emplace_back(node);
+	}
+	return std::make_unique<Graph>(offsetIndex, nodes);
 }

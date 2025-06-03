@@ -18,7 +18,7 @@ ScoreComponent::~ScoreComponent()
 void ScoreComponent::Start()
 {
 	m_pTextRenderer = GetGameObject()->GetComponent<TextRenderer>();
-	m_pTextRenderer->SetText("Score: " + std::to_string(m_Score));
+	m_pTextRenderer->SetText("Score " + std::to_string(m_Score));
 }
 
 int ScoreComponent::GetScore() const

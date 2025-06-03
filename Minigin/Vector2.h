@@ -103,7 +103,11 @@ namespace Engine
 			return *this - normal * 2 * Dot(normal);
 		}
 
-		
+		static float Distance(const Vector2& a, const Vector2& b)
+		{
+			Vector2 dir{ a - b };
+			return dir.Magnitude();
+		}
 
 		static Vector2 Lerp(const Vector2& a, const Vector2& b, float t)
 		{

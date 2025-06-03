@@ -31,6 +31,8 @@ namespace Engine
 		Engine::GraphNode* GetNodeByIndex(int index);
 		int GetIndex() const { return Index; }
 		std::vector<Engine::GraphNode*> GetNodes() const { return m_Nodes; }
+
+		static std::unique_ptr<Graph> LoadGraph(const std::string& filePath);
 	private:
 		int Index;
 		std::vector<Engine::GraphNode*> m_Nodes;

@@ -46,16 +46,7 @@ void MenuComponent::Update()
 	}
 	else
 	{
-		switch (m_SelectedGameMode)
-		{
-		case GameMode::SinglePlayer:
-			BattleScene::CreateScene();
-			break;
-		case GameMode::CoOp:
-			break;
-		case GameMode::VS:
-			break;
-		}
+		BattleScene::CreateScene(m_SelectedGameMode);
 	}
 	
 }

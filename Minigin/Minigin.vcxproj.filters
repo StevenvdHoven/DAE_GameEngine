@@ -168,6 +168,9 @@
     <ClInclude Include="json.hpp">
       <Filter>DataTypes</Filter>
     </ClInclude>
+    <ClInclude Include="PathFinding.h">
+      <Filter>Managers\Services</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -283,6 +286,9 @@
     </ClCompile>
     <ClCompile Include="GraphEditor.cpp">
       <Filter>Editors</Filter>
+    </ClCompile>
+    <ClCompile Include="PathFinding.cpp">
+      <Filter>Managers\Services</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

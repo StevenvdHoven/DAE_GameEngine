@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Observers.h"
+#include <vector>
 
 namespace Engine
 {
@@ -14,13 +15,15 @@ enum struct GameState
 	GameOver
 };
 
+enum struct GameMode;
+
 class ScoreComponent;
 class PlayerHealthComponent;
 
 class GameLoop final : public Engine::Component, public Engine::IObserver
 {
 public:
-	GameLoop(Engine::GameObject* pOwner, ScoreComponent* pScoreComponent);
+	GameLoop(Engine::GameObject* pOwner,GameMode mode, ScoreComponent* pScoreComponent);
 	virtual ~GameLoop() = default;
 
 	void Start() override;
@@ -33,18 +36,23 @@ public:
 	const GameState& GetGameState() const { return m_GameState; }
 private:
 	void HandleScoreInfo();
-
 	void CreateStartText();
 
+	void CreateSinglePlayerLoop();
+	void CreatePVPPlayerLoop();
+	void CreateCo_OpPlayerLoop();
+
 	Engine::GameObject* m_pMapObject;
-	Engine::GameObject* m_pPlayerObject;
+	std::vector< Engine::GameObject*> m_pPlayers;
 	ScoreComponent* m_pScoreComponent;
 	PlayerHealthComponent* m_pPlayerHealthComponent;
 
 
 	Engine::TextRenderer* m_pStartText{ nullptr };
 
-	GameState m_GameState{ GameState::Start };
+	GameState m_GameState;
+	GameMode m_Mode;
+	
 
 };
 

@@ -19,9 +19,9 @@ void load()
 {
 	//TestScene::CreateScene();
 	//BattleScene::CreateScene();
-	//MainMenu::CreateScene();
+	MainMenu::CreateScene();
 	//ColliderTestScene::CreateScene();
-	MultiPlayerTestScene::CreateScene();
+	//MultiPlayerTestScene::CreateScene();
 }
 
 int main(int, char* []) {

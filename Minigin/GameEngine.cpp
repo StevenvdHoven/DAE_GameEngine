@@ -96,10 +96,11 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 	auto& viewPort = ViewPort::GetInstance();
 	auto& time = Time::GetInstance();
 
-	ServiceLocator::RegisterSoundSystem(std::move(std::make_unique<SDL_SoundSystem>()));
-	ServiceLocator::RegisterPhysicsSystem(std::move(std::make_unique<PhysicsSystem>()));
-	ServiceLocator::RegisterGraphEditor(std::move(std::make_unique<GraphEditor>()));
-
+	ServiceLocator::RegisterSoundSystem(std::make_unique<SDL_SoundSystem>());
+	ServiceLocator::RegisterPhysicsSystem(std::make_unique<PhysicsSystem>());
+	ServiceLocator::RegisterGraphEditor(std::make_unique<GraphEditor>());
+	ServiceLocator::RegisterPathFindingService(std::make_unique<PathFinding>());
+		
 	
 
 	load();

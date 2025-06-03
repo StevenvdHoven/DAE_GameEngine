@@ -10,6 +10,7 @@
 #include "ScoreComponent.h"
 #include "StartGameCommand.h"
 #include "InputManager.h"
+#include "MenuComponent.h"
 #include "Scene.h"
 #include <SDL.h>
 
@@ -17,7 +18,7 @@
 
 using namespace Engine;
 
-void BattleScene::CreateScene()
+void BattleScene::CreateScene(GameMode mode = GameMode::SinglePlayer)
 {
 	auto scene{ SceneManager::GetInstance().CreateScene("BattleScene") };
 
@@ -30,14 +31,14 @@ void BattleScene::CreateScene()
 	scene->MoveScene(Vector2{ 0, differenceHeight });
 
 	// Score 
-	auto pFont{ ResourceManager::GetInstance().LoadFont("Lingua.otf",32) };
+	auto pFont{ ResourceManager::GetInstance().LoadFont("tron-arcade.otf",32) };
 	auto scoreTextObject{ std::make_unique<GameObject>() };
 	scoreTextObject->AddComponent<TextRenderer>("",pFont);
 	auto scoreComponent{ scoreTextObject->AddComponent<ScoreComponent>() };
 	scene->Add(std::move(scoreTextObject));
 
 	auto GameloopObject{ std::make_unique<GameObject>() };
-	auto gameloop{ GameloopObject->AddComponent<GameLoop>(scoreComponent) };
+	auto gameloop{ GameloopObject->AddComponent<GameLoop>(mode,scoreComponent) };
 
 	auto startGameCommand{ std::make_unique<StartGameCommand>(gameloop) };
 	startGameCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
