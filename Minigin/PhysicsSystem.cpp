@@ -198,7 +198,7 @@ bool Engine::PhysicsSystem::BoxCast(const Engine::Vector2& location, const Engin
 		if (!layermask.empty())
 		{
 			auto it{ std::find(layermask.begin(), layermask.end(), pOther->GetLayerMask()) };
-			if (it != layermask.end()) continue;
+			if (it == layermask.end()) continue;
 		}
 
 		if (pOther->IsOverlappingTest(location, size))

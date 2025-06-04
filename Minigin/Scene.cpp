@@ -8,10 +8,15 @@ using namespace Engine;
 
 unsigned int Engine::Scene::m_idCounter = 0;
 
-Engine::Scene::Scene(const std::string& name) : m_name(name) {}
+Engine::Scene::Scene(const std::string& name) : m_name(name), m_Started{ false } {}
 
 void Engine::Scene::Add(std::unique_ptr<GameObject> object)
 {
+	if (m_Started)
+	{
+		object->Start();
+	}
+
 	m_objects.emplace_back(std::move(object));
 }
 
@@ -32,6 +37,8 @@ void Engine::Scene::RemoveAll()
 
 void Engine::Scene::Start()
 {
+	m_Started = true;
+
 	for (auto& object : m_objects)
 	{
 		object->Start();

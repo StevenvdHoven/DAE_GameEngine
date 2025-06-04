@@ -9,15 +9,20 @@
 
 using namespace Engine;
 
-Engine::TextRenderer::TextRenderer(GameObject* pOwner, const std::string& text, Font* font):
-	Component{pOwner}, m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
+Engine::TextRenderer::TextRenderer(GameObject* pOwner, const std::string& text, Font* font, const Engine::Color& textColor) :
+	Component{pOwner}, 
+	m_needsUpdate{ true },
+	m_TextColor{textColor},
+	m_text{ text },
+	m_font{ std::move(font) },
+	m_textTexture{ nullptr }
 { }
 
 void Engine::TextRenderer::Update()
 {
 	if (m_needsUpdate)
 	{
-		const SDL_Color color = { 255,255,255,255 }; // only white text is supported now
+		const SDL_Color color{ m_TextColor.ToSDLColor() };
 		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), color);
 		if (surf == nullptr) 
 		{

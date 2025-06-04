@@ -22,18 +22,13 @@ void BattleScene::CreateScene(GameMode mode = GameMode::SinglePlayer)
 {
 	auto scene{ SceneManager::GetInstance().CreateScene("BattleScene") };
 
-	auto backgroundObject{ std::make_unique<GameObject>() };
-	backgroundObject->AddComponent<ImageRenderer>("gameBackground.png");
-	scene->Add(std::move(backgroundObject));
-
-
 	float differenceHeight = 72;
 	scene->MoveScene(Vector2{ 0, differenceHeight });
 
 	// Score 
 	auto pFont{ ResourceManager::GetInstance().LoadFont("tron-arcade.otf",32) };
 	auto scoreTextObject{ std::make_unique<GameObject>() };
-	scoreTextObject->AddComponent<TextRenderer>("",pFont);
+	scoreTextObject->AddComponent<TextRenderer>("",pFont, Engine::Color{0,0,255,255});
 	auto scoreComponent{ scoreTextObject->AddComponent<ScoreComponent>() };
 	scene->Add(std::move(scoreTextObject));
 

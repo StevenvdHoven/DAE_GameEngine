@@ -10,7 +10,7 @@
 using namespace nlohmann;
 
 Engine::GraphEditor::GraphEditor() :
-	m_Active{ true },
+	m_Active{ false },
 	m_ShowNodes{ true },
 	m_DrawNodes{ true },
 	m_FilePath{ "graph.json" },

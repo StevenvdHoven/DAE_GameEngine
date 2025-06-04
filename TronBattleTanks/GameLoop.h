@@ -2,10 +2,12 @@
 #include "Component.h"
 #include "Observers.h"
 #include <vector>
+#include <forward_list>
 
 namespace Engine
 {
 	class TextRenderer;
+	class Scene;
 }
 
 enum struct GameState
@@ -34,6 +36,7 @@ public:
 	void OnNotify(Component* sender) override;
 
 	const GameState& GetGameState() const { return m_GameState; }
+	Engine::GameObject* const GetRandomPlayer() const;
 private:
 	void HandleScoreInfo();
 	void CreateStartText();
@@ -42,8 +45,11 @@ private:
 	void CreatePVPPlayerLoop();
 	void CreateCo_OpPlayerLoop();
 
+	void SpawnEnemies(Engine::Scene* const pScene);
+
 	Engine::GameObject* m_pMapObject;
 	std::vector< Engine::GameObject*> m_pPlayers;
+	std::forward_list<Engine::GameObject*> m_pSpawnedEnemies;
 	ScoreComponent* m_pScoreComponent;
 	PlayerHealthComponent* m_pPlayerHealthComponent;
 

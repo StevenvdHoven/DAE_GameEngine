@@ -9,6 +9,9 @@
 #include "Scene.h"
 #include "Projectile.h"
 #include "GameLoop.h"
+#include "EnemyHealthComponent.h"
+#include "EnemyMovement.h"
+#include "EnemyBrain.h"
 
 #include "InputManager.h"
 #include "MovePlayerCommand.h"
@@ -16,7 +19,11 @@
 #include "PlayerDamageCommand.h"
 #include "PlayerAimCommand.h"
 
+#define ENEMY_IMAGE_PATH "enemy_body.png"
+#define UNIT_COLLIDER_SIZE Engine::Vector2{ 28, 28 }
+
 using namespace Engine;
+
 
 Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene, int playerIndex)
 {
@@ -28,7 +35,7 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene, int playerIndex
 
 	player->AddComponent<PlayerHealthComponent>(1);
 
-	auto collider{ player->AddComponent<BoxCollider2D>(Vector2{ 28, 28 }, false) };
+	auto collider{ player->AddComponent<BoxCollider2D>(UNIT_COLLIDER_SIZE, false) };
 	collider->Center = Vector2{ -13.f, -13.f };
 	collider->SetLayerMask(LayerMask::Player);
 	player->AddComponent<PhysicsBody>();
@@ -114,6 +121,12 @@ Engine::GameObject* PrefabFactory::AddPlayerBullet(Engine::Scene* const scene)
 Engine::GameObject* PrefabFactory::Map1Parent(Engine::Scene* const scene)
 {
 	auto MapParent{ std::make_unique<GameObject>() };
+
+	auto backgroundObject{ std::make_unique<GameObject>() };
+	backgroundObject->GetTransform()->SetLocalPosition(0, 0);
+	backgroundObject->GetTransform()->SetParent(MapParent.get());
+	backgroundObject->AddComponent<ImageRenderer>("gameBackground.png");
+	scene->Add(std::move(backgroundObject));
 
 	auto pLeftWall{ std::make_unique<GameObject>() };
 	pLeftWall->GetTransform()->SetLocalPosition(0, 0);
@@ -454,5 +467,25 @@ Engine::GameObject* PrefabFactory::Map1Parent(Engine::Scene* const scene)
 	auto RawPtrParent{ MapParent.get() };
 	scene->Add(std::move(MapParent));
 	return RawPtrParent;
+}
+
+Engine::GameObject* PrefabFactory::CreateEnemy(Engine::Scene* const scene, GameLoop* const gameLoop)
+{
+	auto enemyObject{ std::make_unique<GameObject>() };
+
+	enemyObject->AddComponent<EnemyBrain>(8.f,gameLoop);
+	enemyObject->AddComponent<EnemyHealthComponent>();
+	enemyObject->AddComponent<EnemyMovement>(1000.f);
+
+	auto imageRenderer{ enemyObject->AddComponent<ImageRenderer>(ENEMY_IMAGE_PATH) };
+	imageRenderer->ChangeImageAllignment(ImageAllignment::Centre);
+	auto collider{ enemyObject->AddComponent<BoxCollider2D>(UNIT_COLLIDER_SIZE) };
+	collider->Center = Vector2{ -13.f, -13.f };
+	enemyObject->AddComponent<PhysicsBody>();
+
+	auto rawPtr{ enemyObject.get() };
+	scene->Add(std::move(enemyObject));
+
+	return rawPtr;
 }
 

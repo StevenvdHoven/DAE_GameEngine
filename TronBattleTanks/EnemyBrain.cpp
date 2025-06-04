@@ -10,7 +10,8 @@ using namespace Engine;
 EnemyBrain::EnemyBrain(Engine::GameObject* pOwner, float pathUpdateTime, GameLoop* pGame):
 	Component{pOwner},
 	m_PathUpdateRate{pathUpdateTime},
-	m_PathUpdateTimer{0.f},
+	m_PathUpdateTimer{pathUpdateTime},
+	m_pTargetPlayer{nullptr},
 	m_pEnemyMovement{nullptr},
 	m_pGame{pGame}
 {
@@ -23,10 +24,16 @@ void EnemyBrain::Start()
 
 void EnemyBrain::Update()
 {
-	m_PathUpdateTimer += Time::GetInstance().GetDeltaTime();
-	if (m_PathUpdateTimer >= m_PathUpdateRate)
+	if (!m_pTargetPlayer) {
+		m_pTargetPlayer = m_pGame->GetRandomPlayer();
+	}
+	else
 	{
-		m_PathUpdateTimer = 0.f;
-		m_pEnemyMovement->SetTargetPosition(Vector2::Zero());
+		m_PathUpdateTimer += Time::GetInstance().GetDeltaTime();
+		if (m_PathUpdateTimer >= m_PathUpdateRate)
+		{
+			m_PathUpdateTimer = 0.f;
+			m_pEnemyMovement->SetTargetPosition(m_pTargetPlayer->GetTransform()->GetWorldLocation());
+		}
 	}
 }

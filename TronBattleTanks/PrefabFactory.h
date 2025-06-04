@@ -7,6 +7,8 @@ namespace Engine
 	class Scene;
 }
 
+class GameLoop;
+
 class PrefabFactory
 {
 public:
@@ -15,6 +17,8 @@ public:
 	static Engine::GameObject* AddPlayerBullet(Engine::Scene* const scene);
 
 	static Engine::GameObject* Map1Parent(Engine::Scene* const scene);
+
+	static Engine::GameObject* CreateEnemy(Engine::Scene* const scene, GameLoop* const gameLoop);
 
 };
 

@@ -28,7 +28,7 @@ namespace Engine
 
 	private:
 		
-		bool LoadGraph(const std::string& graphName,Graph* loadedGraph);
+		Graph* LoadGraph(const std::string& graphName);
 		GraphNode* GraphNodeByPosition(Graph* const graph,const Engine::Vector2 position);
 		GraphNode* ClosestNeighbour(const std::vector<GraphNode*>& neighbours, GraphNode* node);
 		std::vector<GraphNode*> GetNeighbours(Graph* const graph, const GraphNode* node);

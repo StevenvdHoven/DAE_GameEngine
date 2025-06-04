@@ -21,11 +21,15 @@ const std::list<NavigationNode> Engine::PathFinding::FindPath(Graph* const graph
 	const auto endNode{ GraphNodeByPosition(graph,end) };
 
 	GraphNode* currentNode{ graph->GetNodeByIndex(startNode->Index)};
+	int iteration{ 0 };
 	while (currentNode != endNode)
 	{
-		const auto neighbours{ GetNeighbours(graph,currentNode) };
+		if (currentNode == nullptr) break;
 
-		GraphNode* nextNode{ nullptr };
+		const auto neighbours{ GetNeighbours(graph,currentNode) };
+		if (neighbours.size() == 0) break;
+
+		GraphNode* nextNode{ neighbours[0]};
 		float closestDistanceToEnd{ std::numeric_limits<float>::max() };
 
 		for (const auto& neighbour : neighbours)
@@ -38,13 +42,33 @@ const std::list<NavigationNode> Engine::PathFinding::FindPath(Graph* const graph
 			}
 		}
 
+		Vector2 direction{ (nextNode->Position - currentNode->Position).Normalize() };
+		if (std::abs(direction.x) > std::abs(direction.y))
+		{
+			direction.x = direction.x > 0 ? 1.0f : -1.0f;
+			direction.y = 0.0f;
+		}
+		else
+		{
+			direction.y = direction.y > 0 ? 1.0f : -1.0f;
+			direction.x = 0.0f;
+		}
+
 		path.emplace_back(NavigationNode
 			{
 				currentNode->Position,
-				(nextNode->Position - currentNode->Position).Normalize()
+				direction
 			});
 		currentNode = nextNode;
+		++iteration;
+		if (iteration > graph->GetNodes().size()) return {};
 	}
+
+	path.emplace_back(NavigationNode
+		{
+			currentNode->Position,
+			{}
+		});
 
 	return path;
 	
@@ -55,8 +79,8 @@ Graph* const Engine::PathFinding::GetGraph(const std::string& graphName)
 	auto it{ m_LoadedGraphs.find(graphName) };
 	if (it == m_LoadedGraphs.end())
 	{
-		Graph* loadedGraph{nullptr};
-		if (LoadGraph(graphName, loadedGraph))
+		Graph* loadedGraph{ LoadGraph(graphName) };
+		if (loadedGraph != nullptr)
 		{
 			return loadedGraph;
 		}
@@ -66,14 +90,14 @@ Graph* const Engine::PathFinding::GetGraph(const std::string& graphName)
 	return m_LoadedGraphs.at(graphName).get();
 }
 
-bool Engine::PathFinding::LoadGraph(const std::string& graphName, Graph* loadedGraph)
+Graph* Engine::PathFinding::LoadGraph(const std::string& graphName)
 {
 	auto graph{ Graph::LoadGraph(graphName) };
-	if (graph == nullptr) return false;
+	if (graph == nullptr) return nullptr;
 
-	loadedGraph = graph.get();
+	auto loadedGraph = graph.get();
 	m_LoadedGraphs.emplace(graphName, std::move(graph));
-	return true;
+	return loadedGraph;
 }
 
 GraphNode* Engine::PathFinding::GraphNodeByPosition(Graph* const graph, const Engine::Vector2 position)
