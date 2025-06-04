@@ -6,6 +6,7 @@
 #include "TextRenderer.h"
 #include "PrefabFactory.h"
 #include "PlayerHealthComponent.h"
+#include "EnemyHealthComponent.h"
 #include "MenuComponent.h"
 
 #define MAP_01_POSITION Engine::Vector2{0, 72}
@@ -20,10 +21,9 @@ using namespace Engine;
 GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pScoreComponent) :
 	Component(pOwner),
 	m_pScoreComponent{ pScoreComponent },
-	m_GameState{GameState::Start},
-	m_Mode{mode}
+	m_GameState{ GameState::Start },
+	m_Mode{ mode }
 {
-	m_pScoreComponent->GetOnScoreChange()->AddObserver(this);
 	m_pPlayers = std::vector<Engine::GameObject*>{ nullptr,nullptr };
 }
 
@@ -36,7 +36,7 @@ void GameLoop::BeginGame()
 {
 	m_GameState = GameState::Running;
 
-	
+
 
 	//Spawn Player
 	switch (m_Mode)
@@ -51,26 +51,36 @@ void GameLoop::BeginGame()
 		CreatePVPPlayerLoop();
 		break;
 	}
-	
+
 
 	m_pStartText->IsEnabled = false;
 }
 
 void GameLoop::OnNotify(Component* sender)
 {
-	if (m_pScoreComponent == sender)
+	if (m_pPlayerHealthComponent == sender)
 	{
-		HandleScoreInfo();
+		EndGame();
 	}
-	else if (m_pPlayerHealthComponent == sender)
+	else
 	{
-		m_GameState = GameState::GameOver;
-		
-		Destroy(m_pMapObject);
+		auto enemyComponent{ sender->GetGameObject()->GetComponent<EnemyHealthComponent>() };
+		if (enemyComponent && enemyComponent->IsDead())
+		{
+			m_pScoreComponent->AddScore(100);
+			m_pSpawnedEnemies.remove(sender->GetGameObject());
+		}
 
-		m_pStartText->IsEnabled = true;
-		m_pStartText->SetText("Game Over! Press START button to Restart");
+		int count{ 0 };
+		std::for_each(m_pSpawnedEnemies.begin(), m_pSpawnedEnemies.end(), [&count](Engine::GameObject*)
+			{
+				++count;
+			});
+
+		if (count == 0)
+			NextRound();
 	}
+
 }
 
 Engine::GameObject* const GameLoop::GetRandomPlayer() const
@@ -79,19 +89,14 @@ Engine::GameObject* const GameLoop::GetRandomPlayer() const
 	return m_pPlayers[randomPlayer];
 }
 
-void GameLoop::HandleScoreInfo()
-{
-
-}
-
 void GameLoop::CreateStartText()
 {
 	Scene* pScene{ SceneManager::GetInstance().GetActiveScene() };
 
 	auto pFont{ ResourceManager::GetInstance().LoadFont("tron-arcade.otf", 16) };
 	auto startTextObject{ std::make_unique<GameObject>() };
-	
-	const Engine::Vector2 startTextObjectPosition{20,220};
+
+	const Engine::Vector2 startTextObjectPosition{ 20,220 };
 	startTextObject->GetTransform()->SetLocalPosition(startTextObjectPosition);
 	m_pStartText = startTextObject->AddComponent<TextRenderer>("Press START button to Start", pFont, Engine::Color{ 0,0,255,255 });
 
@@ -160,7 +165,7 @@ void GameLoop::CreateCo_OpPlayerLoop()
 		m_pPlayerHealthComponent = m_pPlayers[0]->GetComponent<PlayerHealthComponent>();
 		m_pPlayerHealthComponent->GetOnTakeDamage()->AddObserver(this);
 
-		m_pPlayers[1] = PrefabFactory::AddPlayer(pScene,1);
+		m_pPlayers[1] = PrefabFactory::AddPlayer(pScene, 1);
 		m_pPlayers[1]->GetTransform()->SetWorldLocation(PLAYER_02_POSITION);
 		m_pPlayerHealthComponent = m_pPlayers[1]->GetComponent<PlayerHealthComponent>();
 		m_pPlayerHealthComponent->GetOnTakeDamage()->AddObserver(this);
@@ -174,12 +179,29 @@ void GameLoop::CreateCo_OpPlayerLoop()
 	SpawnEnemies(pScene);
 }
 
+void GameLoop::EndGame()
+{
+	m_GameState = GameState::GameOver;
+
+	Destroy(m_pMapObject);
+
+	m_pStartText->IsEnabled = true;
+	m_pStartText->SetText("Game Over! Press START button to Restart");
+}
+
+void GameLoop::NextRound()
+{
+	SpawnEnemies(SceneManager::GetInstance().GetActiveScene());
+}
+
 void GameLoop::SpawnEnemies(Engine::Scene* const pScene)
 {
+	m_pSpawnedEnemies.clear();
 	const std::vector<Engine::Vector2> spawnPositions
 	{
 		Engine::Vector2{80,330},
-		//Engine::Vector2{220,440}
+		Engine::Vector2{222,430},
+		Engine::Vector2{400,232}
 	};
 
 	for (const auto& spawnPos : spawnPositions)
@@ -187,8 +209,6 @@ void GameLoop::SpawnEnemies(Engine::Scene* const pScene)
 		auto enemy{ PrefabFactory::CreateEnemy(pScene,this) };
 		enemy->GetTransform()->SetWorldLocation(spawnPos);
 		m_pSpawnedEnemies.emplace_front(enemy);
+		enemy->GetComponent<EnemyHealthComponent>()->OnTakeDamage().AddObserver(this);
 	}
-
-
-	m_pSpawnedEnemies.emplace_front();
 }

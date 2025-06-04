@@ -2,6 +2,7 @@
 #include "PhysicsBody.h"
 #include "BoxCollider2D.h"
 #include "GameObject.h"
+#include "EnemyHealthComponent.h"
 
 using namespace Engine;
 
@@ -50,6 +51,14 @@ void Projectile::OnTriggerEnter(Engine::GameObject* other)
 		auto pBoxCollider = dynamic_cast<BoxCollider2D*>(pCollider);
 		if (!pBoxCollider)
 			return;
+
+		auto enemy{ other->GetComponent<EnemyHealthComponent>() };
+		if (enemy)
+		{
+			enemy->TakeDamage(1);
+			Destroy(GetGameObject());
+			return;
+		}
 
 		Vector2 projectilePos = GetGameObject()->GetTransform()->GetWorldLocation();
 		Vector2 targetPos = other->GetTransform()->GetWorldLocation();

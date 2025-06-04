@@ -29,7 +29,7 @@ int ScoreComponent::GetScore() const
 void ScoreComponent::AddScore(int score)
 {
 	m_Score += score;
-	m_pTextRenderer->SetText("Score: " + std::to_string(m_Score));
+	m_pTextRenderer->SetText("Score " + std::to_string(m_Score));
 
 	m_OnScoreChange->Notify(this);
 }

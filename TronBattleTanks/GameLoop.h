@@ -45,6 +45,9 @@ private:
 	void CreatePVPPlayerLoop();
 	void CreateCo_OpPlayerLoop();
 
+	void EndGame();
+	void NextRound();
+
 	void SpawnEnemies(Engine::Scene* const pScene);
 
 	Engine::GameObject* m_pMapObject;

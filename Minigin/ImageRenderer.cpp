@@ -66,6 +66,6 @@ void Engine::ImageRenderer::Render() const
 	pivot.y += static_cast<int>(m_Pivot.y);
 
 	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, rot,&pivot);
-	Renderer::GetInstance().SetColor(SDL_Color{ 0, 0, 255, 255 });
-	Renderer::GetInstance().RenderRectangle(pos, size.x, size.y);
+	/*Renderer::GetInstance().SetColor(SDL_Color{ 0, 0, 255, 255 });
+	Renderer::GetInstance().RenderRectangle(pos, size.x, size.y);*/
 }

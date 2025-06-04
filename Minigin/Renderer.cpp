@@ -48,7 +48,7 @@ void Engine::Renderer::Render() const
 
 	SceneManager::GetInstance().Render();
 
-	ServiceLocator::GetPhysicsSystem().Render();
+	//ServiceLocator::GetPhysicsSystem().Render();
 
 	ServiceLocator::GetGraphEditor().Draw();
 

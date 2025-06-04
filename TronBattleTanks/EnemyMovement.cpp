@@ -7,7 +7,7 @@
 #include "Collider.h"
 
 #define OFFSET_SCALAR 5.f
-#define BOX_SIZE Engine::Vector2{31.f,31.f}
+#define BOX_SIZE Engine::Vector2{30.f,30.f}
 #define DIRECTION_ERROR 4.f
 
 using namespace Engine;
@@ -46,9 +46,8 @@ void EnemyMovement::FixedUpdate()
 			direction.y = direction.y > 0 ? 1.0f : -1.0f;
 			direction.x = 0.0f;
 		}
-		m_TestingDirection = direction;
 
-		printf("testing direction {%f,%f}\n",direction.x,direction.y);
+		m_TestingDirection = direction;
 		if (direction != m_Direction && CheckDirection(direction)) 
 		{
 			m_Direction = direction;
@@ -115,11 +114,6 @@ void EnemyMovement::SetTargetPosition(const Engine::Vector2& targetPos)
 	if (futurePath.size() <= 0) return;
 
 	m_CurrentPath = std::move(futurePath);
-
-	for (const auto& node : m_CurrentPath)
-	{
-		printf("Node with direction{%f,%f}\n", node.Direction.x, node.Direction.y);
-	}
 
 	auto direction{ m_CurrentPath.front().Position - myPos };
 	if (std::abs(direction.x) > std::abs(direction.y))

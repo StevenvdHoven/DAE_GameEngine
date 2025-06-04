@@ -14,10 +14,10 @@ public:
 private:
 	bool m_Rotate;
 	float m_TargetOrientation;
-	float m_RotationRate;
+	const float m_RotationRate;
 	float m_RotationTimer;
 	float m_InitialRotation;
-	int m_RotationSteps;
+	const int m_RotationSteps;
 	int m_CurrentRotationStep;
 };
 

@@ -29,11 +29,10 @@ void StaticRotaterComponent::Update()
 	{
 		m_RotationTimer = 0.f;
 
-		float t = static_cast<float>(m_CurrentRotationStep + 1) / static_cast<float>(m_RotationSteps);
-		float newRotation = m_InitialRotation + t * (m_TargetOrientation - m_InitialRotation);
+		const float t{ static_cast<float>(m_CurrentRotationStep + 1) / static_cast<float>(m_RotationSteps) };
+		const float newRotation{ m_InitialRotation + t * (m_TargetOrientation - m_InitialRotation) };
 
 		GetGameObject()->GetTransform()->SetWorldRotation(newRotation);
-		printf("Rotation step %d: %f\n", m_CurrentRotationStep + 1, newRotation);
 
 		++m_CurrentRotationStep;
 		if (m_CurrentRotationStep >= m_RotationSteps)
@@ -41,8 +40,6 @@ void StaticRotaterComponent::Update()
 			m_Rotate = false;
 		}
 	}
-
-	
 }
 
 void StaticRotaterComponent::SetTargetRotation(float targetRotation)

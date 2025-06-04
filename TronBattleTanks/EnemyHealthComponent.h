@@ -9,6 +9,7 @@ class EnemyHealthComponent final : public Engine::Component, public  IDamageable
 public:
 	EnemyHealthComponent(Engine::GameObject* pOwner, int health = 3);
 
+	bool IsDead() const { return m_Health <= 0; }
 
 	// Inherited via IDamageable
 	void TakeDamage(int damage) override;
