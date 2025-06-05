@@ -13,10 +13,7 @@
 #define PLAYER_01_POSITION Engine::Vector2{ 128, 188 }
 #define PLAYER_02_POSITION Engine::Vector2{ 228, 188 }
 
-
-
 using namespace Engine;
-
 
 GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pScoreComponent) :
 	Component(pOwner),
@@ -36,8 +33,6 @@ void GameLoop::BeginGame()
 {
 	m_GameState = GameState::Running;
 
-
-
 	//Spawn Player
 	switch (m_Mode)
 	{
@@ -51,7 +46,6 @@ void GameLoop::BeginGame()
 		CreatePVPPlayerLoop();
 		break;
 	}
-
 
 	m_pStartText->IsEnabled = false;
 }
@@ -199,9 +193,9 @@ void GameLoop::SpawnEnemies(Engine::Scene* const pScene)
 	m_pSpawnedEnemies.clear();
 	const std::vector<Engine::Vector2> spawnPositions
 	{
-		Engine::Vector2{80,330},
-		Engine::Vector2{222,430},
-		Engine::Vector2{400,232}
+		//Engine::Vector2{80,330},
+		//Engine::Vector2{222,430},
+		Engine::Vector2{400,242}
 	};
 
 	for (const auto& spawnPos : spawnPositions)

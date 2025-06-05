@@ -42,6 +42,12 @@ const std::list<NavigationNode> Engine::PathFinding::FindPath(Graph* const graph
 			}
 		}
 
+		const float distanceCurrentToEnd{ Vector2::Distance(currentNode->Position,endNode->Position) };
+		if (closestDistanceToEnd > distanceCurrentToEnd)
+		{
+			return path;
+		}
+
 		Vector2 direction{ (nextNode->Position - currentNode->Position).Normalize() };
 		if (std::abs(direction.x) > std::abs(direction.y))
 		{
@@ -61,7 +67,10 @@ const std::list<NavigationNode> Engine::PathFinding::FindPath(Graph* const graph
 			});
 		currentNode = nextNode;
 		++iteration;
-		if (iteration > graph->GetNodes().size()) return {};
+		if (iteration > graph->GetNodes().size())
+		{
+			return {};
+		}
 	}
 
 	path.emplace_back(NavigationNode
