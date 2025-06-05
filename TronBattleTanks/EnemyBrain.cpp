@@ -3,17 +3,25 @@
 #include "GameObject.h"
 #include "EnemyMovement.h"
 #include "GameLoop.h"
+#include "PrefabFactory.h"
+#include "ServiceLocator.h"
+#include "SceneManager.h"
+#include "Collider.h"
+#include "Renderer.h"
 
 using namespace Engine;
 
 
-EnemyBrain::EnemyBrain(Engine::GameObject* pOwner, float pathUpdateTime, GameLoop* pGame):
-	Component{pOwner},
-	m_PathUpdateRate{pathUpdateTime},
-	m_PathUpdateTimer{pathUpdateTime},
-	m_pTargetPlayer{nullptr},
-	m_pEnemyMovement{nullptr},
-	m_pGame{pGame}
+EnemyBrain::EnemyBrain(Engine::GameObject* pOwner, float pathUpdateTime, float shootRate, GameLoop* const pGame, std::unique_ptr<EnemyShootCommand>&& shootCommand) :
+	Component{ pOwner },
+	m_PathUpdateRate{ pathUpdateTime },
+	m_PathUpdateTimer{ pathUpdateTime },
+	m_pTargetPlayer{ nullptr },
+	m_pEnemyMovement{ nullptr },
+	m_pGame{ pGame },
+	m_ShootRate{shootRate},
+	m_ShootTimer{0.f},
+	m_ShootCommand{ std::move(shootCommand) }
 {
 }
 
@@ -34,6 +42,53 @@ void EnemyBrain::Update()
 		{
 			m_PathUpdateTimer = 0.f;
 			m_pEnemyMovement->SetTargetPosition(m_pTargetPlayer->GetTransform()->GetWorldLocation());
+		}
+
+		CheckForShoot();
+	}
+}
+
+void EnemyBrain::Render() const
+{
+	const Engine::Vector2 origin{ GetGameObject()->GetTransform()->GetWorldLocation() };
+	const Engine::Vector2 forward{ GetGameObject()->GetTransform()->GetForward() };
+	
+	Renderer::GetInstance().SetColor({ 255,0,0,255 });
+	Renderer::GetInstance().RenderLine(origin, origin + forward * 1000);
+
+	if (m_TestHit)
+	{
+		Renderer::GetInstance().SetColor({ 255,0,255,255 });
+		Renderer::GetInstance().RenderLine(origin, m_TestHit->GetTransform()->GetWorldLocation());
+	}
+}
+
+void EnemyBrain::CheckForShoot()
+{
+	if (m_ShootTimer <= m_ShootRate)
+	{
+		m_ShootTimer += Time::GetInstance().GetDeltaTime();
+		return;
+	}
+
+	const Engine::Vector2 origin{ GetGameObject()->GetTransform()->GetWorldLocation() };
+	const Engine::Vector2 forward{ GetGameObject()->GetTransform()->GetForward() };
+
+	const std::vector<LayerMask> mask{ LayerMask::Player, LayerMask::Wall };
+	const Collider* selfCollider{ GetGameObject()->GetComponent<Collider>() };
+	Collider* outCollider{ nullptr };
+	if (ServiceLocator::GetPhysicsSystem().RayCast(origin, forward, selfCollider, outCollider, mask))
+	{
+		if (outCollider == nullptr) return;
+
+	
+
+		auto owningObject{ outCollider->GetGameObject() };
+		m_TestHit = owningObject;
+		if (owningObject == m_pTargetPlayer)
+		{
+			m_ShootCommand->Execute();
+			m_ShootTimer = 0.f;
 		}
 	}
 }

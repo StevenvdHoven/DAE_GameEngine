@@ -209,6 +209,37 @@ bool Engine::PhysicsSystem::BoxCast(const Engine::Vector2& location, const Engin
 	return false;
 }
 
+bool Engine::PhysicsSystem::RayCast(const Engine::Vector2& location, const Engine::Vector2& direction, const Collider* ignore, Collider*& out, std::vector<LayerMask> layermask) const
+{
+	Engine::Collider* outHit{ nullptr };
+	float lowestT{ std::numeric_limits<float>::max() };
+
+	for (const auto& pOther : m_Colliders)
+	{
+		if (!pOther->IsEnabled) continue;
+
+		if (pOther == ignore) continue;
+
+		if (!layermask.empty())
+		{
+			auto it{ std::find(layermask.begin(), layermask.end(), pOther->GetLayerMask()) };
+			if (it == layermask.end()) continue;
+		}
+
+		float t{ 0 };
+		if (pOther->RayCast(location,direction,t))
+		{
+			if (t < lowestT)
+			{
+				outHit = pOther;
+				lowestT = t;
+			}		
+		}
+	}
+	out = outHit;
+	return outHit != nullptr;
+}
+
 void Engine::PhysicsSystem::ClearColliders()
 {
 	m_Colliders.clear();

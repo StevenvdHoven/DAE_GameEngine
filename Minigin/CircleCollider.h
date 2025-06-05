@@ -17,6 +17,8 @@ namespace Engine
 		virtual bool IsOverlappingTest(const Vector2& location, const Vector2& size) const override;
 		virtual bool IsOverlappingTest(const Vector2& location, const float radius) const override;
 
+		virtual bool RayCast(const Vector2& origin, const Vector2& direction, float& t) const override;
+
 		virtual void DebugRender() override;
 
 		float GetRadius() const { return m_Radius; }

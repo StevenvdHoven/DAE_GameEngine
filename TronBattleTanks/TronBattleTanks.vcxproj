@@ -159,6 +159,7 @@
     <ClCompile Include="EnemyBrain.cpp" />
     <ClCompile Include="EnemyHealthComponent.cpp" />
     <ClCompile Include="EnemyMovement.cpp" />
+    <ClCompile Include="EnemyShootCommand.cpp" />
     <ClCompile Include="FPSCounterComponent.cpp" />
     <ClCompile Include="GameLoop.cpp" />
     <ClCompile Include="HealtBarComponent.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="EnemyBrain.h" />
     <ClInclude Include="EnemyHealthComponent.h" />
     <ClInclude Include="EnemyMovement.h" />
+    <ClInclude Include="EnemyShootCommand.h" />
     <ClInclude Include="FPSCounterComponent.h" />
     <ClInclude Include="GameLoop.h" />
     <ClInclude Include="HealtBarComponent.h" />

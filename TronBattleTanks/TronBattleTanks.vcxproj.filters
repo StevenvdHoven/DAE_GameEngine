@@ -43,6 +43,9 @@
     <Filter Include="Game\Interfaces">
       <UniqueIdentifier>{4663ad68-edc6-43f9-925b-8c5537d737a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Enemy\Commands">
+      <UniqueIdentifier>{89729e28-2425-4f43-b4f7-a4cf3684e410}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AchievementHandler.cpp">
@@ -135,6 +138,9 @@
     <ClCompile Include="EnemyBrain.cpp">
       <Filter>Game\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyShootCommand.cpp">
+      <Filter>Game\Enemy\Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Achievements.h">
@@ -223,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="EnemyBrain.h">
       <Filter>Game\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyShootCommand.h">
+      <Filter>Game\Enemy\Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

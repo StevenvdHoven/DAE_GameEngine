@@ -28,7 +28,7 @@ namespace Engine
 		void RemoveCollider(Collider* pCollider);
 
 		bool BoxCast(const Engine::Vector2& location, const Engine::Vector2& size, const Collider* ignore, std::vector<LayerMask> layermask = {}) const;
-		
+		bool RayCast(const Engine::Vector2& location, const Engine::Vector2& direction, const Collider* ignore, Collider*& out, std::vector<LayerMask> layermask = {}) const;
 
 		
 		void ClearColliders();

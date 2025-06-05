@@ -3,52 +3,53 @@
 #include "Vector2.h"
 #include <unordered_set>
 
-namespace Engine
-{
-	class BoxCollider2D;
-	class CircleCollider;
-
-	enum struct LayerMask
+	namespace Engine
 	{
-		Default = 0,
-		Player = 1 << 0,
-		Enemy = 1 << 1,
-		Projectile = 1 << 2,
-		Wall = 1 << 3,
-	};
+		class BoxCollider2D;
+		class CircleCollider;
 
-	class Collider : public Component
-	{
-	public:
-		Collider(GameObject* pOwner, LayerMask mask);
+		enum struct LayerMask
+		{
+			Default = 0,
+			Player = 1 << 0,
+			Enemy = 1 << 1,
+			Projectile = 1 << 2,
+			Wall = 1 << 3,
+		};
+
+		class Collider : public Component
+		{
+		public:
+			Collider(GameObject* pOwner, LayerMask mask);
 		
-		virtual ~Collider();
+			virtual ~Collider();
 
-		virtual bool IsOverlapping(const Collider* other) const { return other != nullptr; };
-		virtual bool IsOverlapping(const BoxCollider2D* other) const { return other != nullptr; };
-		virtual bool IsOverlapping(const CircleCollider* other) const { return other != nullptr; };
+			virtual bool IsOverlapping(const Collider* other) const { return other != nullptr; };
+			virtual bool IsOverlapping(const BoxCollider2D* other) const { return other != nullptr; };
+			virtual bool IsOverlapping(const CircleCollider* other) const { return other != nullptr; };
 
-		virtual bool IsOverlappingTest(const Vector2& location, const Vector2& size) const { return location != size; }
-		virtual bool IsOverlappingTest(const Vector2& location, const float radius) const { return location != Vector2{radius,radius}; }
+			virtual bool IsOverlappingTest(const Vector2& location, const Vector2& size) const { return location != size; }
+			virtual bool IsOverlappingTest(const Vector2& location, const float radius) const { return location != Vector2{radius,radius}; }
+			virtual bool RayCast(const Vector2&, const Vector2&, float&) const { return false; }
 
-		virtual void DebugRender() {};
+			virtual void DebugRender() {};
 
-		void SetIsTrigger(bool isTrigger) { m_IsTrigger = isTrigger; }
-		bool IsTrigger() const { return m_IsTrigger; }
+			void SetIsTrigger(bool isTrigger) { m_IsTrigger = isTrigger; }
+			bool IsTrigger() const { return m_IsTrigger; }
 
-		Vector2 Center{ 0.f, 0.f };
+			Vector2 Center{ 0.f, 0.f };
 
-		void SetLayerMask(LayerMask layerMask) { m_LayerMask = layerMask; }
-		const LayerMask& GetLayerMask() const { return m_LayerMask; }
-		std::unordered_set<Collider*>& GetOverlappingColliders() { return m_OverlappingColliders; }
+			void SetLayerMask(LayerMask layerMask) { m_LayerMask = layerMask; }
+			const LayerMask& GetLayerMask() const { return m_LayerMask; }
+			std::unordered_set<Collider*>& GetOverlappingColliders() { return m_OverlappingColliders; }
 
-	private:
-		bool m_IsTrigger;
-		LayerMask m_LayerMask;
+		private:
+			bool m_IsTrigger;
+			LayerMask m_LayerMask;
 
-		std::unordered_set<Collider*> m_OverlappingColliders;
-	};
-}
+			std::unordered_set<Collider*> m_OverlappingColliders;
+		};
+	}
 
 
 

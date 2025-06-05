@@ -77,6 +77,41 @@ bool Engine::CircleCollider::IsOverlappingTest(const Vector2& location, const fl
 	return sqaureDistance <= radiusSum * radiusSum;
 }
 
+bool Engine::CircleCollider::RayCast(const Vector2& origin, const Vector2& direction, float& t) const
+{
+	if (direction.x == 0.f && direction.y == 0.f)
+		return false;
+
+	const Vector2 location{ GetGameObject()->GetTransform()->GetWorldLocation() + Center};
+	const Vector2 m{ origin - location };
+
+	const float a{ direction.x * direction.x + direction.y * direction.y };
+	const float b{ 2.0f * (m.x * direction.x + m.y * direction.y) };
+	const float c{ m.x * m.x + m.y * m.y - m_Radius * m_Radius };
+
+	const float discriminant{ b * b - 4 * a * c };
+	if (discriminant < 0.f)
+		return false;
+
+	const float sqrtDiscriminant{ std::sqrt(discriminant) };
+	const float t1{ (-b - sqrtDiscriminant) / (2.0f * a) };
+	const float t2{(-b + sqrtDiscriminant) / (2.0f * a)};
+
+	if (t1 >= 0.f)
+	{
+		t = t1;
+		return true;
+	}
+	else if (t2 >= 0.f)
+	{
+		t = t2;
+		return true;
+	}
+
+	return false;
+}
+
+
 void Engine::CircleCollider::DebugRender()
 {
 

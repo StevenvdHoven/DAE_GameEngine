@@ -36,13 +36,18 @@ void Projectile::Launch(Engine::GameObject* pSender, const Engine::Vector2& dire
 void Projectile::OnTriggerEnter(Engine::GameObject* other)
 {
 	auto pCollider = other->GetComponent<Collider>();
-	if (other == m_pSender || pCollider == nullptr || pCollider->GetLayerMask() == m_IgnoreLayer)
+	if (other == m_pSender 
+		|| pCollider == nullptr 
+		|| pCollider->GetLayerMask() == m_IgnoreLayer)
 	{
 		return;
 	}
 
+	if (pCollider->GetLayerMask() == LayerMask::Projectile)
+		return;
+
 	m_Bounces--;
-	if (m_Bounces <= 0)
+	if (m_Bounces < 0)
 	{
 		Destroy(GetGameObject());
 	}

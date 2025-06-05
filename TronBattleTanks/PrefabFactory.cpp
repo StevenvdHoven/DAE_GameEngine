@@ -18,6 +18,7 @@
 #include "PlayerShootCommand.h"
 #include "PlayerDamageCommand.h"
 #include "PlayerAimCommand.h"
+#include "EnemyShootCommand.h"
 
 #define ENEMY_IMAGE_PATH "enemy_body.png"
 #define UNIT_COLLIDER_SIZE Engine::Vector2{ 28, 28 }
@@ -109,6 +110,23 @@ Engine::GameObject* PrefabFactory::AddPlayerBullet(Engine::Scene* const scene)
 	imageRender->ChangeImageAllignment(ImageAllignment::Centre);
 
 	auto bulletCollider = bullet->AddComponent<CircleCollider>(5.f,true);
+	bulletCollider->SetLayerMask(LayerMask::Projectile);
+	bullet->AddComponent<PhysicsBody>();
+	bullet->AddComponent<Projectile>(1, 6000.f, 3, LayerMask::Player);
+
+	auto rawPtr = bullet.get();
+	scene->Add(std::move(bullet));
+	return rawPtr;
+}
+
+Engine::GameObject* PrefabFactory::AddEnemyBullet(Engine::Scene* const scene)
+{
+	auto bullet{ std::make_unique<GameObject>() };
+	bullet->GetTransform()->SetLocalPosition(0, 0);
+	auto imageRender{ bullet->AddComponent<ImageRenderer>("enemy_bullet.png") };
+	imageRender->ChangeImageAllignment(ImageAllignment::Centre);
+
+	auto bulletCollider = bullet->AddComponent<CircleCollider>(5.f, true);
 	bulletCollider->SetLayerMask(LayerMask::Projectile);
 	bullet->AddComponent<PhysicsBody>();
 	bullet->AddComponent<Projectile>(1, 6000.f, 3, LayerMask::Player);
@@ -473,7 +491,9 @@ Engine::GameObject* PrefabFactory::CreateEnemy(Engine::Scene* const scene, GameL
 {
 	auto enemyObject{ std::make_unique<GameObject>() };
 
-	enemyObject->AddComponent<EnemyBrain>(8.f,gameLoop);
+	auto shootCommand{ std::make_unique<EnemyShootCommand>(enemyObject.get(),Engine::Vector2{5,0},[scene]() { return AddEnemyBullet(scene); })};
+
+	enemyObject->AddComponent<EnemyBrain>(8.f,5.f,gameLoop,std::move(shootCommand));
 	enemyObject->AddComponent<EnemyHealthComponent>();
 	enemyObject->AddComponent<EnemyMovement>(1000.f);
 
