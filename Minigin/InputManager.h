@@ -44,6 +44,8 @@ namespace Engine
 		void BindButton(int playerIndex, int button, std::unique_ptr<Command> pCommand);
 		void BindValue(int playerIndex, int button, std::unique_ptr <ValueCommand<float>> pCommand);
 		void Bind2DValue(int playerIndex, std::unique_ptr <ValueCommand<Vector2>> pCommand);
+
+		void Unbind(int playerIndex, void* pCommand);
 	};
 }
 

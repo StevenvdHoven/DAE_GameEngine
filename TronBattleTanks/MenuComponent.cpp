@@ -17,7 +17,8 @@ MenuComponent::MenuComponent(Engine::GameObject* pGameObject):
 	m_TransitionTime{ 0.0f },
 	m_MenuPlayerStartLocation{ 240.0f, 340.0f },
 	m_MenuPlayerTargetLocation{ 0.0f, 0.0f },
-	m_SelectedGameMode{ GameMode::SinglePlayer }
+	m_SelectedGameMode{ GameMode::SinglePlayer },
+	m_MenuMoveCommand{nullptr}
 {
 	
 
@@ -28,6 +29,7 @@ void MenuComponent::Start()
 	auto pGameObject = GetGameObject();
 	// Register the command to handle input for menu navigation
 	auto moveCommand = std::make_unique<MenuMoveCommand>(pGameObject);
+	m_MenuMoveCommand = moveCommand.get();
 	InputManager::GetInstance().Bind2DValue(0, std::move(moveCommand));
 
 	CreateMenuPlayer();
@@ -46,6 +48,7 @@ void MenuComponent::Update()
 	}
 	else
 	{
+		InputManager::GetInstance().Unbind(0, m_MenuMoveCommand);
 		BattleScene::CreateScene(m_SelectedGameMode);
 	}
 	

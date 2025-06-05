@@ -6,7 +6,6 @@
 #endif
 
 #include <iostream>
-#include "TestScene.h"
 #include "BattleScene.h"
 #include "MainMenu.h"
 #include "MultiPlayerTestScene.h"

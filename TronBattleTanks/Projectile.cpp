@@ -3,11 +3,13 @@
 #include "BoxCollider2D.h"
 #include "GameObject.h"
 #include "EnemyHealthComponent.h"
+#include "PlayerHealthComponent.h"
 
 using namespace Engine;
 
-Projectile::Projectile(Engine::GameObject* pOwner, int damage, float speed, int bounces, LayerMask ignoreLayer):
+Projectile::Projectile(Engine::GameObject* pOwner, EProjectileTarget targetType, int damage, float speed, int bounces, LayerMask ignoreLayer):
 	Engine::Component(pOwner)
+	, m_TargetType{targetType}
 	, m_Damage{ damage }
 	, m_Bounces{ bounces }
 	, m_IgnoreLayer{ignoreLayer}
@@ -43,8 +45,15 @@ void Projectile::OnTriggerEnter(Engine::GameObject* other)
 		return;
 	}
 
-	if (pCollider->GetLayerMask() == LayerMask::Projectile)
+	const LayerMask projectileMask{ LayerMask::Projectile };
+	if (static_cast<int>(pCollider->GetLayerMask()) == static_cast<int>(projectileMask))
 		return;
+
+	if (HandleEnemy(other) || HandlePlayer(other))
+	{
+		Destroy(GetGameObject());
+		return;
+	}
 
 	m_Bounces--;
 	if (m_Bounces < 0)
@@ -56,14 +65,6 @@ void Projectile::OnTriggerEnter(Engine::GameObject* other)
 		auto pBoxCollider = dynamic_cast<BoxCollider2D*>(pCollider);
 		if (!pBoxCollider)
 			return;
-
-		auto enemy{ other->GetComponent<EnemyHealthComponent>() };
-		if (enemy)
-		{
-			enemy->TakeDamage(1);
-			Destroy(GetGameObject());
-			return;
-		}
 
 		Vector2 projectilePos = GetGameObject()->GetTransform()->GetWorldLocation();
 		Vector2 targetPos = other->GetTransform()->GetWorldLocation();
@@ -82,4 +83,32 @@ void Projectile::OnTriggerEnter(Engine::GameObject* other)
 		else
 			m_pBody->Velocity = { m_pBody->Velocity.x, -m_pBody->Velocity.y }; // Vertical flip
 	}
+}
+
+bool Projectile::HandlePlayer(Engine::GameObject* other)
+{
+	if (m_TargetType == EProjectileTarget::ENEMY) return false;
+
+	auto const player{ other->GetComponent<PlayerHealthComponent>() };
+	if (player)
+	{
+		player->TakeDamage(1);
+		return true;
+	}
+
+	return false;
+}
+
+bool Projectile::HandleEnemy(Engine::GameObject* other)
+{
+	if (m_TargetType == EProjectileTarget::PLAYER) return false;
+
+	auto const enemy{ other->GetComponent<EnemyHealthComponent>() };
+	if (enemy)
+	{
+		enemy->TakeDamage(1);
+		return true;
+	}
+
+	return false;
 }

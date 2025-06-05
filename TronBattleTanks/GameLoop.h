@@ -3,12 +3,18 @@
 #include "Observers.h"
 #include <vector>
 #include <forward_list>
+#include "StartGameCommand.h"
 
 namespace Engine
 {
 	class TextRenderer;
 	class Scene;
+	struct Vector2;
 }
+
+enum struct GameMode;
+class ScoreComponent;
+class PlayerHealthComponent;
 
 enum struct GameState
 {
@@ -17,10 +23,20 @@ enum struct GameState
 	GameOver
 };
 
-enum struct GameMode;
+struct PlayerState
+{
+	Engine::GameObject* pPlayer;
+	PlayerHealthComponent* pHealthComp;
+	int Lives;
 
-class ScoreComponent;
-class PlayerHealthComponent;
+	PlayerState()
+	{
+		pPlayer = nullptr;
+		pHealthComp = nullptr;
+		Lives = 3;
+		
+	}
+};
 
 class GameLoop final : public Engine::Component, public Engine::IObserver
 {
@@ -38,30 +54,32 @@ public:
 	const GameState& GetGameState() const { return m_GameState; }
 	Engine::GameObject* const GetRandomPlayer() const;
 private:
-	void HandleScoreInfo();
+	bool IsPlayerEvent(Component* pSender, auto& iterator);
 	void CreateStartText();
 
 	void CreateSinglePlayerLoop();
 	void CreatePVPPlayerLoop();
 	void CreateCo_OpPlayerLoop();
 
+	Engine::Vector2 GetRandomMapLocation() const;
+
 	void EndGame();
 	void NextRound();
 
 	void SpawnEnemies(Engine::Scene* const pScene);
+	void SpawnPlayer(int index, const Engine::Vector2& pos, Engine::Scene* const pScene);
 
 	Engine::GameObject* m_pMapObject;
-	std::vector< Engine::GameObject*> m_pPlayers;
+	std::vector< PlayerState> m_pPlayers;
 	std::forward_list<Engine::GameObject*> m_pSpawnedEnemies;
 	ScoreComponent* m_pScoreComponent;
-	PlayerHealthComponent* m_pPlayerHealthComponent;
-
 
 	Engine::TextRenderer* m_pStartText{ nullptr };
 
 	GameState m_GameState;
 	GameMode m_Mode;
 	
+	void* m_pStarGameCommand;
 
 };
 

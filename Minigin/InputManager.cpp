@@ -112,6 +112,38 @@ public:
 		m_2DValueBindings.emplace_back(binding);
 	}
 
+	void Unbind(void* pCommand)
+	{
+		auto buttonIT{ std::find_if(m_ButtonBindings.begin(), m_ButtonBindings.end(), [pCommand](Engine::PlayerBindingButton* binding)
+			{
+				return binding->pCommand == pCommand;
+			})};
+		if (buttonIT != m_ButtonBindings.end()) {
+			m_ButtonBindings.erase(buttonIT);
+			return;
+		}
+
+		auto valueIT{ std::find_if(m_ValueBindings.begin(), m_ValueBindings.end(), [pCommand](Engine::PlayerBindingValue* binding)
+			{
+				return binding->pCommand == pCommand;
+			}) };
+		if (valueIT != m_ValueBindings.end())
+		{
+			m_ValueBindings.erase(valueIT);
+			return;
+		}
+
+		auto value2dIT{ std::find_if(m_2DValueBindings.begin(), m_2DValueBindings.end(), [pCommand](Engine::PlayerBinding2DValue* binding)
+			{
+				return binding->pCommand == pCommand;
+			}) };
+		if (value2dIT != m_2DValueBindings.end())
+		{
+			m_2DValueBindings.erase(value2dIT);
+			return;
+		}
+	}
+
 	void CheckBindings()
 	{
 		auto copyBindings{ m_ButtonBindings };
@@ -387,6 +419,8 @@ public:
 	void BindValue(int playerIndex, int button, std::unique_ptr <ValueCommand<float>> pCommand);
 	void Bind2DValue(int playerIndex, std::unique_ptr <ValueCommand<Vector2>> pCommand);
 
+	void Unbind(int playerIndex, void* pCommand);
+
 private:
 	std::vector<std::unique_ptr<PlayerController>> m_Controllers;
 
@@ -424,6 +458,11 @@ void Engine::InputManager::InputManagerImpl::Bind2DValue(int playerIndex, std::u
 {
 	m_Controllers[playerIndex]->Bind2DValue(pCommand.get());
 	m_2DValueCommands.emplace_back(std::move(pCommand));
+}
+
+void Engine::InputManager::InputManagerImpl::Unbind(int playerIndex, void* pCommand)
+{
+	m_Controllers[playerIndex]->Unbind(pCommand);
 }
 
 #pragma endregion
@@ -477,6 +516,11 @@ void Engine::InputManager::BindValue(int playerIndex, int button, std::unique_pt
 void Engine::InputManager::Bind2DValue(int playerIndex, std::unique_ptr<ValueCommand<Vector2>> pCommand)
 {
 	m_pImpl->Bind2DValue(playerIndex, std::move(pCommand));
+}
+
+void Engine::InputManager::Unbind(int playerIndex, void* pCommand)
+{
+	m_pImpl->Unbind(playerIndex, pCommand);
 }
 
 

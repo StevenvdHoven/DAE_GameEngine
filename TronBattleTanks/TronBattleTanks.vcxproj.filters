@@ -66,9 +66,6 @@
     <ClCompile Include="PlayerHealthComponent.cpp">
       <Filter>Game\Player</Filter>
     </ClCompile>
-    <ClCompile Include="HealtBarComponent.cpp">
-      <Filter>Game\Player</Filter>
-    </ClCompile>
     <ClCompile Include="ScoreComponent.cpp">
       <Filter>Game\Player</Filter>
     </ClCompile>
@@ -89,9 +86,6 @@
     </ClCompile>
     <ClCompile Include="PrefabFactory.cpp">
       <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>Game\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="PlayerShootCommand.cpp">
       <Filter>Game\Commands</Filter>
@@ -141,6 +135,12 @@
     <ClCompile Include="EnemyShootCommand.cpp">
       <Filter>Game\Enemy\Commands</Filter>
     </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="InputUnbinder.cpp">
+      <Filter>Game\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Achievements.h">
@@ -164,9 +164,6 @@
     <ClInclude Include="PlayerHealthComponent.h">
       <Filter>Game\Player</Filter>
     </ClInclude>
-    <ClInclude Include="HealtBarComponent.h">
-      <Filter>Game\Player</Filter>
-    </ClInclude>
     <ClInclude Include="FPSCounterComponent.h">
       <Filter>Game\Tools</Filter>
     </ClInclude>
@@ -181,9 +178,6 @@
     </ClInclude>
     <ClInclude Include="PrefabFactory.h">
       <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="TestScene.h">
-      <Filter>Game\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="PlayerShootCommand.h">
       <Filter>Game\Commands</Filter>
@@ -232,6 +226,12 @@
     </ClInclude>
     <ClInclude Include="EnemyShootCommand.h">
       <Filter>Game\Enemy\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="InputUnbinder.h">
+      <Filter>Game\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScene.h">
+      <Filter>Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

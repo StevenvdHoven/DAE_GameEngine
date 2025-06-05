@@ -80,9 +80,7 @@ void EnemyBrain::CheckForShoot()
 	if (ServiceLocator::GetPhysicsSystem().RayCast(origin, forward, selfCollider, outCollider, mask))
 	{
 		if (outCollider == nullptr) return;
-
-	
-
+		
 		auto owningObject{ outCollider->GetGameObject() };
 		m_TestHit = owningObject;
 		if (owningObject == m_pTargetPlayer)

@@ -14,7 +14,7 @@
 #include "Scene.h"
 #include <SDL.h>
 
-#define START_BUTTON 0x010
+
 
 using namespace Engine;
 
@@ -33,12 +33,9 @@ void BattleScene::CreateScene(GameMode mode = GameMode::SinglePlayer)
 	scene->Add(std::move(scoreTextObject));
 
 	auto GameloopObject{ std::make_unique<GameObject>() };
-	auto gameloop{ GameloopObject->AddComponent<GameLoop>(mode,scoreComponent) };
+	GameloopObject->AddComponent<GameLoop>(mode,scoreComponent);
 
-	auto startGameCommand{ std::make_unique<StartGameCommand>(gameloop) };
-	startGameCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
-	startGameCommand->SetTriggerState(Engine::TriggerState::PRESSED);
-	InputManager::GetInstance().BindButton(0, START_BUTTON, std::move(startGameCommand));
+	
 
 	scene->Add(std::move(GameloopObject));
 }

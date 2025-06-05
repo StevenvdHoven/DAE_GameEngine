@@ -1,7 +1,7 @@
 #pragma once
 #include "Command.h"
-#include "GameLoop.h"
 
+class GameLoop;
 
 class StartGameCommand final : public Engine::Command
 {
