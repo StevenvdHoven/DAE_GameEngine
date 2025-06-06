@@ -41,11 +41,15 @@
 
 			void SetLayerMask(LayerMask layerMask) { m_LayerMask = layerMask; }
 			const LayerMask& GetLayerMask() const { return m_LayerMask; }
+
+			std::unordered_set<LayerMask>& GetIgnoreLayerMask() { return m_IgnoreMask; }
+
 			std::unordered_set<Collider*>& GetOverlappingColliders() { return m_OverlappingColliders; }
 
 		private:
 			bool m_IsTrigger;
 			LayerMask m_LayerMask;
+			std::unordered_set<LayerMask> m_IgnoreMask;
 
 			std::unordered_set<Collider*> m_OverlappingColliders;
 		};

@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "BattleScene.h"
+#include "GameOverScene.h"
 #include "MainMenu.h"
 #include "MultiPlayerTestScene.h"
 #include "ColliderTestScene.h"
@@ -18,7 +19,8 @@ void load()
 {
 	//TestScene::CreateScene();
 	//BattleScene::CreateScene();
-	MainMenu::CreateScene();
+	//MainMenu::CreateScene();
+	GameOverScene::CreateScene(EGameOverType::LOST);
 	//ColliderTestScene::CreateScene();
 	//MultiPlayerTestScene::CreateScene();
 }

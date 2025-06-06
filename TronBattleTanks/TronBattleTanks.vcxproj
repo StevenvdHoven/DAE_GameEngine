@@ -162,6 +162,7 @@
     <ClCompile Include="EnemyShootCommand.cpp" />
     <ClCompile Include="FPSCounterComponent.cpp" />
     <ClCompile Include="GameLoop.cpp" />
+    <ClCompile Include="GameOverMenuComponent.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="IDamageable.cpp" />
     <ClCompile Include="InputUnbinder.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="EnemyShootCommand.h" />
     <ClInclude Include="FPSCounterComponent.h" />
     <ClInclude Include="GameLoop.h" />
+    <ClInclude Include="GameOverMenuComponent.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="IDamageable.h" />
     <ClInclude Include="InputUnbinder.h" />

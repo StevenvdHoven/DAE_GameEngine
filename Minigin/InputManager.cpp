@@ -171,17 +171,49 @@ public:
 		{
 			const auto triggerState{ binding->pCommand->GetTriggerState() };
 
-			bool pressed{ binding->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Pressed(binding->InputMask) : Is_KeyPressed(binding->InputMask) };
-			bool released{ binding->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_Released(binding->InputMask) : Is_KeyReleased(binding->InputMask) };
+			const bool right{ binding->pCommand->GetInputType() == Engine::ValueCommand<float>::InputType::RIGHT_TRIGGER };
+			const bool pressed{ binding->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_TriggerPressed(right) : Is_KeyPressed(binding->InputMask)};
+			const bool down{ binding->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_TriggerDown(right) : Is_KeyDown(binding->InputMask) };
+			const bool released{ binding->pCommand->GetDeviceType() == Engine::DeviceType::GAMEPAD ? Is_TriggerReleased(right) : Is_KeyReleased(binding->InputMask)};
 
 
 			if (pressed && triggerState == Engine::TriggerState::PRESSED)
 			{
-				binding->pCommand->Execute(1.0);
+				if (binding->pCommand->GetDeviceType() == Engine::DeviceType::KEYBOARD)
+				{
+					binding->pCommand->Execute(1);
+				}
+				else 
+				{
+					float value{ static_cast<float>(right ? CurrentState.Gamepad.bRightTrigger : CurrentState.Gamepad.bLeftTrigger) };
+					binding->pCommand->Execute(value);
+				}
+				
 			}
+			if (down && triggerState == Engine::TriggerState::HELD)
+			{
+				if (binding->pCommand->GetDeviceType() == Engine::DeviceType::KEYBOARD)
+				{
+					binding->pCommand->Execute(1);
+				}
+				else
+				{
+					float value{ static_cast<float>(right ? CurrentState.Gamepad.bRightTrigger : CurrentState.Gamepad.bLeftTrigger) };
+					binding->pCommand->Execute(value);
+				}
+			}
+
 			if (released && triggerState == Engine::TriggerState::RELEASED)
 			{
-				binding->pCommand->Execute(0);
+				if (binding->pCommand->GetDeviceType() == Engine::DeviceType::KEYBOARD)
+				{
+					binding->pCommand->Execute(0);
+				}
+				else
+				{
+					float value{ static_cast<float>(right ? CurrentState.Gamepad.bRightTrigger : CurrentState.Gamepad.bLeftTrigger) };
+					binding->pCommand->Execute(value);
+				}
 			}
 		}
 
@@ -198,13 +230,13 @@ public:
 			bool down = false;
 			bool released = false;
 
-			if (type == Engine::GameActorCommand2D::InputType2D::WASD ||
-				type == Engine::GameActorCommand2D::InputType2D::ARROW_KEYS)
+			if (type == Engine::GameActorCommand2D::InputType::WASD ||
+				type == Engine::GameActorCommand2D::InputType::ARROW_KEYS)
 			{
 				pressed = Is_KeyboardPressed(type);
 				down = Is_KeyboardDown(type);
 				released = Is_KeyboardReleased(type);
-				value = (type == Engine::GameActorCommand2D::InputType2D::WASD) ? GetWASD() : GetArrows();
+				value = (type == Engine::GameActorCommand2D::InputType::WASD) ? GetWASD() : GetArrows();
 			}
 			else
 			{
@@ -216,9 +248,9 @@ public:
 				
 				switch (type)
 				{
-				case Engine::GameActorCommand2D::InputType2D::LEFT_STICK: value = GetLeftStick(); break;
-				case Engine::GameActorCommand2D::InputType2D::RIGHT_STICK: value = GetRightStick(); break;
-				case Engine::GameActorCommand2D::InputType2D::D_PAD: value = GetDPad(); break;
+				case Engine::GameActorCommand2D::InputType::LEFT_STICK: value = GetLeftStick(); break;
+				case Engine::GameActorCommand2D::InputType::RIGHT_STICK: value = GetRightStick(); break;
+				case Engine::GameActorCommand2D::InputType::D_PAD: value = GetDPad(); break;
 				}
 			}
 
@@ -302,15 +334,15 @@ private:
 		return value;
 	}
 
-	int Get2DBindingMask(Engine::GameActorCommand2D::InputType2D inputType)
+	int Get2DBindingMask(Engine::GameActorCommand2D::InputType inputType)
 	{
 		switch (inputType)
 		{
-		case Engine::GameActorCommand2D::InputType2D::LEFT_STICK:
+		case Engine::GameActorCommand2D::InputType::LEFT_STICK:
 			return XINPUT_GAMEPAD_LEFT_THUMB;
-		case Engine::GameActorCommand2D::InputType2D::RIGHT_STICK:
+		case Engine::GameActorCommand2D::InputType::RIGHT_STICK:
 			return XINPUT_GAMEPAD_RIGHT_THUMB;
-		case Engine::GameActorCommand2D::InputType2D::D_PAD:
+		case Engine::GameActorCommand2D::InputType::D_PAD:
 			return XINPUT_GAMEPAD_DPAD_UP | XINPUT_GAMEPAD_DPAD_DOWN |
 				XINPUT_GAMEPAD_DPAD_LEFT | XINPUT_GAMEPAD_DPAD_RIGHT;
 		default:
@@ -318,14 +350,50 @@ private:
 		}
 	}
 
-	bool Is_KeyboardPressed(Engine::GameActorCommand2D::InputType2D type)
+	bool Is_TriggerPressed(bool right) 
+	{
+		if (right)
+		{
+			return CurrentState.Gamepad.bRightTrigger >  0 && PreviousState.Gamepad.bRightTrigger == 0;
+		}
+		else
+		{
+			return CurrentState.Gamepad.bLeftTrigger > 0 && PreviousState.Gamepad.bLeftTrigger == 0;
+		}
+	}
+
+	bool Is_TriggerDown(bool right)
+	{
+		if (right)
+		{
+			return CurrentState.Gamepad.bRightTrigger > 0;
+		}
+		else
+		{
+			return CurrentState.Gamepad.bLeftTrigger > 0;
+		}
+	}
+
+	bool Is_TriggerReleased(bool right)
+	{
+		if (right)
+		{
+			return CurrentState.Gamepad.bRightTrigger <= 0 && PreviousState.Gamepad.bRightTrigger != 0;
+		}
+		else
+		{
+			return CurrentState.Gamepad.bLeftTrigger <= 0 && PreviousState.Gamepad.bLeftTrigger != 0;
+		}
+	}
+
+	bool Is_KeyboardPressed(Engine::GameActorCommand2D::InputType type)
 	{
 		switch (type)
 		{
-		case Engine::GameActorCommand2D::InputType2D::WASD:
+		case Engine::GameActorCommand2D::InputType::WASD:
 			return Is_KeyPressed(SDL_SCANCODE_W) || Is_KeyPressed(SDL_SCANCODE_A) ||
 				Is_KeyPressed(SDL_SCANCODE_S) || Is_KeyPressed(SDL_SCANCODE_D);
-		case Engine::GameActorCommand2D::InputType2D::ARROW_KEYS:
+		case Engine::GameActorCommand2D::InputType::ARROW_KEYS:
 			return Is_KeyPressed(SDL_SCANCODE_UP) || Is_KeyPressed(SDL_SCANCODE_DOWN) ||
 				Is_KeyPressed(SDL_SCANCODE_LEFT) || Is_KeyPressed(SDL_SCANCODE_RIGHT);
 		default:
@@ -333,14 +401,14 @@ private:
 		}
 	}
 
-	bool Is_KeyboardDown(Engine::GameActorCommand2D::InputType2D type)
+	bool Is_KeyboardDown(Engine::GameActorCommand2D::InputType type)
 	{
 		switch (type)
 		{
-		case Engine::GameActorCommand2D::InputType2D::WASD:
+		case Engine::GameActorCommand2D::InputType::WASD:
 			return Is_KeyDown(SDL_SCANCODE_W) || Is_KeyDown(SDL_SCANCODE_A) ||
 				Is_KeyDown(SDL_SCANCODE_S) || Is_KeyDown(SDL_SCANCODE_D);
-		case Engine::GameActorCommand2D::InputType2D::ARROW_KEYS:
+		case Engine::GameActorCommand2D::InputType::ARROW_KEYS:
 			return Is_KeyDown(SDL_SCANCODE_UP) || Is_KeyDown(SDL_SCANCODE_DOWN) ||
 				Is_KeyDown(SDL_SCANCODE_LEFT) || Is_KeyDown(SDL_SCANCODE_RIGHT);
 		default:
@@ -348,14 +416,14 @@ private:
 		}
 	}
 
-	bool Is_KeyboardReleased(Engine::GameActorCommand2D::InputType2D type)
+	bool Is_KeyboardReleased(Engine::GameActorCommand2D::InputType type)
 	{
 		switch (type)
 		{
-		case Engine::GameActorCommand2D::InputType2D::WASD:
+		case Engine::GameActorCommand2D::InputType::WASD:
 			return Is_KeyReleased(SDL_SCANCODE_W) || Is_KeyReleased(SDL_SCANCODE_A) ||
 				Is_KeyReleased(SDL_SCANCODE_S) || Is_KeyReleased(SDL_SCANCODE_D);
-		case Engine::GameActorCommand2D::InputType2D::ARROW_KEYS:
+		case Engine::GameActorCommand2D::InputType::ARROW_KEYS:
 			return Is_KeyReleased(SDL_SCANCODE_UP) || Is_KeyReleased(SDL_SCANCODE_DOWN) ||
 				Is_KeyReleased(SDL_SCANCODE_LEFT) || Is_KeyReleased(SDL_SCANCODE_RIGHT);
 		default:
@@ -363,19 +431,19 @@ private:
 		}
 	}
 
-	Engine::Vector2 Get2DValue(Engine::GameActorCommand2D::InputType2D inputType)
+	Engine::Vector2 Get2DValue(Engine::GameActorCommand2D::InputType inputType)
 	{
 		switch (inputType)
 		{
-		case Engine::GameActorCommand2D::InputType2D::LEFT_STICK:
+		case Engine::GameActorCommand2D::InputType::LEFT_STICK:
 			return GetLeftStick();
-		case Engine::GameActorCommand2D::InputType2D::RIGHT_STICK:
+		case Engine::GameActorCommand2D::InputType::RIGHT_STICK:
 			return GetRightStick();
-		case Engine::GameActorCommand2D::InputType2D::D_PAD:
+		case Engine::GameActorCommand2D::InputType::D_PAD:
 			return GetDPad();
-		case Engine::GameActorCommand2D::InputType2D::WASD:
+		case Engine::GameActorCommand2D::InputType::WASD:
 			return GetWASD();
-		case Engine::GameActorCommand2D::InputType2D::ARROW_KEYS:
+		case Engine::GameActorCommand2D::InputType::ARROW_KEYS:
 			return GetArrows();
 		default:
 			return Engine::Vector2{};

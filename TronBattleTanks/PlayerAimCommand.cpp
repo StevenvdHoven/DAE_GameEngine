@@ -4,7 +4,7 @@
 #include "StaticRotaterComponent.h"
 
 PlayerAimCommand::PlayerAimCommand(Engine::GameObject* pOwner) :
-	GameActorCommand2D(pOwner, ValueCommand::InputType2D::RIGHT_STICK),
+	GameActorCommand2D(pOwner, ValueCommand::InputType::RIGHT_STICK),
 	pRotator{pOwner->GetComponent<StaticRotaterComponent>()}
 {
 

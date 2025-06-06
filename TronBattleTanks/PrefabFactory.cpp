@@ -23,6 +23,7 @@
 
 #define ENEMY_IMAGE_PATH "enemy_body.png"
 #define UNIT_COLLIDER_SIZE Engine::Vector2{ 28, 28 }
+#define UNIT_SPEED 2000.0f
 
 using namespace Engine;
 
@@ -40,14 +41,16 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene, int playerIndex
 	auto collider{ player->AddComponent<BoxCollider2D>(UNIT_COLLIDER_SIZE, false) };
 	collider->Center = Vector2{ -13.f, -13.f };
 	collider->SetLayerMask(LayerMask::Player);
+	collider->GetIgnoreLayerMask().insert(LayerMask::Player);
+	collider->GetIgnoreLayerMask().insert(LayerMask::Enemy);
 	player->AddComponent<PhysicsBody>();
 
 
 	// Bind Input
-	auto moveCommandController = std::make_unique<MovePlayerCommand>(player.get(), Engine::ValueCommand<Vector2>::InputType2D::D_PAD, 1000.f);
+	auto moveCommandController = std::make_unique<MovePlayerCommand>(player.get(), Engine::ValueCommand<Vector2>::InputType::D_PAD, UNIT_SPEED);
 	moveCommandController->SetTriggerState(TriggerState::HELD);
 
-	auto stopCommandController = std::make_unique<MovePlayerCommand>(player.get(), Engine::ValueCommand<Vector2>::InputType2D::D_PAD, 0.f);
+	auto stopCommandController = std::make_unique<MovePlayerCommand>(player.get(), Engine::ValueCommand<Vector2>::InputType::D_PAD, 0.f);
 	stopCommandController->SetTriggerState(TriggerState::RELEASED);
 
 	
@@ -93,7 +96,9 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene, int playerIndex
 
 	InputManager::GetInstance().Bind2DValue(playerIndex, std::move(aimCommand));
 
-	InputManager::GetInstance().BindButton(playerIndex, 0x4000, std::move(shootCommand));
+	shootCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
+	shootCommand->SetInputType(Engine::ValueCommand<float>::InputType::RIGHT_TRIGGER);
+	InputManager::GetInstance().BindValue(playerIndex, -1, std::move(shootCommand));
 
 	auto rawPtr = player.get();
 	scene->Add(std::move(player));
@@ -112,7 +117,7 @@ Engine::GameObject* PrefabFactory::AddPlayerBullet(Engine::Scene* const scene)
 	auto bulletCollider = bullet->AddComponent<CircleCollider>(5.f,true);
 	bulletCollider->SetLayerMask(LayerMask::Projectile);
 	bullet->AddComponent<PhysicsBody>();
-	bullet->AddComponent<Projectile>(EProjectileTarget::ENEMY,1, 6000.f, 3, LayerMask::Player);
+	bullet->AddComponent<Projectile>(EProjectileTarget::ENEMY,1, 6000.f, 3, 1.f, LayerMask::Player);
 
 	auto rawPtr = bullet.get();
 	scene->Add(std::move(bullet));
@@ -129,7 +134,7 @@ Engine::GameObject* PrefabFactory::AddEnemyBullet(Engine::Scene* const scene)
 	auto bulletCollider = bullet->AddComponent<CircleCollider>(5.f, true);
 	bulletCollider->SetLayerMask(LayerMask::Projectile);
 	bullet->AddComponent<PhysicsBody>();
-	bullet->AddComponent<Projectile>(EProjectileTarget::PLAYER,1, 6000.f, 0, LayerMask::Enemy);
+	bullet->AddComponent<Projectile>(EProjectileTarget::PLAYER,1, 6000.f, 0,10.f, LayerMask::Enemy);
 
 	auto rawPtr = bullet.get();
 	scene->Add(std::move(bullet));
@@ -493,13 +498,16 @@ Engine::GameObject* PrefabFactory::CreateEnemy(Engine::Scene* const scene, GameL
 
 	auto shootCommand{ std::make_unique<EnemyShootCommand>(enemyObject.get(),Engine::Vector2{5,0},[scene]() { return AddEnemyBullet(scene); })};
 
-	enemyObject->AddComponent<EnemyBrain>(8.f,5.f,gameLoop,std::move(shootCommand));
+	enemyObject->AddComponent<EnemyBrain>(2.f,4.f,gameLoop,std::move(shootCommand));
 	enemyObject->AddComponent<EnemyHealthComponent>();
-	enemyObject->AddComponent<EnemyMovement>(1000.f);
+	enemyObject->AddComponent<EnemyMovement>(UNIT_SPEED);
 
 	auto imageRenderer{ enemyObject->AddComponent<ImageRenderer>(ENEMY_IMAGE_PATH) };
 	imageRenderer->ChangeImageAllignment(ImageAllignment::Centre);
 	auto collider{ enemyObject->AddComponent<BoxCollider2D>(UNIT_COLLIDER_SIZE) };
+	collider->SetLayerMask(LayerMask::Enemy);
+	collider->GetIgnoreLayerMask().insert(LayerMask::Player);
+	collider->GetIgnoreLayerMask().insert(LayerMask::Enemy);
 	collider->Center = Vector2{ -13.f, -13.f };
 	enemyObject->AddComponent<PhysicsBody>();
 

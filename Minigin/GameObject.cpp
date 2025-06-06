@@ -24,6 +24,8 @@ void Engine::GameObject::RemoveComponent(Component* pComponent)
 
 void Engine::GameObject::Start()
 {
+	if (!m_IsActive) return;
+
 	for (auto& pComponent : m_Components)
 	{
 		pComponent->Start();
@@ -32,6 +34,8 @@ void Engine::GameObject::Start()
 
 void Engine::GameObject::Update()
 {
+	if (!m_IsActive) return;
+
 	for (auto& pComponent : m_Components)
 	{
 		if (pComponent->IsEnabled)
@@ -41,6 +45,8 @@ void Engine::GameObject::Update()
 
 void Engine::GameObject::FixedUpdate()
 {
+	if (!m_IsActive) return;
+
 	for (auto& pComponent : m_Components)
 	{
 		if (pComponent->IsEnabled)
@@ -50,6 +56,8 @@ void Engine::GameObject::FixedUpdate()
 
 void Engine::GameObject::LateUpdate()
 {
+	if (!m_IsActive) return;
+
 	for (auto& pComponent : m_Components)
 	{
 		if (pComponent->IsEnabled)
@@ -65,6 +73,8 @@ void Engine::GameObject::LateUpdate()
 
 void Engine::GameObject::Render() const
 {
+	if (!m_IsActive) return;
+
 	for (auto& pComponent : m_Components)
 	{
 		if (pComponent->IsEnabled)
@@ -74,6 +84,8 @@ void Engine::GameObject::Render() const
 
 void Engine::GameObject::OnCollisionEnter(GameObject* other)
 {
+	if (!m_IsActive) return;
+
 	for (auto& pComponent : m_Components)
 	{
 		if (pComponent->IsEnabled)
@@ -83,6 +95,8 @@ void Engine::GameObject::OnCollisionEnter(GameObject* other)
 
 void Engine::GameObject::OnCollisionStay(GameObject* other)
 {
+	if (!m_IsActive) return;
+
 	for (auto& pComponent : m_Components)
 	{
 		if (pComponent->IsEnabled)
@@ -92,6 +106,8 @@ void Engine::GameObject::OnCollisionStay(GameObject* other)
 
 void Engine::GameObject::OnCollisionExit(GameObject* other)
 {
+	if (!m_IsActive) return;
+
 	for (auto& pComponent : m_Components)
 	{
 		if (pComponent->IsEnabled)
@@ -101,6 +117,8 @@ void Engine::GameObject::OnCollisionExit(GameObject* other)
 
 void Engine::GameObject::OnTriggerEnter(GameObject* other)
 {
+	if (!m_IsActive) return;
+
 	for (auto& pComponent : m_Components)
 	{
 		if (pComponent->IsEnabled)
@@ -110,6 +128,8 @@ void Engine::GameObject::OnTriggerEnter(GameObject* other)
 
 void Engine::GameObject::OnTriggerStay(GameObject* other)
 {
+	if (!m_IsActive) return;
+
 	for (auto& pComponent : m_Components)
 	{
 		if (pComponent->IsEnabled)
@@ -119,9 +139,16 @@ void Engine::GameObject::OnTriggerStay(GameObject* other)
 
 void Engine::GameObject::OnTriggerExit(GameObject* other)
 {
+	if (!m_IsActive) return;
+
 	for (auto& pComponent : m_Components)
 	{
 		if (pComponent->IsEnabled)
 			pComponent->OnTriggerExit(other);
 	}
+}
+
+void Engine::GameObject::SetActive(bool active)
+{
+	m_IsActive = active;
 }

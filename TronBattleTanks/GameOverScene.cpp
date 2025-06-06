@@ -11,18 +11,33 @@
 #include "StartGameCommand.h"
 #include "InputManager.h"
 #include "MenuComponent.h"
+#include "GameOverMenuComponent.h"
+#include "TextRenderer.h"
 #include "Scene.h"
 #include <SDL.h>
 
 using namespace Engine;
 
-void GameOverScene::CreateScene(EGameOverType)
+void GameOverScene::CreateScene(EGameOverType type)
 {
 	auto scene{ SceneManager::GetInstance().CreateScene("GameOver Scene") };
 
-	auto gameOverObjext{ std::make_unique<GameObject>() };
-	auto pFont{ ResourceManager::GetInstance().LoadFont("tron-arcade.otf",22) };
-	gameOverObjext->AddComponent<TextRenderer>("Game over press START to go to menu", pFont);
+	auto gameOverObject{ std::make_unique<GameObject>() };
+	gameOverObject->AddComponent<GameOverMenuComponent>();
 
-	scene->Add(std::move(gameOverObjext));
+	std::string text{ "Game Over" };
+
+	if (type != EGameOverType::LOST)
+	{
+		text = type == EGameOverType::PLAYER1WON ? "Player 1 Won!" : "Player 2 Won!";
+	}
+
+	auto pFont{ ResourceManager::GetInstance().LoadFont("tron-arcade.otf",30) };
+	auto gameOverText{ std::make_unique<GameObject>() };
+	gameOverText->GetTransform()->SetLocalPosition({ 50, 50 });
+	gameOverText->AddComponent<TextRenderer>(text, pFont, Engine::Color{ 0,0,255,255 });
+
+	scene->Add(std::move(gameOverText));
+	scene->Add(std::move(gameOverObject));
+	
 }

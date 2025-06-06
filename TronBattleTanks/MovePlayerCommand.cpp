@@ -9,7 +9,7 @@
 
 using namespace Engine;
 
-MovePlayerCommand::MovePlayerCommand(GameObject* pActor, InputType2D inputType, float speed):
+MovePlayerCommand::MovePlayerCommand(GameObject* pActor, InputType inputType, float speed):
 	Engine::GameActorCommand2D{ pActor, inputType }
 	, m_Speed{speed}
 	, m_pTransform{ pActor->GetComponent<Transform>() }

@@ -17,7 +17,7 @@
 #define PLAYER_01_POSITION Engine::Vector2{ 128, 188 }
 #define PLAYER_02_POSITION Engine::Vector2{ 228, 188 }
 
-#define START_BUTTON 0x010
+#define PRESS_BUTTON 0x010
 
 using namespace Engine;
 
@@ -34,12 +34,19 @@ GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pS
 	startGameCommand->SetTriggerState(Engine::TriggerState::PRESSED);
 
 	m_pStarGameCommand = startGameCommand.get();
-	InputManager::GetInstance().BindButton(0, START_BUTTON, std::move(startGameCommand));
+	InputManager::GetInstance().BindButton(0, PRESS_BUTTON, std::move(startGameCommand));
+
+	if (mode == GameMode::VS)
+	{
+		pScoreComponent->GetGameObject()->SetActive(false);
+	}
 }
 
 void GameLoop::Start()
 {
 	CreateStartText();
+
+	CreateLivesText();
 }
 
 void GameLoop::BeginGame()
@@ -66,7 +73,7 @@ void GameLoop::BeginGame()
 void GameLoop::OnNotify(Component* sender)
 {
 	std::vector<PlayerState>::iterator it;
-	if (IsPlayerEvent(sender,it))
+	if (IsPlayerEvent(sender, it))
 	{
 		auto& player{ *it };
 		player.Lives--;
@@ -78,6 +85,7 @@ void GameLoop::OnNotify(Component* sender)
 		{
 			const auto randomPos{ GetRandomMapLocation() };
 			player.pPlayer->GetTransform()->SetWorldLocation(randomPos);
+			player.pTextComp->SetText("P" + std::to_string(player.Index) + " Lives " + std::to_string(player.Lives));
 		}
 	}
 	else
@@ -130,6 +138,24 @@ void GameLoop::CreateStartText()
 	pScene->Add(std::move(startTextObject));
 }
 
+void GameLoop::CreateLivesText()
+{
+	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
+	const auto pFont{ ResourceManager::GetInstance().LoadFont("tron-arcade.otf",20) };
+
+	const int amountOfPlayers{ m_Mode == GameMode::SinglePlayer ? 1 : 2 };
+	constexpr float spacing{ 20.f };
+	m_pLivesTexts.resize(amountOfPlayers);
+	for (int index{ 0 }; index < amountOfPlayers; ++index)
+	{
+		auto livesObject{ std::make_unique<Engine::GameObject>() };
+		livesObject->GetTransform()->SetLocalPosition(250.f, index * spacing);
+		m_pLivesTexts[index] = livesObject->AddComponent<TextRenderer>("P" + std::to_string(index) + " Lives", pFont, Engine::Color{ 0,0,255,255 });
+
+		pScene->Add(std::move(livesObject));
+	}
+}
+
 void GameLoop::CreateSinglePlayerLoop()
 {
 	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
@@ -178,7 +204,7 @@ Engine::Vector2 GameLoop::GetRandomMapLocation() const
 
 void GameLoop::EndGame()
 {
-	InputManager::GetInstance().Unbind(0,m_pStarGameCommand);
+	InputManager::GetInstance().Unbind(0, m_pStarGameCommand);
 	switch (m_Mode)
 	{
 	case GameMode::SinglePlayer:
@@ -190,7 +216,7 @@ void GameLoop::EndGame()
 	case GameMode::VS:
 		if (m_pPlayers[0].Lives > 0) GameOverScene::CreateScene(EGameOverType::PLAYER1WON);
 		else GameOverScene::CreateScene(EGameOverType::PLAYER2WON);
-		break; 
+		break;
 	}
 }
 
@@ -222,10 +248,13 @@ void GameLoop::SpawnPlayer(int index, const Engine::Vector2& pos, Engine::Scene*
 {
 	if (m_pPlayers[index].pPlayer == nullptr)
 	{
-		m_pPlayers[index].pPlayer = PrefabFactory::AddPlayer(pScene);
+		m_pPlayers[index].Index = index;
+		m_pPlayers[index].pPlayer = PrefabFactory::AddPlayer(pScene, index);
 		m_pPlayers[index].pPlayer->GetTransform()->SetWorldLocation(pos);
 		m_pPlayers[index].pHealthComp = m_pPlayers[index].pPlayer->GetComponent<PlayerHealthComponent>();
 		m_pPlayers[index].pHealthComp->GetOnTakeDamage()->AddObserver(this);
 		m_pPlayers[index].Lives = 3;
+		m_pPlayers[index].pTextComp = m_pLivesTexts[index];
+		m_pPlayers[index].pTextComp->SetText("P" + std::to_string(index) + " Lives 3");
 	}
 }

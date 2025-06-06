@@ -4,7 +4,7 @@
 using namespace Engine;
 
 MenuMoveCommand::MenuMoveCommand(Engine::GameObject* pGameObject): 
-	GameActorCommand2D{ pGameObject,InputType2D::D_PAD },
+	GameActorCommand2D{ pGameObject,InputType::D_PAD },
 	m_pMenuComponent{ pGameObject->GetComponent<MenuComponent>() }
 {
 }

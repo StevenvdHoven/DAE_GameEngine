@@ -141,6 +141,9 @@
     <ClCompile Include="InputUnbinder.cpp">
       <Filter>Game\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="GameOverMenuComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Achievements.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="GameOverScene.h">
       <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverMenuComponent.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

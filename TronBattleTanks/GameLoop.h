@@ -25,14 +25,18 @@ enum struct GameState
 
 struct PlayerState
 {
+	int Index;
 	Engine::GameObject* pPlayer;
 	PlayerHealthComponent* pHealthComp;
+	Engine::TextRenderer* pTextComp;
 	int Lives;
 
 	PlayerState()
 	{
+		Index = 0;
 		pPlayer = nullptr;
 		pHealthComp = nullptr;
+		pTextComp = nullptr;
 		Lives = 3;
 		
 	}
@@ -56,6 +60,7 @@ public:
 private:
 	bool IsPlayerEvent(Component* pSender, auto& iterator);
 	void CreateStartText();
+	void CreateLivesText();
 
 	void CreateSinglePlayerLoop();
 	void CreatePVPPlayerLoop();
@@ -71,6 +76,7 @@ private:
 
 	Engine::GameObject* m_pMapObject;
 	std::vector< PlayerState> m_pPlayers;
+	std::vector<Engine::TextRenderer*> m_pLivesTexts;
 	std::forward_list<Engine::GameObject*> m_pSpawnedEnemies;
 	ScoreComponent* m_pScoreComponent;
 

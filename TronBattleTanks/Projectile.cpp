@@ -4,14 +4,16 @@
 #include "GameObject.h"
 #include "EnemyHealthComponent.h"
 #include "PlayerHealthComponent.h"
+#include "EngineTime.h"
 
 using namespace Engine;
 
-Projectile::Projectile(Engine::GameObject* pOwner, EProjectileTarget targetType, int damage, float speed, int bounces, LayerMask ignoreLayer):
+Projectile::Projectile(Engine::GameObject* pOwner, EProjectileTarget targetType, int damage, float speed, int bounces, float lifeTime, LayerMask ignoreLayer):
 	Engine::Component(pOwner)
 	, m_TargetType{targetType}
 	, m_Damage{ damage }
 	, m_Bounces{ bounces }
+	, m_LifeTimer{lifeTime}
 	, m_IgnoreLayer{ignoreLayer}
 	, m_Speed{ speed }
 	, m_pSender{ nullptr }
@@ -26,6 +28,15 @@ Projectile::Projectile(Engine::GameObject* pOwner, EProjectileTarget targetType,
 
 void Projectile::Start()
 {
+}
+
+void Projectile::Update()
+{
+	m_LifeTimer -= Time::GetInstance().GetDeltaTime();
+	if (m_LifeTimer < 0)
+	{
+		Destroy(GetGameObject());
+	}
 }
 
 void Projectile::Launch(Engine::GameObject* pSender, const Engine::Vector2& direction)

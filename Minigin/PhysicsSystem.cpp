@@ -48,6 +48,10 @@ bool Engine::PhysicsSystem::CheckCollisions(Collider* collider)
 
 			if (!pOther->IsEnabled) return;
 
+			const auto& ignoreMask{ collider->GetIgnoreLayerMask() };
+			auto it{ std::find(ignoreMask.begin(),ignoreMask.end(),pOther->GetLayerMask()) };
+			if (it != ignoreMask.end()) return;
+
 			if (pOther->IsOverlapping(collider))
 			{
 				EvaluteOverlappingColliders(collider, pOther, true);

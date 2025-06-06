@@ -10,7 +10,7 @@ namespace Engine
 class MovePlayerCommand : public Engine::GameActorCommand2D
 {
 public:
-	MovePlayerCommand(Engine::GameObject* pActor, InputType2D inputType, float speed);
+	MovePlayerCommand(Engine::GameObject* pActor, InputType inputType, float speed);
 	void Execute(const Engine::Vector2& value) override;
 private:
 	float m_Speed;

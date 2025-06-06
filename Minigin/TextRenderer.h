@@ -27,6 +27,7 @@ namespace Engine
 
 		Engine::Color& Color()
 		{
+			m_needsUpdate = true;
 			return m_TextColor;
 		}
 	private:

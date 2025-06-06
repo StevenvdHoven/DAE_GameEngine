@@ -20,7 +20,7 @@ EnemyBrain::EnemyBrain(Engine::GameObject* pOwner, float pathUpdateTime, float s
 	m_pEnemyMovement{ nullptr },
 	m_pGame{ pGame },
 	m_ShootRate{shootRate},
-	m_ShootTimer{0.f},
+	m_ShootTimer{ shootRate },
 	m_ShootCommand{ std::move(shootCommand) }
 {
 }
@@ -48,20 +48,20 @@ void EnemyBrain::Update()
 	}
 }
 
-void EnemyBrain::Render() const
-{
-	const Engine::Vector2 origin{ GetGameObject()->GetTransform()->GetWorldLocation() };
-	const Engine::Vector2 forward{ GetGameObject()->GetTransform()->GetForward() };
-	
-	Renderer::GetInstance().SetColor({ 255,0,0,255 });
-	Renderer::GetInstance().RenderLine(origin, origin + forward * 1000);
-
-	if (m_TestHit)
-	{
-		Renderer::GetInstance().SetColor({ 255,0,255,255 });
-		Renderer::GetInstance().RenderLine(origin, m_TestHit->GetTransform()->GetWorldLocation());
-	}
-}
+//void EnemyBrain::Render() const
+//{
+//	const Engine::Vector2 origin{ GetGameObject()->GetTransform()->GetWorldLocation() };
+//	const Engine::Vector2 forward{ GetGameObject()->GetTransform()->GetForward() };
+//	
+//	Renderer::GetInstance().SetColor({ 255,0,0,255 });
+//	Renderer::GetInstance().RenderLine(origin, origin + forward * 1000);
+//
+//	if (m_TestHit)
+//	{
+//		Renderer::GetInstance().SetColor({ 255,0,255,255 });
+//		Renderer::GetInstance().RenderLine(origin, m_TestHit->GetTransform()->GetWorldLocation());
+//	}
+//}
 
 void EnemyBrain::CheckForShoot()
 {

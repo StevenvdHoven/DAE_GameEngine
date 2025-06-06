@@ -45,15 +45,17 @@ namespace Engine
 	class ValueCommand
 	{
 	public:
-		enum class InputType2D
+		enum class InputType
 		{
 			LEFT_STICK,
 			RIGHT_STICK,
 			D_PAD,
 			WASD,
-			ARROW_KEYS
+			ARROW_KEYS,
+			RIGHT_TRIGGER,
+			LEFT_TRIGGER
 		};
-		ValueCommand() : m_DeviceType{DeviceType::KEYBOARD},  m_InputType(InputType2D::LEFT_STICK), m_TriggerState(TriggerState::PRESSED)
+		ValueCommand() : m_DeviceType{DeviceType::KEYBOARD},  m_InputType(InputType::LEFT_STICK), m_TriggerState(TriggerState::PRESSED)
 		{
 
 		}
@@ -62,8 +64,8 @@ namespace Engine
 		virtual void Execute(const ValueType& value) = 0;
 
 	public:
-		InputType2D GetInputType() const { return m_InputType; }
-		void SetInputType(InputType2D inputType) { m_InputType = inputType; }
+		InputType GetInputType() const { return m_InputType; }
+		void SetInputType(InputType inputType) { m_InputType = inputType; }
 
 		DeviceType GetDeviceType() const { return m_DeviceType; }
 		void ChangeDeviceType(DeviceType deviceType) { m_DeviceType = deviceType; }
@@ -74,7 +76,7 @@ namespace Engine
 	protected:
 
 		DeviceType m_DeviceType;
-		InputType2D m_InputType;
+		InputType m_InputType;
 		TriggerState m_TriggerState;
 	};
 
@@ -97,11 +99,30 @@ namespace Engine
 
 	};
 
+	template<typename ValueType>
+	class GameActorValueCommand : public ValueCommand<float>
+	{
+	public:
+		GameActorValueCommand(GameObject* pActor, ValueCommand::InputType inputType) :
+			m_pActor{ pActor }
+		{
+			m_DeviceType = DeviceType::KEYBOARD;
+			m_InputType = inputType;
+			m_TriggerState = TriggerState::HELD;
+		}
+
+		virtual void Execute(const float& value) override = 0;
+	protected:
+		GameObject* GetActor() const { return m_pActor; }
+	private:
+		GameObject* m_pActor;
+	};
+
 	class GameActorCommand2D : public ValueCommand<Vector2>
 	{
 	
 	public:
-		GameActorCommand2D(GameObject* pActor, ValueCommand::InputType2D inputType) : m_pActor(pActor)
+		GameActorCommand2D(GameObject* pActor, ValueCommand::InputType inputType) : m_pActor(pActor)
 		{
 			m_DeviceType = DeviceType::KEYBOARD;
 			m_InputType = inputType;

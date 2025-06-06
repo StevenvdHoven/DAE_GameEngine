@@ -18,10 +18,11 @@ enum struct EProjectileTarget
 class Projectile : public Engine::Component
 {
 public:
-	Projectile(Engine::GameObject* pOwner, EProjectileTarget targetType, int damage, float speed, int bounces, Engine::LayerMask ignoreLayer);
+	Projectile(Engine::GameObject* pOwner, EProjectileTarget targetType, int damage, float speed, int bounces,float lifeTime, Engine::LayerMask ignoreLayer);
 	~Projectile() override = default;
 
 	void Start() override;
+	void Update() override;
 	void Launch(Engine::GameObject* pSender, const Engine::Vector2& direction);
 
 	void OnTriggerEnter(Engine::GameObject* other) override;
@@ -32,6 +33,7 @@ private:
 	EProjectileTarget m_TargetType;
 	int m_Damage;
 	int m_Bounces;
+	float m_LifeTimer;
 	Engine::LayerMask m_IgnoreLayer;
 	float m_Speed;
 	Engine::GameObject* m_pSender;

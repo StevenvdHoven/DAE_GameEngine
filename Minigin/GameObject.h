@@ -28,6 +28,8 @@ namespace Engine
 		void OnTriggerStay(GameObject* other);
 		void OnTriggerExit(GameObject* other);
 
+		void SetActive(bool active);
+
 		GameObject();
 		~GameObject();
 
@@ -46,6 +48,7 @@ namespace Engine
 		friend class Scene;
 
 		bool m_IsDestroyed{ false };
+		bool m_IsActive{ true };
 		Transform* m_pTransform{ nullptr };
 		std::vector<std::unique_ptr<Component>> m_Components;
 	};
