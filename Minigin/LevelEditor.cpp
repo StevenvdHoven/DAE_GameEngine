@@ -11,7 +11,7 @@ using namespace Engine;
 
 LevelEditor::LevelEditor():
 	m_EditingScene{nullptr}
-{
+{	
 }
 
 LevelEditor::~LevelEditor()

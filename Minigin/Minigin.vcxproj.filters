@@ -192,6 +192,9 @@
     <ClInclude Include="GraphEditor.h">
       <Filter>Editors\GraphEditor</Filter>
     </ClInclude>
+    <ClInclude Include="LevelEditorCommands.h">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -313,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="GraphEditor.cpp">
       <Filter>Editors\GraphEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelEditorCommands.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
