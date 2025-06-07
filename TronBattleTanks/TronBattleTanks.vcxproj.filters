@@ -69,9 +69,6 @@
     <ClCompile Include="ScoreComponent.cpp">
       <Filter>Game\Player</Filter>
     </ClCompile>
-    <ClCompile Include="FPSCounterComponent.cpp">
-      <Filter>Game\Tools</Filter>
-    </ClCompile>
     <ClCompile Include="RotatorComponent.cpp">
       <Filter>Game\Tools</Filter>
     </ClCompile>
@@ -129,9 +126,6 @@
     <ClCompile Include="EnemyMovement.cpp">
       <Filter>Game\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyBrain.cpp">
-      <Filter>Game\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyShootCommand.cpp">
       <Filter>Game\Enemy\Commands</Filter>
     </ClCompile>
@@ -143,6 +137,9 @@
     </ClCompile>
     <ClCompile Include="GameOverMenuComponent.cpp">
       <Filter>Game\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBrain.cpp">
+      <Filter>Game\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -166,9 +163,6 @@
     </ClInclude>
     <ClInclude Include="PlayerHealthComponent.h">
       <Filter>Game\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="FPSCounterComponent.h">
-      <Filter>Game\Tools</Filter>
     </ClInclude>
     <ClInclude Include="RotatorComponent.h">
       <Filter>Game\Tools</Filter>

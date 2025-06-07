@@ -90,6 +90,11 @@ void GameOverMenuComponent::OnButtonPress()
 	}
 }
 
+std::string GameOverMenuComponent::GetTypeName() const
+{
+	return "GameOverMenuComponent";
+}
+
 void GameOverMenuComponent::CreateNavigationTexts()
 {
 	auto pScene{ SceneManager::GetInstance().GetActiveScene() };

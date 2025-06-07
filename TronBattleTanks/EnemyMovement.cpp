@@ -216,3 +216,8 @@ void EnemyMovement::CaculateRotation(Engine::Vector2 direction)
 	GetGameObject()->GetTransform()->SetLocalRotation(rot);
 }
 
+std::string EnemyMovement::GetTypeName() const
+{
+	return "EnemyMovement";
+}
+

@@ -33,3 +33,8 @@ void ScoreComponent::AddScore(int score)
 
 	m_OnScoreChange->Notify(this);
 }
+
+std::string ScoreComponent::GetTypeName() const
+{
+	return "ScoreComponent";
+}

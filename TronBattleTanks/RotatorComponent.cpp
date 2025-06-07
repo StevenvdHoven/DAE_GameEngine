@@ -5,6 +5,11 @@
 
 using namespace Engine;
 
+RotatorComponent::RotatorComponent(Engine::GameObject* pOwner):
+	RotatorComponent{pOwner,Engine::Vector2{},false,0,0,0}
+{
+}
+
 RotatorComponent::RotatorComponent(GameObject* pOwner, const Vector2& center, bool clockWise, float rotationDistance, float angle, float speed):
 	Component{ pOwner },
 	m_Center{ center },
@@ -23,5 +28,10 @@ void RotatorComponent::Update()
 		m_Angle += m_Speed * Time::GetInstance().GetDeltaTime();
 	
 	GetGameObject()->GetTransform()->SetLocalPosition(m_Center + Vector2{ cos(m_Angle) * m_RotationDistance, sin(m_Angle) * m_RotationDistance });
+}
+
+std::string RotatorComponent::GetTypeName() const
+{
+	return "RotatorComponent";
 }
 

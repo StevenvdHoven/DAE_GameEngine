@@ -40,6 +40,24 @@
     <Filter Include="Editors">
       <UniqueIdentifier>{a592a2d4-56c9-42b6-bbad-3aafe1028e60}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Managers\Services\ComponentRegistery">
+      <UniqueIdentifier>{213c23e1-b084-4f2c-bd26-79ba8c1b6ea0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\Services\PathFinding">
+      <UniqueIdentifier>{129f8124-888a-484f-ac49-a1eed069bae9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\Services\SoundSystem">
+      <UniqueIdentifier>{25fd8ea3-ccbd-4cf3-92d2-30c2f60140d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\Services\PhysicsSystem">
+      <UniqueIdentifier>{8bc5bdc5-dd37-403e-a56f-daeb5ae6d5de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editors\LevelEditor">
+      <UniqueIdentifier>{aeee71ab-89c7-4183-8b7d-e100c50a5ab7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editors\GraphEditor">
+      <UniqueIdentifier>{780b0829-d7a8-4314-ab5a-7853d3483f63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -129,12 +147,6 @@
     <ClInclude Include="ServiceLocator.h">
       <Filter>Managers\Services</Filter>
     </ClInclude>
-    <ClInclude Include="SoundSystem.h">
-      <Filter>Managers\Services</Filter>
-    </ClInclude>
-    <ClInclude Include="SDL_SoundSystem.h">
-      <Filter>Managers\Services</Filter>
-    </ClInclude>
     <ClInclude Include="BoxCollider2D.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -143,9 +155,6 @@
     </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsSystem.h">
-      <Filter>Managers\Services</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsBody.h">
       <Filter>Components</Filter>
@@ -156,20 +165,32 @@
     <ClInclude Include="GrapEditorCommands.h">
       <Filter>EngineCommands</Filter>
     </ClInclude>
-    <ClInclude Include="GraphEditor.h">
-      <Filter>Editors</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngine.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="json.hpp">
       <Filter>DataTypes</Filter>
     </ClInclude>
-    <ClInclude Include="PathFinding.h">
-      <Filter>Managers\Services</Filter>
+    <ClInclude Include="LevelEditor.h">
+      <Filter>Editors\LevelEditor</Filter>
     </ClInclude>
     <ClInclude Include="ComponentRegistery.h">
-      <Filter>Managers\Services</Filter>
+      <Filter>Managers\Services\ComponentRegistery</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFinding.h">
+      <Filter>Managers\Services\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundSystem.h">
+      <Filter>Managers\Services\SoundSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL_SoundSystem.h">
+      <Filter>Managers\Services\SoundSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsSystem.h">
+      <Filter>Managers\Services\PhysicsSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphEditor.h">
+      <Filter>Editors\GraphEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -254,12 +275,6 @@
     <ClCompile Include="ServiceLocator.cpp">
       <Filter>Managers\Services</Filter>
     </ClCompile>
-    <ClCompile Include="SoundSystem.cpp">
-      <Filter>Managers\Services</Filter>
-    </ClCompile>
-    <ClCompile Include="SDL_SoundSystem.cpp">
-      <Filter>Managers\Services</Filter>
-    </ClCompile>
     <ClCompile Include="BoxCollider2D.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -268,9 +283,6 @@
     </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsSystem.cpp">
-      <Filter>Managers\Services</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsBody.cpp">
       <Filter>Components</Filter>
@@ -281,14 +293,26 @@
     <ClCompile Include="GrapEditorCommands.cpp">
       <Filter>EngineCommands</Filter>
     </ClCompile>
-    <ClCompile Include="GraphEditor.cpp">
-      <Filter>Editors</Filter>
-    </ClCompile>
-    <ClCompile Include="PathFinding.cpp">
-      <Filter>Managers\Services</Filter>
+    <ClCompile Include="LevelEditor.cpp">
+      <Filter>Editors\LevelEditor</Filter>
     </ClCompile>
     <ClCompile Include="ComponentRegistery.cpp">
-      <Filter>Managers\Services</Filter>
+      <Filter>Managers\Services\ComponentRegistery</Filter>
+    </ClCompile>
+    <ClCompile Include="PathFinding.cpp">
+      <Filter>Managers\Services\PathFinding</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundSystem.cpp">
+      <Filter>Managers\Services\SoundSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL_SoundSystem.cpp">
+      <Filter>Managers\Services\SoundSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsSystem.cpp">
+      <Filter>Managers\Services\PhysicsSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphEditor.cpp">
+      <Filter>Editors\GraphEditor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

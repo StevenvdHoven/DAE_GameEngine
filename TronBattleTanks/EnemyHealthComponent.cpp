@@ -21,3 +21,8 @@ Engine::Subject& EnemyHealthComponent::OnTakeDamage() const
 {
 	return *OnTakeDamageEvent;
 }
+
+std::string EnemyHealthComponent::GetTypeName() const
+{
+	return "EnemyHealthComponent";
+}

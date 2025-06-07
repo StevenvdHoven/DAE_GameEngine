@@ -1,6 +1,11 @@
 #include "InputUnbinder.h"
 #include "InputManager.h"
 
+InputUnbinder::InputUnbinder(Engine::GameObject* pOwner):
+	InputUnbinder{pOwner,0,std::vector<void*>{}}
+{
+}
+
 InputUnbinder::InputUnbinder(Engine::GameObject* pOwner, int playerIndex, std::vector<void*>&& pCommands):
 	Component{pOwner},
 	m_PlayerIndex{playerIndex},
@@ -16,4 +21,9 @@ InputUnbinder::~InputUnbinder()
 		{
 			inputInstance.Unbind(m_PlayerIndex, pCommand);
 		});
+}
+
+std::string InputUnbinder::GetTypeName() const
+{
+	return "InputUnbinder";
 }

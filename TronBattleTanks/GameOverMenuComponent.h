@@ -20,6 +20,8 @@ public:
 	void NavigateMenu(const Engine::Vector2& direction);
 	void OnButtonPress();
 
+
+	std::string GetTypeName() const override;
 private:
 	void CreateNavigationTexts();
 

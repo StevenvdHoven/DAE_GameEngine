@@ -97,6 +97,42 @@ void Engine::Scene::MoveScene(const Vector2& delta)
 
 nlohmann::json Engine::Scene::Seriliaze() const
 {
-	return nlohmann::json();
+	nlohmann::json sceneJson;
+	sceneJson["scene_name"] = m_name;
+
+	nlohmann::json rootObjectsJson = nlohmann::json::array();
+	for (const auto& gameObject : m_objects)
+	{
+		if (gameObject->GetTransform()->GetParent() != nullptr) continue;
+
+		nlohmann::json goJson;
+		gameObject->Serialize(goJson);
+		rootObjectsJson.emplace_back(goJson);
+	}
+
+	sceneJson["root_game_objects"] = rootObjectsJson;
+
+	return sceneJson;
+}
+
+void Engine::Scene::Deserialize(nlohmann::json& in)
+{
+	RemoveAll();
+
+	m_name = in.value("scene_name", "Unnamed Scene");
+	m_Started = false;
+
+	if (!in.contains("root_game_objects"))
+		return;
+
+	const auto& rootObjectsJson = in["root_game_objects"];
+
+	for (const auto& goJson : rootObjectsJson)
+	{
+		auto gameObject = std::make_unique<GameObject>();
+		gameObject->Deserialize(const_cast<nlohmann::json&>(goJson));
+
+		Add(std::move(gameObject));
+	}
 }
 

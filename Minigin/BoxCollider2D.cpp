@@ -6,6 +6,11 @@
 
 using namespace Engine;
 
+Engine::BoxCollider2D::BoxCollider2D(GameObject* pOwner):
+	BoxCollider2D{pOwner,{},false}
+{
+}
+
 BoxCollider2D::BoxCollider2D(GameObject* pOwner, const Vector2& size, bool isTrigger, LayerMask mask):
 	Collider(pOwner,mask),
 	m_Size(size)

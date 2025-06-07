@@ -34,8 +34,8 @@ namespace Engine
         virtual void OnTriggerStay(GameObject* other);
         virtual void OnTriggerExit(GameObject* other);
 
-        virtual void Serialize(nlohmann::json& out) const = 0;
-        virtual void Deserialize(const nlohmann::json& in) = 0;
+        virtual void Serialize(nlohmann::json&) const {};
+        virtual void Deserialize(const nlohmann::json&) {};
         virtual std::string GetTypeName() const = 0;
 
         void Destroy(GameObject* pGameObject);

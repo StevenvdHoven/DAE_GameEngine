@@ -14,3 +14,8 @@ void PlayerHealthComponent::TakeDamage(int)
 	m_OnTakeDamage->Notify(this);
 }
 
+std::string PlayerHealthComponent::GetTypeName() const
+{
+	return "PlayerHealthComponent";
+}
+

@@ -81,6 +81,11 @@ void MenuComponent::SetGameMode(GameMode mode)
 	}
 }
 
+std::string MenuComponent::GetTypeName() const
+{
+	return "MenuComponent";
+}
+
 void MenuComponent::CreateMenuPlayer()
 {
 	auto scene = SceneManager::GetInstance().GetActiveScene();

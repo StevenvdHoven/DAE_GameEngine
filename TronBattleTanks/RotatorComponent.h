@@ -7,9 +7,11 @@
 class RotatorComponent final : public Engine::Component
 {
 public:
+	RotatorComponent(Engine::GameObject* pOwner);
 	RotatorComponent(Engine::GameObject* pOwner,const Engine::Vector2& center,bool clockWise, float rotationDistance, float angle, float speed);
 	void Update() override;
 
+	std::string GetTypeName() const override;
 private:
 	Engine::Vector2 m_Center;
 	bool m_ClockWise;

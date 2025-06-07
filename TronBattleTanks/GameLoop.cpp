@@ -116,6 +116,11 @@ Engine::GameObject* const GameLoop::GetRandomPlayer() const
 	return m_pPlayers[randomPlayer].pPlayer;
 }
 
+std::string GameLoop::GetTypeName() const
+{
+	return "GameLoop";
+}
+
 bool GameLoop::IsPlayerEvent(Component* pSender, auto& iterator)
 {
 	iterator = std::find_if(m_pPlayers.begin(), m_pPlayers.end(), [pSender](PlayerState state)

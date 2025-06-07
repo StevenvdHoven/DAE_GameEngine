@@ -32,6 +32,8 @@ namespace Engine
 		void MoveScene(const Vector2& delta);
 
 		nlohmann::json Seriliaze() const;
+		void Deserialize(nlohmann::json& out);
+		std::string& Name() const { return m_name; }
 
 	private:
 

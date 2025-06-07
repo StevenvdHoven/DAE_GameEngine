@@ -57,6 +57,8 @@ public:
 
 	const GameState& GetGameState() const { return m_GameState; }
 	Engine::GameObject* const GetRandomPlayer() const;
+
+	std::string GetTypeName() const override;
 private:
 	bool IsPlayerEvent(Component* pSender, auto& iterator);
 	bool IsAllPlayersDead();

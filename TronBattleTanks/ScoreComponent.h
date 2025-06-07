@@ -17,6 +17,8 @@ public:
 
 	Engine::Subject* GetOnScoreChange() const { return m_OnScoreChange.get(); }
 
+	std::string GetTypeName() const override;
+
 private:
 	int m_Score;
 	Engine::TextRenderer* m_pTextRenderer;

@@ -14,6 +14,9 @@ public:
 	// Inherited via IDamageable
 	void TakeDamage(int damage) override;
 	Engine::Subject& OnTakeDamage() const;
+
+
+	std::string GetTypeName() const override;
 private:
 	mutable int m_Health;
 	std::unique_ptr<Engine::Subject> OnTakeDamageEvent;

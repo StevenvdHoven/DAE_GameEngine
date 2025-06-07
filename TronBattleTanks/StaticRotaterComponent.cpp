@@ -4,6 +4,11 @@
 
 using namespace Engine;
 
+StaticRotaterComponent::StaticRotaterComponent(Engine::GameObject* pOwner):
+	StaticRotaterComponent{pOwner,0,0}
+{
+}
+
 StaticRotaterComponent::StaticRotaterComponent(Engine::GameObject* pOwner, float rotationRate, int rotationSteps):
 	Component(pOwner),
 	m_Rotate{false},
@@ -52,4 +57,9 @@ void StaticRotaterComponent::SetTargetRotation(float targetRotation)
 
 	m_CurrentRotationStep = 0;
 	m_RotationTimer = 0.f;
+}
+
+std::string StaticRotaterComponent::GetTypeName() const
+{
+	return "StaticRotaterComponent";
 }

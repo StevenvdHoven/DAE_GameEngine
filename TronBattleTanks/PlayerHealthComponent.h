@@ -13,7 +13,11 @@ public:
 
 	Engine::Subject* GetOnTakeDamage() const { return m_OnTakeDamage.get(); }
 
+	std::string GetTypeName() const override;
+
 private:
 	std::unique_ptr<Engine::Subject> m_OnTakeDamage;
+
+	
 };
 

@@ -5,6 +5,7 @@
 #include "GraphEditor.h"
 #include "PathFinding.h"
 #include "ComponentRegistery.h"
+#include "LevelEditor.h"
 
 namespace Engine
 {
@@ -13,6 +14,7 @@ namespace Engine
 		static std::unique_ptr<SoundSystem> m_SoundSystem;
 		static std::unique_ptr<PhysicsSystem> m_PhysicsSystem;
 		static std::unique_ptr<GraphEditor> m_GraphEditor;
+		static std::unique_ptr<LevelEditor> m_LevelEditor;
 		static std::unique_ptr<PathFinding> m_PathFinding;
 		static std::unique_ptr<ComponentRegistery> m_ComponentRegistery;
 	public:
@@ -29,7 +31,10 @@ namespace Engine
 		{
 			return *m_GraphEditor;
 		}
-
+		static LevelEditor& GetLevelEditor()
+		{
+			return *m_LevelEditor;
+		}
 		static PathFinding& GetPathFinding() 
 		{
 			return *m_PathFinding;
@@ -47,6 +52,10 @@ namespace Engine
 		static void RegisterPhysicsSystem(std::unique_ptr<PhysicsSystem>&& physicsSystem)
 		{
 			m_PhysicsSystem = std::move(physicsSystem);
+		}
+		static void RegisterLevelEditor(std::unique_ptr<LevelEditor>&& levelEditor)
+		{
+			m_LevelEditor = std::move(levelEditor);
 		}
 		static void RegisterGraphEditor(std::unique_ptr<GraphEditor>&& graphEditor)
 		{

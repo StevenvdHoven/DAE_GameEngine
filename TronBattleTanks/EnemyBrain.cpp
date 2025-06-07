@@ -63,6 +63,11 @@ void EnemyBrain::Update()
 //	}
 //}
 
+std::string EnemyBrain::GetTypeName() const
+{
+	return "EnemyBrain";
+}
+
 void EnemyBrain::CheckForShoot()
 {
 	if (m_ShootTimer <= m_ShootRate)

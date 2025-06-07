@@ -38,5 +38,8 @@ private:
 	float m_Speed;
 	Engine::GameObject* m_pSender;
 	Engine::PhysicsBody* m_pBody;
+
+	// Inherited via Component
+	std::string GetTypeName() const override;
 };
 

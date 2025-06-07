@@ -29,6 +29,8 @@ public:
 	void SetTargetPosition(const Engine::Vector2& targetPos);
 	bool CheckDirection(const Engine::Vector2& newDirection) const;
 
+	std::string GetTypeName() const override;
+
 private:
 	void FollowPathMethod();
 	void DirectionMethod();
@@ -43,5 +45,7 @@ private:
 	Engine::PhysicsBody* m_Body;
 	std::list<Engine::NavigationNode> m_CurrentPath;
 	Engine::Graph* m_MapGraph;
+
+	
 };
 

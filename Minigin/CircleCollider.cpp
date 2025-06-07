@@ -7,6 +7,11 @@
 
 using namespace Engine;
 
+Engine::CircleCollider::CircleCollider(GameObject* pOwner):
+	CircleCollider{pOwner,0,false}
+{
+}
+
 Engine::CircleCollider::CircleCollider(GameObject* pOwner, float radius, bool isTrigger, LayerMask mask):
 	Collider(pOwner,mask),
 	m_Radius(radius)

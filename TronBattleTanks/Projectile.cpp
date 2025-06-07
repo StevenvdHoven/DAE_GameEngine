@@ -123,3 +123,8 @@ bool Projectile::HandleEnemy(Engine::GameObject* other)
 
 	return false;
 }
+
+std::string Projectile::GetTypeName() const
+{
+	return "Projectile";
+}

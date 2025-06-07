@@ -65,7 +65,6 @@ void Engine::GraphEditor::GUI()
 	
 	delete[] buffer;
 
-
 	ImGui::Checkbox("Show Nodes", &m_ShowNodes);
 	ImGui::Checkbox("Draw Nodes", &m_DrawNodes);
 

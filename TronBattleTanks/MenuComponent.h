@@ -19,6 +19,7 @@ public:
 
 	void SetGameMode(GameMode mode);
 
+	std::string GetTypeName() const override;
 private:
 	void CreateMenuPlayer();
 
