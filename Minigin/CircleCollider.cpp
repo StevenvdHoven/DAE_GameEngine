@@ -121,3 +121,26 @@ void Engine::CircleCollider::DebugRender()
 	Renderer::GetInstance().SetColor({ 255, 0, 0, 255 });
 	Renderer::GetInstance().RenderRectangle(pos, radius, radius);
 }
+
+void Engine::CircleCollider::Serialize(nlohmann::json& out) const
+{
+	Collider::Serialize(out);
+
+	nlohmann::json circleColliderJson;
+	circleColliderJson["circle_collider_radius"] = m_Radius;
+	out["component_circle_collider"] = circleColliderJson;
+
+}
+
+void Engine::CircleCollider::Deserialize(const nlohmann::json& in)
+{
+	Collider::Deserialize(in);
+
+	nlohmann::json circleColliderJson{ in["component_circle_collider"] };
+	m_Radius = circleColliderJson["circle_collider_radius"];
+}
+
+std::string Engine::CircleCollider::GetTypeName() const
+{
+	return "CircleCollider";
+}

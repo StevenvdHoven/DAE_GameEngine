@@ -9,6 +9,11 @@
 
 using namespace Engine;
 
+Engine::TextRenderer::TextRenderer(GameObject* pOwner):
+	TextRenderer{ pOwner,"",nullptr,Engine::Color{0,0,0,0} }
+{
+}
+
 Engine::TextRenderer::TextRenderer(GameObject* pOwner, const std::string& text, Font* font, const Engine::Color& textColor) :
 	Component{pOwner}, 
 	m_needsUpdate{ true },
@@ -17,6 +22,28 @@ Engine::TextRenderer::TextRenderer(GameObject* pOwner, const std::string& text, 
 	m_font{ std::move(font) },
 	m_textTexture{ nullptr }
 { }
+
+void Engine::TextRenderer::Serialize(nlohmann::json & json) const
+{
+	nlohmann::json textRendererJson;
+	textRendererJson["textrenderer_text"] = m_text;
+	textRendererJson["textrenderer_color"] = m_TextColor.Serialize();
+	json["component_text_renderer"] = textRendererJson;
+}
+
+void Engine::TextRenderer::Deserialize(const nlohmann::json& json)
+{
+	nlohmann::json textRendererJson{ json["component_text_renderer"] };
+
+	m_needsUpdate = true;
+	m_text = textRendererJson["textrender_text"];
+	m_TextColor.Desrialize(textRendererJson["textrenderer_color"]);
+}
+
+std::string Engine::TextRenderer::GetTypeName() const
+{
+	return "TextRenderer";
+}
 
 void Engine::TextRenderer::Update()
 {

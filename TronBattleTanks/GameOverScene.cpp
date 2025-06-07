@@ -18,12 +18,12 @@
 
 using namespace Engine;
 
-void GameOverScene::CreateScene(EGameOverType type)
+void GameOverScene::CreateScene(EGameOverType type, GameMode mode, int score)
 {
 	auto scene{ SceneManager::GetInstance().CreateScene("GameOver Scene") };
 
 	auto gameOverObject{ std::make_unique<GameObject>() };
-	gameOverObject->AddComponent<GameOverMenuComponent>();
+	gameOverObject->AddComponent<GameOverMenuComponent>(mode);
 
 	std::string text{ "Game Over" };
 
@@ -37,6 +37,15 @@ void GameOverScene::CreateScene(EGameOverType type)
 	gameOverText->GetTransform()->SetLocalPosition({ 50, 50 });
 	gameOverText->AddComponent<TextRenderer>(text, pFont, Engine::Color{ 0,0,255,255 });
 
+	if (mode != GameMode::VS)
+	{
+		auto ScoreText{ std::make_unique<GameObject>() };
+		ScoreText->GetTransform()->SetLocalPosition({ 50,200 });
+		ScoreText->AddComponent<TextRenderer>("Score " + std::to_string(score), pFont, Engine::Color{ 0,0,255,255 });
+
+		scene->Add(std::move(ScoreText));
+	}
+	
 	scene->Add(std::move(gameOverText));
 	scene->Add(std::move(gameOverObject));
 	

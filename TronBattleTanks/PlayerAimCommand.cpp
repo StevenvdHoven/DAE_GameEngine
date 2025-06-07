@@ -19,7 +19,7 @@ void PlayerAimCommand::Execute(const Engine::Vector2& value)
 	rotation = fmodf(rotation + 360.f, 360.f);
 	for (float angle{ 0 }; angle < 360.f; angle += 45.f)
 	{
-		if (rotation < angle + 45.f)
+		if (rotation < angle + 55.f && rotation > angle - 35.f)
 		{
 			rotation = angle;
 			break;

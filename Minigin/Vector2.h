@@ -1,6 +1,6 @@
 #pragma once
 #include <cmath>
-
+#include "json.hpp"
 
 namespace Engine
 {
@@ -102,6 +102,21 @@ namespace Engine
 		{
 			return *this - normal * 2 * Dot(normal);
 		}
+
+		nlohmann::json Serialize() const
+		{
+			nlohmann::json seriliazedVector2;
+			seriliazedVector2["x"] = x;
+			seriliazedVector2["y"] = y;
+			return seriliazedVector2;
+		}
+
+		void Deserialize(nlohmann::json& json)
+		{
+			x = json["x"];
+			y = json["y"];
+		}
+		
 
 		static float Distance(const Vector2& a, const Vector2& b)
 		{

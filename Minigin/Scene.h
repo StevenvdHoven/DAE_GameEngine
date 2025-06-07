@@ -13,6 +13,12 @@ namespace Engine
 		explicit Scene(const std::string& name);
 		~Scene() = default;
 
+
+		Scene(const Scene& other) = delete;
+		Scene(Scene&& other) = delete;
+		Scene& operator=(const Scene& other) = delete;
+		Scene& operator=(Scene&& other) = delete;
+
 		void Add(std::unique_ptr<GameObject> object);
 		void Remove(GameObject* object);
 		void RemoveAll();
@@ -25,10 +31,7 @@ namespace Engine
 
 		void MoveScene(const Vector2& delta);
 
-		Scene(const Scene& other) = delete;
-		Scene(Scene&& other) = delete;
-		Scene& operator=(const Scene& other) = delete;
-		Scene& operator=(Scene&& other) = delete;
+		nlohmann::json Seriliaze() const;
 
 	private:
 

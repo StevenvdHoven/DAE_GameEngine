@@ -35,6 +35,16 @@ void Engine::SceneManager::Render()
 	m_pActiveScene->Render();
 }
 
+void Engine::SceneManager::SaveScene()
+{
+
+}
+
+Engine::Scene* Engine::SceneManager::LoadScene(const std::string& filePath)
+{
+	return nullptr;
+}
+
 Engine::Scene* Engine::SceneManager::CreateScene(const std::string& name)
 {
 	auto scene = std::make_unique<Scene>(name);

@@ -20,7 +20,7 @@ void load()
 	//TestScene::CreateScene();
 	//BattleScene::CreateScene();
 	//MainMenu::CreateScene();
-	GameOverScene::CreateScene(EGameOverType::LOST);
+	GameOverScene::CreateScene(EGameOverType::LOST,GameMode::VS,1000);
 	//ColliderTestScene::CreateScene();
 	//MultiPlayerTestScene::CreateScene();
 }

@@ -24,8 +24,9 @@ void GameOverMenu::NavigationCommand::Execute(const Engine::Vector2& input)
 	m_pGameOverMenu->NavigateMenu(input);
 }
 
-GameOverMenuComponent::GameOverMenuComponent(Engine::GameObject* pOwner):
+GameOverMenuComponent::GameOverMenuComponent(Engine::GameObject* pOwner, GameMode mode):
 	Engine::Component{pOwner},
+	m_Mode{mode},
 	m_CurrentSelectedText{0},
 	m_pTextComponents{},
 	m_NavigationCommand{nullptr}
@@ -91,22 +92,22 @@ void GameOverMenuComponent::OnButtonPress()
 
 void GameOverMenuComponent::CreateNavigationTexts()
 {
+	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
 	auto pFont{ ResourceManager::GetInstance().LoadFont("tron-arcade.otf", 20) };
 	
 	auto menuObject{ std::make_unique<Engine::GameObject>() };
 	menuObject->GetTransform()->SetLocalPosition({ 50,100 });
 	auto menuText{ menuObject->AddComponent<TextRenderer>("Go to Menu",pFont,DEFAULT_COLOR)};
 	m_pTextComponents.emplace_back(menuText);
-
-	auto sumbitObject{ std::make_unique<Engine::GameObject>() };
-	sumbitObject->GetTransform()->SetLocalPosition({ 50,150 });
-	auto sumbitText{ sumbitObject->AddComponent<TextRenderer>("Submit Score",pFont,DEFAULT_COLOR) };
-	m_pTextComponents.emplace_back(sumbitText);
-
-	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
 	pScene->Add(std::move(menuObject));
-	pScene->Add(std::move(sumbitObject));
 
+	if (m_Mode != GameMode::VS)
+	{
+		auto sumbitObject{ std::make_unique<Engine::GameObject>() };
+		sumbitObject->GetTransform()->SetLocalPosition({ 50,150 });
+		auto sumbitText{ sumbitObject->AddComponent<TextRenderer>("Submit Score",pFont,DEFAULT_COLOR) };
+		m_pTextComponents.emplace_back(sumbitText); pScene->Add(std::move(sumbitObject));
+	}
 }
 
 GameOverMenu::PressButtonCommand::PressButtonCommand(GameOverMenuComponent* const pGameOverMenu):

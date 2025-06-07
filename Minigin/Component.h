@@ -1,5 +1,6 @@
 #pragma once
 #include <xmemory>
+#include "json.hpp"
 
 namespace Engine
 {
@@ -32,6 +33,10 @@ namespace Engine
         virtual void OnTriggerEnter(GameObject* other);
         virtual void OnTriggerStay(GameObject* other);
         virtual void OnTriggerExit(GameObject* other);
+
+        virtual void Serialize(nlohmann::json& out) const = 0;
+        virtual void Deserialize(const nlohmann::json& in) = 0;
+        virtual std::string GetTypeName() const = 0;
 
         void Destroy(GameObject* pGameObject);
         void Destroy(Component* pComponent);

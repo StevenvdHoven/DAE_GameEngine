@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "Command.h"
 #include <vector>
+#include "MenuComponent.h"
 
 namespace Engine
 {
@@ -11,7 +12,7 @@ namespace Engine
 class GameOverMenuComponent final : public Engine::Component
 {
 public:
-	GameOverMenuComponent(Engine::GameObject* pOwner);
+	GameOverMenuComponent(Engine::GameObject* pOwner, GameMode mode = GameMode::SinglePlayer);
 	virtual ~GameOverMenuComponent();
 
 	void Start() override;
@@ -21,6 +22,8 @@ public:
 
 private:
 	void CreateNavigationTexts();
+
+	GameMode m_Mode;
 
 	int m_CurrentSelectedText;
 	std::vector<Engine::TextRenderer*> m_pTextComponents;

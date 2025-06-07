@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "Component.h"
 #include "Transform.h"
+#include "json.hpp"
 
 namespace Engine
 {
@@ -28,6 +29,9 @@ namespace Engine
 		void OnTriggerStay(GameObject* other);
 		void OnTriggerExit(GameObject* other);
 
+		void Serialize(nlohmann::json& json);
+		void Deserialize(nlohmann::json& json);
+
 		void SetActive(bool active);
 
 		GameObject();
@@ -47,9 +51,9 @@ namespace Engine
 	private:
 		friend class Scene;
 
-		bool m_IsDestroyed{ false };
-		bool m_IsActive{ true };
-		Transform* m_pTransform{ nullptr };
+		bool m_IsActive;
+		bool m_IsDestroyed;
+		Transform* m_pTransform;
 		std::vector<std::unique_ptr<Component>> m_Components;
 	};
 

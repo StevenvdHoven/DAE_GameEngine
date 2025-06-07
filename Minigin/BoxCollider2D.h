@@ -7,6 +7,7 @@ namespace Engine
 	class BoxCollider2D : public Collider
 	{
 	public:
+		BoxCollider2D(GameObject* pOwner);
 		BoxCollider2D(GameObject* pOwner,const Vector2& size, bool isTrigger = false, LayerMask mask = LayerMask::Default);
 		virtual ~BoxCollider2D() = default;
 
@@ -22,6 +23,10 @@ namespace Engine
 		virtual void DebugRender() override;
 
 		const Vector2& GetSize() const { return m_Size; }
+
+		virtual void Serialize(nlohmann::json& out) const override;
+		virtual void Deserialize(const nlohmann::json& in) override;
+		virtual std::string GetTypeName() const override;
 
 	private:
 		Vector2 m_Size;

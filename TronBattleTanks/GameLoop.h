@@ -59,6 +59,7 @@ public:
 	Engine::GameObject* const GetRandomPlayer() const;
 private:
 	bool IsPlayerEvent(Component* pSender, auto& iterator);
+	bool IsAllPlayersDead();
 	void CreateStartText();
 	void CreateLivesText();
 

@@ -12,8 +12,13 @@ namespace Engine
 		PhysicsBody(GameObject* pOwner);
 		virtual ~PhysicsBody();
 
+		void Serialize(nlohmann::json& json) const override;
+		void Deserialize(const nlohmann::json& json) override;
+		std::string GetTypeName() const override;
 
 		Vector2 Velocity{ 0.f, 0.f };
+		
+	
 	};
 }
 

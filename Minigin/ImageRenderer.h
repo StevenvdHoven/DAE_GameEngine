@@ -25,6 +25,7 @@ namespace Engine
 	class ImageRenderer final : public Component
 	{
 	public:
+		ImageRenderer(GameObject* pOwner);
 		ImageRenderer(GameObject* pOwner, const std::string& imagePath);
 
 		void Update() override;
@@ -33,10 +34,16 @@ namespace Engine
 		void ChangeImageAllignment(ImageAllignment allignment) { m_ImageAllignment = allignment; }
 		void SetPivot(const Vector2& pivot) { m_Pivot = pivot; }
 
+		void Serialize(nlohmann::json& json) const override;
+		void Deserialize(const nlohmann::json& json) override;
+		std::string GetTypeName() const override;
+
 	private:
+		const std::string m_ImagePath;
 		Texture2D* m_pTexture;
 		ImageAllignment m_ImageAllignment;
 		Vector2 m_Pivot;
+	
 	};
 }
 

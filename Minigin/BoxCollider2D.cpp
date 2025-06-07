@@ -127,3 +127,25 @@ void Engine::BoxCollider2D::DebugRender()
 	Renderer::GetInstance().SetColor({ 255, 0, 0, 255 });
 	Renderer::GetInstance().RenderRectangle(pos, m_Size.x, m_Size.y);
 }
+
+void Engine::BoxCollider2D::Serialize(nlohmann::json& out) const
+{
+	Collider::Serialize(out);
+
+	nlohmann::json boxColliderJson;
+	boxColliderJson["box_collider_size"] = m_Size.Serialize();
+	out["component_box_collider"] = boxColliderJson;
+}
+
+void Engine::BoxCollider2D::Deserialize(const nlohmann::json& in)
+{
+	Collider::Deserialize(in);
+
+	nlohmann::json boxColliderJson{ in["component_box_collider"] };
+	m_Size.Deserialize(boxColliderJson["box_collider_size"]);
+}
+
+std::string Engine::BoxCollider2D::GetTypeName() const
+{
+	return "BoxCollider";
+}

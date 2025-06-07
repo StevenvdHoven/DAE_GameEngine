@@ -81,9 +81,6 @@
     <ClInclude Include="Renderer.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="ValueWatchComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Vector2.h">
       <Filter>DataTypes</Filter>
     </ClInclude>
@@ -171,6 +168,9 @@
     <ClInclude Include="PathFinding.h">
       <Filter>Managers\Services</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentRegistery.h">
+      <Filter>Managers\Services</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -208,9 +208,6 @@
     </ClCompile>
     <ClCompile Include="Texture2D.cpp">
       <Filter>DataTypes</Filter>
-    </ClCompile>
-    <ClCompile Include="ValueWatchComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\imgui.cpp">
       <Filter>imgui</Filter>
@@ -288,6 +285,9 @@
       <Filter>Editors</Filter>
     </ClCompile>
     <ClCompile Include="PathFinding.cpp">
+      <Filter>Managers\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentRegistery.cpp">
       <Filter>Managers\Services</Filter>
     </ClCompile>
   </ItemGroup>

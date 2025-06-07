@@ -20,6 +20,7 @@
 		class Collider : public Component
 		{
 		public:
+			Collider(GameObject* pOwner);
 			Collider(GameObject* pOwner, LayerMask mask);
 		
 			virtual ~Collider();
@@ -34,6 +35,10 @@
 
 			virtual void DebugRender() {};
 
+			virtual void Serialize(nlohmann::json& out) const override;
+			virtual void Deserialize(const nlohmann::json& in) override;
+			virtual std::string GetTypeName() const override;
+
 			void SetIsTrigger(bool isTrigger) { m_IsTrigger = isTrigger; }
 			bool IsTrigger() const { return m_IsTrigger; }
 
@@ -47,11 +52,15 @@
 			std::unordered_set<Collider*>& GetOverlappingColliders() { return m_OverlappingColliders; }
 
 		private:
+			Collider() = default;
+
 			bool m_IsTrigger;
 			LayerMask m_LayerMask;
 			std::unordered_set<LayerMask> m_IgnoreMask;
 
 			std::unordered_set<Collider*> m_OverlappingColliders;
+
+			
 		};
 	}
 

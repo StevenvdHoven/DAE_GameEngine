@@ -119,6 +119,26 @@ void Engine::Transform::SetParent(GameObject* pParent, bool keepWorldPosition)
 	if (m_pParent) m_pParent->GetTransform()->AddChild(GetGameObject());
 }
 
+void Engine::Transform::Serialize(nlohmann::json& json) const
+{
+	nlohmann::json transformJson;
+	transformJson["transform_local_pos"] = m_LocalPosition.Serialize();
+	transformJson["transform_local_rot"] = m_LocalRotation;
+	json["component_transform"] = transformJson;
+}
+
+void Engine::Transform::Deserialize(const nlohmann::json& json)
+{
+	nlohmann::json transformJson = json["component_transform"];
+	m_LocalPosition.Deserialize(transformJson["tranform_local_pos"]);
+	m_LocalRotation = transformJson["transform_local_rot"];
+}
+
+std::string Engine::Transform::GetTypeName() const
+{
+	return "TransformComponent";
+}
+
 void Engine::Transform::SetPositionDirty(bool flag)
 {
 	m_PositionIsDirty = flag;

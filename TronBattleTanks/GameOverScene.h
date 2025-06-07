@@ -1,4 +1,5 @@
 #pragma once
+#include "MenuComponent.h"
 
 namespace Engine
 {
@@ -16,6 +17,6 @@ enum struct EGameOverType
 class GameOverScene
 {
 public:
-	static void CreateScene(EGameOverType gameOverType);
+	static void CreateScene(EGameOverType gameOverType, GameMode mode = GameMode::SinglePlayer , int score = 0);
 };
 

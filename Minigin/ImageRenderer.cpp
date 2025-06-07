@@ -3,11 +3,18 @@
 #include "Renderer.h"
 #include "Transform.h"
 #include "GameObject.h"
+#include "json.hpp"
 
 using namespace Engine;
 
+Engine::ImageRenderer::ImageRenderer(GameObject* pOwner):
+	ImageRenderer{pOwner,""}
+{
+}
+
 Engine::ImageRenderer::ImageRenderer(GameObject* pOwner,const std::string& imagePath):
 	Component{pOwner},
+	m_ImagePath{imagePath},
 	m_pTexture{ ResourceManager::GetInstance().LoadTexture(imagePath)},
 	m_ImageAllignment{ ImageAllignment::TopLeft }
 {
@@ -68,4 +75,26 @@ void Engine::ImageRenderer::Render() const
 	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, rot,&pivot);
 	/*Renderer::GetInstance().SetColor(SDL_Color{ 0, 0, 255, 255 });
 	Renderer::GetInstance().RenderRectangle(pos, size.x, size.y);*/
+}
+
+void Engine::ImageRenderer::Serialize(nlohmann::json& json) const
+{
+	nlohmann::json imageRendererJson;
+	imageRendererJson["image_path"] = m_ImagePath;
+	imageRendererJson["image_allignment"] = static_cast<int>(m_ImageAllignment);
+	imageRendererJson["image_pivot"] = m_Pivot.Serialize();
+	json["component_image_renderer"] = imageRendererJson;
+}
+
+void Engine::ImageRenderer::Deserialize(const nlohmann::json& json)
+{
+	nlohmann::json imageRendererJson{ json["component_image_renderer"] };
+	m_pTexture = ResourceManager::GetInstance().LoadTexture(imageRendererJson["image_path"]);
+	m_ImageAllignment = static_cast<ImageAllignment>(imageRendererJson["image_allignment"]);
+	m_Pivot.Deserialize(imageRendererJson["image_pivot"]);
+}
+
+std::string Engine::ImageRenderer::GetTypeName() const
+{
+	return "ImageRenderer";
 }

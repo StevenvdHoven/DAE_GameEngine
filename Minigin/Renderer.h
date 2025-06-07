@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include "Singleton.h"
 #include "Vector2.h"
+#include "json.hpp"
 /**
  * Simple RAII wrapper for the SDL renderer
  */
@@ -22,6 +23,24 @@ namespace Engine
 		SDL_Color ToSDLColor() const
 		{
 			return SDL_Color{ r, g, b, a };
+		}
+
+		nlohmann::json Serialize() const
+		{
+			nlohmann::json serilizedColor;
+			serilizedColor["r"] = r;
+			serilizedColor["g"] = g;
+			serilizedColor["b"] = b;
+			serilizedColor["a"] = a;
+			return serilizedColor;
+		}
+
+		void Desrialize(nlohmann::json& json)
+		{
+			r = json["r"];
+			g = json["g"];
+			b = json["b"];
+			a = json["a"];
 		}
 	};
 

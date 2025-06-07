@@ -12,9 +12,6 @@ enum struct GameMode
 class MenuComponent : public Engine::Component
 {
 public:
-
-
-
 	MenuComponent(Engine::GameObject* pGameObject);
 	void Start() override;
 

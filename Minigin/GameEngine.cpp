@@ -96,6 +96,7 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 	auto& viewPort = ViewPort::GetInstance();
 	auto& time = Time::GetInstance();
 
+	ServiceLocator::RegisterComponentRegistery(std::make_unique<ComponentRegistery>());
 	ServiceLocator::RegisterSoundSystem(std::make_unique<SDL_SoundSystem>());
 	ServiceLocator::RegisterPhysicsSystem(std::make_unique<PhysicsSystem>());
 	ServiceLocator::RegisterGraphEditor(std::make_unique<GraphEditor>());

@@ -77,15 +77,16 @@ void GameLoop::OnNotify(Component* sender)
 	{
 		auto& player{ *it };
 		player.Lives--;
+		player.pTextComp->SetText("P" + std::to_string(player.Index) + " Lives " + std::to_string(player.Lives));
 		if (player.Lives <= 0)
 		{
+			player.pPlayer->SetActive(false);
 			EndGame();
 		}
 		else
 		{
 			const auto randomPos{ GetRandomMapLocation() };
 			player.pPlayer->GetTransform()->SetWorldLocation(randomPos);
-			player.pTextComp->SetText("P" + std::to_string(player.Index) + " Lives " + std::to_string(player.Lives));
 		}
 	}
 	else
@@ -122,6 +123,11 @@ bool GameLoop::IsPlayerEvent(Component* pSender, auto& iterator)
 			return state.pHealthComp == pSender;
 		});
 	return iterator != m_pPlayers.end();
+}
+
+bool GameLoop::IsAllPlayersDead()
+{
+	return false;
 }
 
 void GameLoop::CreateStartText()
@@ -208,14 +214,14 @@ void GameLoop::EndGame()
 	switch (m_Mode)
 	{
 	case GameMode::SinglePlayer:
-		GameOverScene::CreateScene(EGameOverType::LOST);
+		GameOverScene::CreateScene(EGameOverType::LOST,m_Mode,m_pScoreComponent->GetScore());
 		break;
 	case GameMode::CoOp:
-		GameOverScene::CreateScene(EGameOverType::LOST);
+		GameOverScene::CreateScene(EGameOverType::LOST, m_Mode, m_pScoreComponent->GetScore());
 		break;
 	case GameMode::VS:
-		if (m_pPlayers[0].Lives > 0) GameOverScene::CreateScene(EGameOverType::PLAYER1WON);
-		else GameOverScene::CreateScene(EGameOverType::PLAYER2WON);
+		if (m_pPlayers[0].Lives > 0) GameOverScene::CreateScene(EGameOverType::PLAYER1WON,m_Mode);
+		else GameOverScene::CreateScene(EGameOverType::PLAYER2WON, m_Mode);
 		break;
 	}
 }

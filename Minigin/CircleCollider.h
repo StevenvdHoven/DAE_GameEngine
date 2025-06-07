@@ -7,6 +7,7 @@ namespace Engine
 	class CircleCollider : public Collider
 	{
 	public:
+		CircleCollider(GameObject* pOwner);
 		CircleCollider(GameObject* pOwner, float radius, bool isTrigger = false, LayerMask mask = LayerMask::Default);
 		virtual ~CircleCollider() override = default;
 
@@ -22,6 +23,10 @@ namespace Engine
 		virtual void DebugRender() override;
 
 		float GetRadius() const { return m_Radius; }
+
+		virtual void Serialize(nlohmann::json& out) const override;
+		virtual void Deserialize(const nlohmann::json& in) override;
+		virtual std::string GetTypeName() const override;
 
 	private:
 		float m_Radius;

@@ -19,6 +19,9 @@ namespace Engine
 		void LateUpdate();
 		void Render();
 
+		void SaveScene();
+		Scene* LoadScene(const std::string& filePath);
+
 		Scene* GetActiveScene() const { return m_pActiveScene.get(); }
 	private:
 		

@@ -95,3 +95,8 @@ void Engine::Scene::MoveScene(const Vector2& delta)
 	}
 }
 
+nlohmann::json Engine::Scene::Seriliaze() const
+{
+	return nlohmann::json();
+}
+

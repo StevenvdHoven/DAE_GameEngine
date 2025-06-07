@@ -230,6 +230,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputP
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentRegistery.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GraphEditor.h" />
@@ -256,7 +257,6 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputP
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="EngineTime.h" />
     <ClInclude Include="Transform.h" />
-    <ClInclude Include="ValueWatchComponent.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="ViewPort.h" />
   </ItemGroup>
@@ -274,6 +274,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputP
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ComponentRegistery.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphEditor.cpp" />
@@ -297,7 +298,6 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputP
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="ValueWatchComponent.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="ViewPort.cpp" />
   </ItemGroup>
