@@ -18,16 +18,6 @@ Engine::Transform::Transform(GameObject* pOwner) :
 
 Engine::Transform::~Transform()
 {
-	if (m_pParent) // If a child is deleted notify parent
-	{
-		m_pParent->GetTransform()->RemoveChild(GetGameObject());
-	}
-
-	for (auto& child : m_pChildren) // Apply the same for all children
-	{
-		child->GetTransform()->SetParent(nullptr);
-		Destroy(child);
-	}
 }
 
 void Engine::Transform::Update()

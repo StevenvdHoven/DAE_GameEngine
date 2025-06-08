@@ -14,7 +14,7 @@ namespace Engine
 	public:
 		TextRenderer(GameObject* pOwner);
 		TextRenderer(GameObject* pOwner, const std::string& text, const std::string& fontText,int size = 30, const Engine::Color& textColor = { 255,255,255,255 });
-		virtual ~TextRenderer() = default;
+		virtual ~TextRenderer();
 
 		TextRenderer(const TextRenderer& other) = delete;
 		TextRenderer(TextRenderer&& other) = delete;
@@ -38,9 +38,12 @@ namespace Engine
 		void Serialize(nlohmann::json& json) const override;
 		void Deserialize(const nlohmann::json& json) override;
 		std::string GetTypeName() const override;
+
+		int Order() const { return m_Order; }
 	private:
 
 		bool m_needsUpdate;
+		int m_Order;
 		std::string m_text;
 		int m_FontSize;
 		std::string m_FontText;

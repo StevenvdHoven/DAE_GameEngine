@@ -44,6 +44,8 @@ bool Engine::PhysicsSystem::CheckCollisions(Collider* collider)
 	bool collided = false;
 	std::for_each(m_Colliders.begin(), m_Colliders.end(), [&](Collider* pOther)
 		{
+			if (pOther == nullptr || collider == nullptr) return;
+
 			if (pOther == collider) return;
 
 			if (!pOther->IsEnabled) return;
@@ -76,10 +78,12 @@ void Engine::PhysicsSystem::EvaluteOverlappingColliders(Collider* first, Collide
 	std::unordered_set<Collider*>& otherOverlappingColliders = other->GetOverlappingColliders();
 	if (collided)
 	{
-		if (overlappingColliders.insert(other).second)
+		if (!overlappingColliders.contains(other))
 		{
-			FireCollisionEvents(first->GetGameObject(), other->GetGameObject(), first->IsTrigger(), CollisionType::Begin);
+			overlappingColliders.insert(other);
 			otherOverlappingColliders.insert(first);
+			FireCollisionEvents(first->GetGameObject(), other->GetGameObject(), first->IsTrigger(), CollisionType::Begin);
+			FireCollisionEvents(other->GetGameObject(), first->GetGameObject(), other->IsTrigger(), CollisionType::Begin);
 		}
 		else
 		{
@@ -88,13 +92,16 @@ void Engine::PhysicsSystem::EvaluteOverlappingColliders(Collider* first, Collide
 	}
 	else
 	{
-		if (overlappingColliders.erase(other) > 0)
+		
+		if (overlappingColliders.contains(other))
 		{
 			FireCollisionEvents(first->GetGameObject(), other->GetGameObject(), first->IsTrigger(), CollisionType::End);
+			overlappingColliders.erase(other);
 		}
-		if (otherOverlappingColliders.erase(first) > 0)
+		if (otherOverlappingColliders.contains(other))
 		{
 			FireCollisionEvents(other->GetGameObject(), first->GetGameObject(), other->IsTrigger(), CollisionType::End);
+			otherOverlappingColliders.erase(other);
 		}
 	}
 }

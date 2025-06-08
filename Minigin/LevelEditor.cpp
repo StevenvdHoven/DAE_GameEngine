@@ -14,7 +14,7 @@
 using namespace Engine;
 
 LevelEditor::LevelEditor():
-	m_Active{true},
+	m_Active{false},
 	m_LevelLoadFilePath{ "Level1.json" },
 	m_EditingScene{nullptr},
 	m_SelectedGameObject{ nullptr }
@@ -52,7 +52,13 @@ void Engine::LevelEditor::GUI()
 	}
 	if (ImGui::Button("Load level"))
 	{
-		LoadLevel(m_LevelLoadFilePath);
+		if (m_EditingScene)
+		{
+			m_EditingScene->RemoveAll();
+		}
+
+		m_SelectedGameObject = nullptr;
+		m_EditingScene = LoadLevel(m_LevelLoadFilePath);
 		ImGui::End();
 		return;
 
@@ -80,26 +86,17 @@ void Engine::LevelEditor::GUI()
 
 void LevelEditor::Render()
 {
-	if (m_EditingScene)
-	{
-		m_EditingScene->Render();
-	}
+	
 }
 
 void LevelEditor::Update()
 {
-	if (m_EditingScene)
-	{
-		m_EditingScene->Update();
-	}
+
 }
 
 void Engine::LevelEditor::LateUpdate()
 {
-	if (m_EditingScene)
-	{
-		m_EditingScene->LateUpdate();
-	}
+
 }
 
 void Engine::LevelEditor::OpenNewScene()
@@ -125,31 +122,29 @@ void LevelEditor::SaveLevel()
 	}
 }
 
-void LevelEditor::LoadLevel(const std::string& filePath)
+Scene* LevelEditor::LoadLevel(const std::string& filePath)
 {
-	if (m_EditingScene)
-	{
-		m_EditingScene->RemoveAll();
-	}
-
-	m_SelectedGameObject = nullptr;
-
 	std::filesystem::path path{ filePath };
 	std::string fullPath{ LEVEL_DIRECTORY + filePath };
 	std::ifstream file(fullPath);
 	if (!file.is_open())
 	{
 		printf("Couldn't load a level");
-		return;
+		return SceneManager::GetInstance().CreateScene("Failed scene");
 	}
 
 	nlohmann::json sceneData;
 	file >> sceneData;
 
 	std::string sceneName{ path.stem().string() };
-	m_EditingScene = SceneManager::GetInstance().CreateScene(sceneName);
-	m_EditingScene->Deserialize(sceneData);
+	auto scene = SceneManager::GetInstance().CreateScene(sceneName);
+	scene->Deserialize(sceneData);
+	return scene;
+}
 
+void Engine::LevelEditor::SetLevel(Scene* const pScene)
+{
+	m_EditingScene = pScene;
 }
 
 void Engine::LevelEditor::CreateGameObject()

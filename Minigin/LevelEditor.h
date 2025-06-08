@@ -20,7 +20,8 @@ namespace Engine
 
 		void OpenNewScene();
 		void SaveLevel();
-		void LoadLevel(const std::string& filePath);
+		Scene* LoadLevel(const std::string& filePath);
+		void SetLevel(Scene* const pScene);
 
 		void CreateGameObject();
 

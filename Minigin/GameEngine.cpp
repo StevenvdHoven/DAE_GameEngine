@@ -105,9 +105,6 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 
 	load();
 
-	ServiceLocator::GetLevelEditor().SetActive(true);
-	ServiceLocator::GetLevelEditor().OpenNewScene();
-
 	sceneManager.Start();
 
 	const int ms_per_frame{ 1000 / 144 };

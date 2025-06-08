@@ -31,6 +31,7 @@ private:
 	Engine::Vector2 m_MenuPlayerTargetLocation;
 	GameMode m_SelectedGameMode;
 	void* m_MenuMoveCommand;
+	void* m_MenuKeyboardMoveCommand;
 
 };
 

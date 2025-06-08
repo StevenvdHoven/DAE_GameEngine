@@ -138,6 +138,12 @@
     <ClCompile Include="EnemyBrain.cpp">
       <Filter>Game\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="TestMapScene.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleTriggerComponent.cpp">
+      <Filter>Game\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Achievements.h">
@@ -226,6 +232,12 @@
     </ClInclude>
     <ClInclude Include="GameOverMenuComponent.h">
       <Filter>Game\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="TestMapScene.h">
+      <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleTriggerComponent.h">
+      <Filter>Game\Tools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

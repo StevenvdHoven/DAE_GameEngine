@@ -27,6 +27,7 @@ namespace Engine
 	public:
 		ImageRenderer(GameObject* pOwner);
 		ImageRenderer(GameObject* pOwner, const std::string& imagePath);
+		virtual ~ImageRenderer();
 
 		void Update() override;
 		void Render() const override;
@@ -40,7 +41,10 @@ namespace Engine
 		void Deserialize(const nlohmann::json& json) override;
 		std::string GetTypeName() const override;
 
+		int Order() const {return m_Order;}
+
 	private:
+		int m_Order;
 		std::string m_ImagePath;
 		Texture2D* m_pTexture;
 		ImageAllignment m_ImageAllignment;

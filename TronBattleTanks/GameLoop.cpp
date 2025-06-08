@@ -12,6 +12,7 @@
 #include "ServiceLocator.h"
 #include "PathFinding.h"
 #include "GameOverScene.h"
+#include "SimpleTriggerComponent.h"
 
 #define MAP_01_POSITION Engine::Vector2{0, 72}
 #define PLAYER_01_POSITION Engine::Vector2{ 128, 188 }
@@ -24,6 +25,7 @@ using namespace Engine;
 GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pScoreComponent) :
 	Component(pOwner),
 	m_pScoreComponent{ pScoreComponent },
+	m_CristalTrigger{nullptr},
 	m_GameState{ GameState::Start },
 	m_Mode{ mode }
 {
@@ -33,8 +35,14 @@ GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pS
 	startGameCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
 	startGameCommand->SetTriggerState(Engine::TriggerState::PRESSED);
 
+	auto keyboardStartCommand{std::make_unique<StartGameCommand>(this)};
+	keyboardStartCommand->ChangeDeviceType(Engine::DeviceType::KEYBOARD);
+	keyboardStartCommand->SetTriggerState(Engine::TriggerState::PRESSED);
+
 	m_pStarGameCommand = startGameCommand.get();
+	m_pKeyboardStartCommand = keyboardStartCommand.get();
 	InputManager::GetInstance().BindButton(0, PRESS_BUTTON, std::move(startGameCommand));
+	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_Z, std::move(keyboardStartCommand));
 
 	if (mode == GameMode::VS)
 	{
@@ -44,6 +52,11 @@ GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pS
 
 void GameLoop::Start()
 {
+	m_pMapObject = SceneManager::GetInstance().GetActiveScene()->FindObjectByName("Parent");
+	m_pMapObject->GetTransform()->SetWorldLocation(1000, 1000);
+
+	m_CristalTrigger = SceneManager::GetInstance().GetActiveScene()->FindObjectByName("Cristal")->GetComponent<SimpleTriggerComponent>();
+	m_CristalTrigger->GetOnTrigger().AddObserver(this);
 	CreateStartText();
 
 	CreateLivesText();
@@ -52,6 +65,8 @@ void GameLoop::Start()
 void GameLoop::BeginGame()
 {
 	m_GameState = GameState::Running;
+	InputManager::GetInstance().Unbind(0, m_pStarGameCommand);
+	InputManager::GetInstance().Unbind(0, m_pKeyboardStartCommand);
 
 	//Spawn Player
 	switch (m_Mode)
@@ -72,6 +87,17 @@ void GameLoop::BeginGame()
 
 void GameLoop::OnNotify(Component* sender)
 {
+	if (m_CristalTrigger == sender)
+	{
+		auto lastHit{ m_CristalTrigger->GetLastHit() };
+		if (lastHit)
+		{
+			const auto randomPos{ GetRandomMapLocation() };
+			lastHit->GetTransform()->SetWorldLocation(randomPos);
+			return;
+		}
+	}
+
 	std::vector<PlayerState>::iterator it;
 	if (IsPlayerEvent(sender, it))
 	{
@@ -168,8 +194,7 @@ void GameLoop::CreateLivesText()
 void GameLoop::CreateSinglePlayerLoop()
 {
 	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
-
-	m_pMapObject = PrefabFactory::Map1Parent(pScene);
+	
 	m_pMapObject->GetTransform()->SetWorldLocation(MAP_01_POSITION);
 
 	SpawnPlayer(0, PLAYER_01_POSITION, pScene);
@@ -181,7 +206,6 @@ void GameLoop::CreatePVPPlayerLoop()
 {
 	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
 
-	m_pMapObject = PrefabFactory::Map1Parent(pScene);
 	m_pMapObject->GetTransform()->SetWorldLocation(MAP_01_POSITION);
 
 	SpawnPlayer(0, PLAYER_01_POSITION, pScene);
@@ -192,7 +216,6 @@ void GameLoop::CreateCo_OpPlayerLoop()
 {
 	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
 
-	m_pMapObject = PrefabFactory::Map1Parent(pScene);
 	m_pMapObject->GetTransform()->SetWorldLocation(MAP_01_POSITION);
 
 	SpawnPlayer(0, PLAYER_01_POSITION, pScene);

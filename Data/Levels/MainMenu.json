@@ -1,0 +1,118 @@
+{
+    "root_game_objects": [
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "ImageRenderer"
+            ],
+            "game_object_components": {
+                "ImageRenderer": {
+                    "image_allignment": 0,
+                    "image_order": 0,
+                    "image_path": "main_menu_bg.png",
+                    "image_pivot": {
+                        "x": 0.0,
+                        "y": 0.0
+                    }
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "MenuImage"
+        },
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "TextRenderer"
+            ],
+            "game_object_components": {
+                "TextRenderer": {
+                    "text_renderer_color": {
+                        "a": 255,
+                        "b": 255,
+                        "g": 0,
+                        "r": 0
+                    },
+                    "text_renderer_font": "tron-arcade.otf",
+                    "text_renderer_font_size": 32,
+                    "text_renderer_order": 0,
+                    "text_renderer_text": "Single Player"
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": 40.0,
+                        "y": 206.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "Text-SinglePlayer"
+        },
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "TextRenderer"
+            ],
+            "game_object_components": {
+                "TextRenderer": {
+                    "text_renderer_color": {
+                        "a": 255,
+                        "b": 255,
+                        "g": 0,
+                        "r": 0
+                    },
+                    "text_renderer_font": "tron-arcade.otf",
+                    "text_renderer_font_size": 32,
+                    "text_renderer_order": 0,
+                    "text_renderer_text": "Co Op"
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": 40.0,
+                        "y": 306.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "Text-Co-Op"
+        },
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "TextRenderer"
+            ],
+            "game_object_components": {
+                "TextRenderer": {
+                    "text_renderer_color": {
+                        "a": 255,
+                        "b": 255,
+                        "g": 0,
+                        "r": 0
+                    },
+                    "text_renderer_font": "tron-arcade.otf",
+                    "text_renderer_font_size": 32,
+                    "text_renderer_order": 0,
+                    "text_renderer_text": "PVP"
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": 215.0,
+                        "y": 431.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "Text-pvp"
+        }
+    ],
+    "scene_name": "MainMenu"
+}

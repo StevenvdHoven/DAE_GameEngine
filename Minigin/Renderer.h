@@ -2,13 +2,28 @@
 #include <SDL.h>
 #include "Singleton.h"
 #include "Vector2.h"
+#include <set>
 #include "json.hpp"
+
 /**
  * Simple RAII wrapper for the SDL renderer
  */
 namespace Engine
 {
 	class Texture2D;
+
+	class TextRenderer;
+	class ImageRenderer;
+
+	struct TextComparer
+	{
+		bool operator()(const Engine::TextRenderer* lhs, const Engine::TextRenderer* rhs) const;
+	};
+
+	struct ImageComparer
+	{
+		bool operator()(const Engine::ImageRenderer* lhs, const Engine::ImageRenderer* rhs) const;
+	};
 
 	struct Color
 	{
@@ -54,6 +69,13 @@ namespace Engine
 		void Render() const;
 		void Destroy();
 
+		void Add(ImageRenderer* const pImage);
+		void Add(TextRenderer* const pTextRenderer);
+		void Remove(ImageRenderer* const pImage);
+		void Remove(TextRenderer* const pTextRenderer);
+		
+		void Reorder();
+
 		void RenderLine(const Vector2& start, const Vector2& end) const;
 		void RenderLine(float startX, float startY, float endX, float endY) const;
 
@@ -83,6 +105,10 @@ namespace Engine
 		{
 			SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
 		}
+
+	private:
+		std::vector<ImageRenderer*> m_RenderImages;
+		std::vector<TextRenderer*> m_TextRenderers;
 	};
 }
 

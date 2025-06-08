@@ -25,6 +25,7 @@ namespace Engine
         virtual void FixedUpdate() {};
         virtual void LateUpdate() {};
         virtual void Render() const {};
+        virtual void Gizmos() const {};
 
         virtual void OnCollisionEnter(GameObject* other);
         virtual void OnCollisionStay(GameObject* other);

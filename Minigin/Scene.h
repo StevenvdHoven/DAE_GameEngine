@@ -31,6 +31,9 @@ namespace Engine
 
 		void MoveScene(const Vector2& delta);
 
+		GameObject* FindObjectByName(const std::string& name);
+
+
 		nlohmann::json Seriliaze() const;
 		void Deserialize(nlohmann::json& out);
 		std::string& Name() { return m_name; }
@@ -46,6 +49,5 @@ namespace Engine
 
 		static unsigned int m_idCounter;
 	};
+
 }
-
-

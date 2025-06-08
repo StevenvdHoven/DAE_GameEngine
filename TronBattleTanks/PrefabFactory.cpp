@@ -20,6 +20,7 @@
 #include "PlayerDamageCommand.h"
 #include "PlayerAimCommand.h"
 #include "EnemyShootCommand.h"
+#include <SDL.h>
 
 #define ENEMY_IMAGE_PATH "enemy_body.png"
 #define UNIT_COLLIDER_SIZE Engine::Vector2{ 28, 28 }
@@ -48,11 +49,26 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene, int playerIndex
 
 
 	// Bind Input
+	std::vector<void*> inputCommands;
+
 	auto moveCommandController = std::make_unique<MovePlayerCommand>(player.get(), Engine::ValueCommand<Vector2>::InputType::D_PAD, UNIT_SPEED);
 	moveCommandController->SetTriggerState(TriggerState::HELD);
+	inputCommands.emplace_back(moveCommandController.get());
+	InputManager::GetInstance().Bind2DValue(playerIndex, std::move(moveCommandController));
+	
 
 	auto stopCommandController = std::make_unique<MovePlayerCommand>(player.get(), Engine::ValueCommand<Vector2>::InputType::D_PAD, 0.f);
 	stopCommandController->SetTriggerState(TriggerState::RELEASED);
+	inputCommands.emplace_back(stopCommandController.get());
+	InputManager::GetInstance().Bind2DValue(playerIndex, std::move(stopCommandController));
+
+	if (playerIndex == 0)
+	{
+		auto keyboardMoveCommand{ std::make_unique<MovePlayerCommand>(player.get(), Engine::ValueCommand<Vector2>::InputType::ARROW_KEYS, UNIT_SPEED) };
+		keyboardMoveCommand->SetTriggerState(TriggerState::CONSTANT);
+		inputCommands.emplace_back(keyboardMoveCommand.get());
+		InputManager::GetInstance().Bind2DValue(playerIndex, std::move(keyboardMoveCommand));
+	}
 
 	
 	// Rotator
@@ -65,6 +81,17 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene, int playerIndex
 	auto aimCommand = std::make_unique<PlayerAimCommand>(playerGunRotator.get());
 	aimCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
 	aimCommand->SetTriggerState(TriggerState::CONSTANT);
+	inputCommands.emplace_back(aimCommand.get());
+
+	InputManager::GetInstance().Bind2DValue(playerIndex, std::move(aimCommand));
+
+	if (playerIndex == 0)
+	{
+		auto keyboarAim{ std::make_unique<PlayerAimCommand>(playerGunRotator.get()) };
+		keyboarAim->SetInputType(Engine::ValueCommand<Engine::Vector2>::InputType::WASD);
+		keyboarAim->SetTriggerState(TriggerState::CONSTANT);
+		inputCommands.emplace_back(keyboarAim.get());
+	}
 
 	//Gun
 	const auto playerGunImagePath{ playerIndex == 0 ? "player_gun.png" : "player_02_gun.png" };
@@ -79,23 +106,25 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene, int playerIndex
 	// Bind Input
 	auto shootCommand = std::make_unique<PlayerShootCommand>(playerGun.get(),Vector2{10,0}, [scene]() { return AddPlayerBullet(scene); });
 	shootCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
-	shootCommand->SetTriggerState(TriggerState::PRESSED);
-	
-	player->AddComponent<InputUnbinder>(0, std::vector<void*>{
-		moveCommandController.get(), 
-		stopCommandController.get(),
-		aimCommand.get(),
-		shootCommand.get()
-	});
-
-	InputManager::GetInstance().Bind2DValue(playerIndex, std::move(moveCommandController));
-	InputManager::GetInstance().Bind2DValue(playerIndex, std::move(stopCommandController));
-
-	InputManager::GetInstance().Bind2DValue(playerIndex, std::move(aimCommand));
-
-	shootCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
 	shootCommand->SetInputType(Engine::ValueCommand<float>::InputType::RIGHT_TRIGGER);
+	inputCommands.emplace_back(shootCommand.get());
 	InputManager::GetInstance().BindValue(playerIndex, -1, std::move(shootCommand));
+
+	if (playerIndex == 0)
+	{
+		auto keyboardShoot{ std::make_unique<PlayerShootCommand>(playerGun.get(),Vector2{10,0}, [scene]() { return AddPlayerBullet(scene); }) };
+		keyboardShoot->ChangeDeviceType(Engine::DeviceType::KEYBOARD);
+		keyboardShoot->SetTriggerState(TriggerState::PRESSED);
+		inputCommands.emplace_back(keyboardShoot.get());
+		InputManager::GetInstance().BindValue(playerIndex, SDL_SCANCODE_SPACE, std::move(keyboardShoot));
+	}
+	
+	player->AddComponent<InputUnbinder>(playerIndex,std::move(inputCommands));
+
+	
+
+
+	
 
 	auto rawPtr = player.get();
 	scene->Add(std::move(player));

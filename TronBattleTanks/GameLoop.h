@@ -15,6 +15,7 @@ namespace Engine
 enum struct GameMode;
 class ScoreComponent;
 class PlayerHealthComponent;
+class SimpleTriggerComponent;
 
 enum struct GameState
 {
@@ -77,11 +78,14 @@ private:
 	void SpawnEnemies(Engine::Scene* const pScene);
 	void SpawnPlayer(int index, const Engine::Vector2& pos, Engine::Scene* const pScene);
 
+	
+	ScoreComponent* m_pScoreComponent;
+	SimpleTriggerComponent* m_CristalTrigger;
+
 	Engine::GameObject* m_pMapObject;
 	std::vector< PlayerState> m_pPlayers;
 	std::vector<Engine::TextRenderer*> m_pLivesTexts;
 	std::forward_list<Engine::GameObject*> m_pSpawnedEnemies;
-	ScoreComponent* m_pScoreComponent;
 
 	Engine::TextRenderer* m_pStartText{ nullptr };
 
@@ -89,6 +93,7 @@ private:
 	GameMode m_Mode;
 	
 	void* m_pStarGameCommand;
+	void* m_pKeyboardStartCommand;
 
 };
 

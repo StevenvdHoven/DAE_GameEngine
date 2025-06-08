@@ -11,6 +11,7 @@
 #include "StartGameCommand.h"
 #include "InputManager.h"
 #include "MenuComponent.h"
+#include "ServiceLocator.h"
 #include "Scene.h"
 #include <SDL.h>
 
@@ -20,10 +21,7 @@ using namespace Engine;
 
 void BattleScene::CreateScene(GameMode mode = GameMode::SinglePlayer)
 {
-	auto scene{ SceneManager::GetInstance().CreateScene("BattleScene") };
-
-	float differenceHeight = 72;
-	scene->MoveScene(Vector2{ 0, differenceHeight });
+	auto scene{ ServiceLocator::GetLevelEditor().LoadLevel("Map01.json")};
 
 	// Score 
 	std::unique_ptr<Engine::GameObject> scoreTextObject;

@@ -30,7 +30,14 @@ void MenuComponent::Start()
 	// Register the command to handle input for menu navigation
 	auto moveCommand = std::make_unique<MenuMoveCommand>(pGameObject);
 	m_MenuMoveCommand = moveCommand.get();
+
+	auto keyboardMoveCommand{ std::make_unique<MenuMoveCommand>(pGameObject) };
+	keyboardMoveCommand->ChangeDeviceType(DeviceType::KEYBOARD);
+	keyboardMoveCommand->SetInputType(ValueCommand<Engine::Vector2>::InputType::ARROW_KEYS);
+	m_MenuKeyboardMoveCommand = keyboardMoveCommand.get();
+
 	InputManager::GetInstance().Bind2DValue(0, std::move(moveCommand));
+	InputManager::GetInstance().Bind2DValue(0, std::move(keyboardMoveCommand));
 
 	CreateMenuPlayer();
 }
@@ -49,6 +56,7 @@ void MenuComponent::Update()
 	else
 	{
 		InputManager::GetInstance().Unbind(0, m_MenuMoveCommand);
+		InputManager::GetInstance().Unbind(0, m_MenuKeyboardMoveCommand);
 		BattleScene::CreateScene(m_SelectedGameMode);
 	}
 	

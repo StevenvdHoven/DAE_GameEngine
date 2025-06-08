@@ -8,6 +8,7 @@
 #include "ServiceLocator.h"
 #include "SceneManager.h"
 #include "imgui.h"
+#include "json.hpp"
 
 using namespace Engine;
 

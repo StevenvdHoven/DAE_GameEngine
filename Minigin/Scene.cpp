@@ -1,8 +1,8 @@
 #include "Scene.h"
 #include "GameObject.h"
-
-#include <algorithm>
 #include "Transform.h"
+#include <algorithm>
+
 
 using namespace Engine;
 
@@ -93,6 +93,16 @@ void Engine::Scene::MoveScene(const Vector2& delta)
 		auto futureLocation{ location + delta };
 		object->GetTransform()->SetLocalPosition(futureLocation);
 	}
+}
+
+GameObject* Engine::Scene::FindObjectByName(const std::string& name)
+{
+	auto it{ std::find_if(m_objects.begin(),m_objects.end(),[&name](std::unique_ptr<GameObject>& gameObject)
+		{
+			return gameObject->Name() == name;
+		}) };
+	if (it == m_objects.end()) return nullptr;
+	else return (*it).get();
 }
 
 nlohmann::json Engine::Scene::Seriliaze() const

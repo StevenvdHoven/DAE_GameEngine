@@ -7,6 +7,8 @@
 #include <backends/imgui_impl_opengl3.h>
 #include "ServiceLocator.h"
 #include "PhysicsSystem.h"
+#include "ImageRenderer.h"
+#include "TextRenderer.h"
 
 using namespace Engine;
 
@@ -46,9 +48,18 @@ void Engine::Renderer::Render() const
 	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderClear(m_renderer);
 
-	SceneManager::GetInstance().Render();
+	//SceneManager::GetInstance().Render();
+	for (auto& image : m_RenderImages)
+	{
+		if (image->IsEnabled)
+			image->Render();
+	}
 
-	
+	for (auto& textRenderer : m_TextRenderers)
+	{
+		if (textRenderer->IsEnabled)
+			textRenderer->Render();
+	}
 
 	if (ServiceLocator::GetGraphEditor().IsActive())
 		ServiceLocator::GetGraphEditor().Draw();
@@ -75,6 +86,41 @@ void Engine::Renderer::Destroy()
 		SDL_DestroyRenderer(m_renderer);
 		m_renderer = nullptr;
 	}
+}
+
+void Engine::Renderer::Add(ImageRenderer* const pImage)
+{
+	m_RenderImages.emplace_back(pImage);
+	Reorder();
+}
+
+void Engine::Renderer::Add(TextRenderer* const pTextRenderer)
+{
+	m_TextRenderers.emplace_back(pTextRenderer);
+	Reorder();
+}
+
+void Engine::Renderer::Remove(ImageRenderer* const pImage)
+{
+	m_RenderImages.erase(std::find(m_RenderImages.begin(), m_RenderImages.end(), pImage));
+}
+
+void Engine::Renderer::Remove(TextRenderer* const pTextRenderer)
+{
+	m_TextRenderers.erase(std::find(m_TextRenderers.begin(), m_TextRenderers.end(), pTextRenderer));
+}
+
+void Engine::Renderer::Reorder()
+{
+	std::sort(m_RenderImages.begin(), m_RenderImages.end(), [](const ImageRenderer* first, const ImageRenderer* second)
+		{
+			return first->Order() < second->Order();
+		});
+
+	std::sort(m_TextRenderers.begin(), m_TextRenderers.end(), [](const TextRenderer* first, const TextRenderer* second)
+		{
+			return first->Order() < second->Order();
+		});
 }
 
 void Engine::Renderer::RenderLine(const Vector2& start, const Vector2& end) const
@@ -193,3 +239,14 @@ void Engine::Renderer::RenderTexture(const Texture2D& texture, float x, float y,
 }
 
 SDL_Renderer* Engine::Renderer::GetSDLRenderer() const { return m_renderer; }
+
+bool Engine::TextComparer::operator()(const Engine::TextRenderer* lhs, const Engine::TextRenderer* rhs) const
+{
+	return lhs->Order() > rhs->Order();
+}
+
+bool Engine::ImageComparer::operator()(const Engine::ImageRenderer* lhs, const Engine::ImageRenderer* rhs) const
+{
+
+	return lhs->Order() > rhs->Order();
+}
