@@ -16,6 +16,8 @@ namespace Engine
 		void Deserialize(const nlohmann::json& json) override;
 		std::string GetTypeName() const override;
 
+		void GUI() override;
+
 		Vector2 Velocity{ 0.f, 0.f };
 		
 	

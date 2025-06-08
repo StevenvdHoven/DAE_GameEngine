@@ -129,10 +129,15 @@ void Engine::Scene::Deserialize(nlohmann::json& in)
 
 	for (const auto& goJson : rootObjectsJson)
 	{
+		std::vector<std::unique_ptr<GameObject>> spawnChildren;
 		auto gameObject = std::make_unique<GameObject>();
-		gameObject->Deserialize(const_cast<nlohmann::json&>(goJson));
+		gameObject->Deserialize(const_cast<nlohmann::json&>(goJson),spawnChildren);
 
 		Add(std::move(gameObject));
+		for (auto& child : spawnChildren)
+		{
+			m_objects.emplace_back(std::move(child));
+		}
 	}
 }
 

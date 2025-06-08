@@ -167,7 +167,6 @@
     <ClCompile Include="InputUnbinder.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MenuComponent.cpp" />
     <ClCompile Include="MenuMoveCommand.cpp" />
     <ClCompile Include="MovePlayerCommand.cpp" />
@@ -199,7 +198,6 @@
     <ClInclude Include="IDamageable.h" />
     <ClInclude Include="InputUnbinder.h" />
     <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuComponent.h" />
     <ClInclude Include="MenuMoveCommand.h" />
     <ClInclude Include="MovePlayerCommand.h" />

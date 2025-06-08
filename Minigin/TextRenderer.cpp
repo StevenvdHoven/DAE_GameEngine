@@ -6,38 +6,94 @@
 #include "Texture2D.h"
 #include "Transform.h"
 #include "GameObject.h"
+#include "ResourceManager.h"
+#include "imgui.h"
 
 using namespace Engine;
 
-Engine::TextRenderer::TextRenderer(GameObject* pOwner):
-	TextRenderer{ pOwner,"",nullptr,Engine::Color{0,0,0,0} }
+Engine::TextRenderer::TextRenderer(GameObject* pOwner) :
+	TextRenderer{ pOwner,"","" }
 {
 }
 
-Engine::TextRenderer::TextRenderer(GameObject* pOwner, const std::string& text, Font* font, const Engine::Color& textColor) :
-	Component{pOwner}, 
+Engine::TextRenderer::TextRenderer(GameObject* pOwner, const std::string& text, const std::string& fontText, int size, const Engine::Color& textColor) :
+	Component{ pOwner },
 	m_needsUpdate{ true },
-	m_TextColor{textColor},
 	m_text{ text },
-	m_font{ std::move(font) },
+	m_FontSize{ size },
+	m_FontText{ fontText },
+	m_TextColor{ textColor },
+	m_font{ ResourceManager::GetInstance().LoadFont(fontText, static_cast<uint8_t>(size)) },
 	m_textTexture{ nullptr }
-{ }
-
-void Engine::TextRenderer::Serialize(nlohmann::json & json) const
 {
-	nlohmann::json textRendererJson;
-	textRendererJson["textrenderer_text"] = m_text;
-	textRendererJson["textrenderer_color"] = m_TextColor.Serialize();
-	json["component_text_renderer"] = textRendererJson;
+}
+
+void Engine::TextRenderer::GUI()
+{
+	ImGui::Text("Text Renderer Component");
+	ImGui::Separator();
+
+	char textBuffer[256];
+	strcpy_s(textBuffer, sizeof(textBuffer), m_text.c_str());
+	if (ImGui::InputText("Text", textBuffer, sizeof(textBuffer)))
+	{
+		m_text = textBuffer;
+		m_needsUpdate = true;
+		Update();
+	}
+
+	char fontBuffer[256];
+	strcpy_s(fontBuffer, sizeof(fontBuffer), m_FontText.c_str());
+	if (ImGui::InputText("Font", fontBuffer, sizeof(fontBuffer)))
+	{
+		m_FontText = fontBuffer;
+		m_needsUpdate = true;
+		Update();
+	}
+
+	if (ImGui::InputInt("Font Size", &m_FontSize))
+	{
+		if (m_FontSize < 1) m_FontSize = 1;
+		m_needsUpdate = true;
+		Update();
+	}
+
+	float color[4] = {
+		m_TextColor.r / 255.f,
+		m_TextColor.g / 255.f,
+		m_TextColor.b / 255.f,
+		m_TextColor.a / 255.f
+	};
+
+	if (ImGui::ColorEdit4("Color", color))
+	{
+		m_TextColor = {
+			static_cast<uint8_t>(color[0] * 255),
+			static_cast<uint8_t>(color[1] * 255),
+			static_cast<uint8_t>(color[2] * 255),
+			static_cast<uint8_t>(color[3] * 255)
+		};
+		m_needsUpdate = true;
+	}
+
+}
+
+void Engine::TextRenderer::Serialize(nlohmann::json& json) const
+{
+	json["text_renderer_text"] = m_text;
+	json["text_renderer_font"] = m_FontText;
+	json["text_renderer_font_size"] = m_FontSize;
+	json["text_renderer_color"] = m_TextColor.Serialize();
 }
 
 void Engine::TextRenderer::Deserialize(const nlohmann::json& json)
 {
-	nlohmann::json textRendererJson{ json["component_text_renderer"] };
-
 	m_needsUpdate = true;
-	m_text = textRendererJson["textrender_text"];
-	m_TextColor.Desrialize(textRendererJson["textrenderer_color"]);
+	m_text = json["text_renderer_text"].get<std::string>();
+	m_FontText = json["text_renderer_font"].get<std::string>();
+	m_FontSize = json["text_renderer_font_size"].get<int>();
+	auto colorJson{ json["text_renderer_color"] };
+	m_TextColor.Desrialize(colorJson);
 }
 
 std::string Engine::TextRenderer::GetTypeName() const
@@ -49,16 +105,20 @@ void Engine::TextRenderer::Update()
 {
 	if (m_needsUpdate)
 	{
+		m_font = ResourceManager::GetInstance().LoadFont(m_FontText, static_cast<uint8_t>(m_FontSize));
+
 		const SDL_Color color{ m_TextColor.ToSDLColor() };
 		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), color);
-		if (surf == nullptr) 
+		if (surf == nullptr)
 		{
-			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
+			m_needsUpdate = false;
+			return;
 		}
 		auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
-		if (texture == nullptr) 
+		if (texture == nullptr)
 		{
-			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
+			m_needsUpdate = false;
+			return;
 		}
 		SDL_FreeSurface(surf);
 		m_textTexture.reset();

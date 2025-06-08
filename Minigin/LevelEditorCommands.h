@@ -3,15 +3,16 @@
 
 namespace Engine
 {
-	class ToggleLevelEditorCommand : Engine::Command
+	class ToggleLevelEditorCommand : public Command
 	{
 	public:
 		ToggleLevelEditorCommand() = default;
+		virtual ~ToggleLevelEditorCommand() = default;
 
 		void Execute() override;
 	};
 
-	class CreateGameObjectCommand : Engine::Command
+	class CreateGameObjectCommand : public Command
 	{
 	public:
 		CreateGameObjectCommand() = default;

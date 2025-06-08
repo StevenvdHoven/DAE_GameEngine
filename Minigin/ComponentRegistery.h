@@ -16,7 +16,11 @@ public:
     void Register(const std::string& typeName) {
         m_Adders[typeName] = [](Engine::GameObject* obj, const nlohmann::json& data) {
             auto* comp = obj->AddComponent<T>();
-            comp->Deserialize(data);
+            if (!data.empty())
+            {
+                comp->Deserialize(data);
+            }
+            
             };
     }
 
@@ -26,6 +30,14 @@ public:
             it->second(obj, data);
         }
     }
+
+	std::vector<std::string> GetRegisteredTypes() const {
+		std::vector<std::string> types;
+		for (const auto& pair : m_Adders) {
+			types.push_back(pair.first);
+		}
+		return types;
+	}
 
 private:
     std::unordered_map<std::string, ComponentAdder> m_Adders;

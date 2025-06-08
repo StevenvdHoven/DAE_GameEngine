@@ -4,6 +4,7 @@
 namespace Engine
 {
 	class Scene;
+	class GameObject;
 
 
 	class LevelEditor final
@@ -12,22 +13,28 @@ namespace Engine
 		LevelEditor();
 		~LevelEditor();
 
+		void GUI();
 		void Render();
 		void Update();
+		void LateUpdate();
 
 		void OpenNewScene();
 		void SaveLevel();
 		void LoadLevel(const std::string& filePath);
 
-		void SetActive(bool active) { m_Active = active; }
-		bool IsActive() const { return m_Active; }
+		void CreateGameObject();
+
+		void SetActive(bool active);
+		bool IsActive() const;
 			
 	private:
-		void RenderUI();
+		void ImGuiSelectedGameObject();
+		void ImGuiScene();
 
 		bool m_Active;
 		std::string m_LevelLoadFilePath;
 		Scene* m_EditingScene;
+		GameObject* m_SelectedGameObject;
 	};
 
 }

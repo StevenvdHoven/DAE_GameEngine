@@ -33,7 +33,9 @@ namespace Engine
 
 		nlohmann::json Seriliaze() const;
 		void Deserialize(nlohmann::json& out);
-		std::string& Name() const { return m_name; }
+		std::string& Name() { return m_name; }
+
+		std::vector<std::unique_ptr<GameObject>>& GetAllObjects() { return  m_objects; }
 
 	private:
 

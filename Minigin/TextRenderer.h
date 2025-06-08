@@ -13,8 +13,9 @@ namespace Engine
 	{
 	public:
 		TextRenderer(GameObject* pOwner);
-		TextRenderer(GameObject* pOwner, const std::string& text, Font* font, const Engine::Color& textColor = { 255,255,255,255 });
+		TextRenderer(GameObject* pOwner, const std::string& text, const std::string& fontText,int size = 30, const Engine::Color& textColor = { 255,255,255,255 });
 		virtual ~TextRenderer() = default;
+
 		TextRenderer(const TextRenderer& other) = delete;
 		TextRenderer(TextRenderer&& other) = delete;
 		TextRenderer& operator=(const TextRenderer& other) = delete;
@@ -32,6 +33,8 @@ namespace Engine
 			return m_TextColor;
 		}
 
+		void GUI() override;
+
 		void Serialize(nlohmann::json& json) const override;
 		void Deserialize(const nlohmann::json& json) override;
 		std::string GetTypeName() const override;
@@ -39,12 +42,11 @@ namespace Engine
 
 		bool m_needsUpdate;
 		std::string m_text;
+		int m_FontSize;
+		std::string m_FontText;
 		Engine::Color m_TextColor;
 		Font* m_font;
 		std::unique_ptr<Texture2D> m_textTexture;
-	
-	
-
 	};
 }
 

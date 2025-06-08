@@ -32,16 +32,15 @@ void GameOverScene::CreateScene(EGameOverType type, GameMode mode, int score)
 		text = type == EGameOverType::PLAYER1WON ? "Player 1 Won!" : "Player 2 Won!";
 	}
 
-	auto pFont{ ResourceManager::GetInstance().LoadFont("tron-arcade.otf",30) };
 	auto gameOverText{ std::make_unique<GameObject>() };
 	gameOverText->GetTransform()->SetLocalPosition({ 50, 50 });
-	gameOverText->AddComponent<TextRenderer>(text, pFont, Engine::Color{ 0,0,255,255 });
+	gameOverText->AddComponent<TextRenderer>(text, "tron-arcade.otf", 30, Engine::Color{ 0,0,255,255 });
 
 	if (mode != GameMode::VS)
 	{
 		auto ScoreText{ std::make_unique<GameObject>() };
 		ScoreText->GetTransform()->SetLocalPosition({ 50,200 });
-		ScoreText->AddComponent<TextRenderer>("Score " + std::to_string(score), pFont, Engine::Color{ 0,0,255,255 });
+		ScoreText->AddComponent<TextRenderer>("Score " + std::to_string(score), "tron-arcade.otf", 30, Engine::Color{ 0,0,255,255 });
 
 		scene->Add(std::move(ScoreText));
 	}

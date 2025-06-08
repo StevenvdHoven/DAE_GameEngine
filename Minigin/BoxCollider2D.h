@@ -28,6 +28,8 @@ namespace Engine
 		virtual void Deserialize(const nlohmann::json& in) override;
 		virtual std::string GetTypeName() const override;
 
+		void GUI() override;
+
 	private:
 		Vector2 m_Size;
 	};

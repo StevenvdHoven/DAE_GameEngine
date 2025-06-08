@@ -98,11 +98,10 @@ std::string GameOverMenuComponent::GetTypeName() const
 void GameOverMenuComponent::CreateNavigationTexts()
 {
 	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
-	auto pFont{ ResourceManager::GetInstance().LoadFont("tron-arcade.otf", 20) };
 	
 	auto menuObject{ std::make_unique<Engine::GameObject>() };
 	menuObject->GetTransform()->SetLocalPosition({ 50,100 });
-	auto menuText{ menuObject->AddComponent<TextRenderer>("Go to Menu",pFont,DEFAULT_COLOR)};
+	auto menuText{ menuObject->AddComponent<TextRenderer>("Go to Menu","tron-arcade.otf", 20,DEFAULT_COLOR)};
 	m_pTextComponents.emplace_back(menuText);
 	pScene->Add(std::move(menuObject));
 
@@ -110,7 +109,7 @@ void GameOverMenuComponent::CreateNavigationTexts()
 	{
 		auto sumbitObject{ std::make_unique<Engine::GameObject>() };
 		sumbitObject->GetTransform()->SetLocalPosition({ 50,150 });
-		auto sumbitText{ sumbitObject->AddComponent<TextRenderer>("Submit Score",pFont,DEFAULT_COLOR) };
+		auto sumbitText{ sumbitObject->AddComponent<TextRenderer>("Submit Score","tron-arcade.otf", 20,DEFAULT_COLOR) };
 		m_pTextComponents.emplace_back(sumbitText); pScene->Add(std::move(sumbitObject));
 	}
 }

@@ -102,10 +102,11 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 	ServiceLocator::RegisterPhysicsSystem(std::make_unique<PhysicsSystem>());
 	ServiceLocator::RegisterGraphEditor(std::make_unique<GraphEditor>());
 	ServiceLocator::RegisterPathFindingService(std::make_unique<PathFinding>());
-		
-	
 
 	load();
+
+	ServiceLocator::GetLevelEditor().SetActive(true);
+	ServiceLocator::GetLevelEditor().OpenNewScene();
 
 	sceneManager.Start();
 
@@ -137,9 +138,14 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 		sceneManager.Update();
 		sceneManager.LateUpdate();
 
+		if (ServiceLocator::GetLevelEditor().IsActive())
+			ServiceLocator::GetLevelEditor().LateUpdate();
+
 		viewPort.Render();
 		if(ServiceLocator::GetGraphEditor().IsActive())
 			ServiceLocator::GetGraphEditor().GUI();
+		if (ServiceLocator::GetLevelEditor().IsActive())
+			ServiceLocator::GetLevelEditor().GUI();
 
 		renderer.Render();
 

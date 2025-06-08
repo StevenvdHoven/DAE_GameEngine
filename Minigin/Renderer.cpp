@@ -28,14 +28,14 @@ void Engine::Renderer::Init(SDL_Window* window)
 {
 	m_window = window;
 	m_renderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED);
-	if (m_renderer == nullptr) 
+	if (m_renderer == nullptr)
 	{
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 	}
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	
+
 	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
 	ImGui_ImplOpenGL3_Init();
 }
@@ -48,13 +48,19 @@ void Engine::Renderer::Render() const
 
 	SceneManager::GetInstance().Render();
 
-	//ServiceLocator::GetPhysicsSystem().Render();
+	
 
-	ServiceLocator::GetGraphEditor().Draw();
+	if (ServiceLocator::GetGraphEditor().IsActive())
+		ServiceLocator::GetGraphEditor().Draw();
+
+	if (ServiceLocator::GetLevelEditor().IsActive())
+		ServiceLocator::GetLevelEditor().Render();
+
+	ServiceLocator::GetPhysicsSystem().Render();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	
+
 	SDL_RenderPresent(m_renderer);
 }
 

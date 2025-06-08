@@ -139,12 +139,11 @@ void GameLoop::CreateStartText()
 {
 	Scene* pScene{ SceneManager::GetInstance().GetActiveScene() };
 
-	auto pFont{ ResourceManager::GetInstance().LoadFont("tron-arcade.otf", 16) };
 	auto startTextObject{ std::make_unique<GameObject>() };
 
 	const Engine::Vector2 startTextObjectPosition{ 20,220 };
 	startTextObject->GetTransform()->SetLocalPosition(startTextObjectPosition);
-	m_pStartText = startTextObject->AddComponent<TextRenderer>("Press START button to Start", pFont, Engine::Color{ 0,0,255,255 });
+	m_pStartText = startTextObject->AddComponent<TextRenderer>("Press START button to Start", "tron-arcade.otf", 16, Engine::Color{ 0,0,255,255 });
 
 	pScene->Add(std::move(startTextObject));
 }
@@ -152,7 +151,6 @@ void GameLoop::CreateStartText()
 void GameLoop::CreateLivesText()
 {
 	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
-	const auto pFont{ ResourceManager::GetInstance().LoadFont("tron-arcade.otf",20) };
 
 	const int amountOfPlayers{ m_Mode == GameMode::SinglePlayer ? 1 : 2 };
 	constexpr float spacing{ 20.f };
@@ -161,7 +159,7 @@ void GameLoop::CreateLivesText()
 	{
 		auto livesObject{ std::make_unique<Engine::GameObject>() };
 		livesObject->GetTransform()->SetLocalPosition(250.f, index * spacing);
-		m_pLivesTexts[index] = livesObject->AddComponent<TextRenderer>("P" + std::to_string(index) + " Lives", pFont, Engine::Color{ 0,0,255,255 });
+		m_pLivesTexts[index] = livesObject->AddComponent<TextRenderer>("P" + std::to_string(index) + " Lives", "tron-arcade.otf", 20, Engine::Color{ 0,0,255,255 });
 
 		pScene->Add(std::move(livesObject));
 	}

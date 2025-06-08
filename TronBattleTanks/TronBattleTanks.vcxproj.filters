@@ -72,9 +72,6 @@
     <ClCompile Include="RotatorComponent.cpp">
       <Filter>Game\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Game\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="BattleScene.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
@@ -166,9 +163,6 @@
     </ClInclude>
     <ClInclude Include="RotatorComponent.h">
       <Filter>Game\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Menu.h">
-      <Filter>Game\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="BattleScene.h">
       <Filter>Game\Scenes</Filter>

@@ -38,6 +38,8 @@ namespace Engine
 		void Serialize(nlohmann::json& out) const override;
 		void Deserialize(const nlohmann::json& in) override;
 		std::string GetTypeName() const override;
+
+		void GUI() override;
 	private:
 
 		void SetPositionDirty(bool flag = true);

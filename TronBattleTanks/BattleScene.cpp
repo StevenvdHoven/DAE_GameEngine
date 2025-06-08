@@ -26,20 +26,18 @@ void BattleScene::CreateScene(GameMode mode = GameMode::SinglePlayer)
 	scene->MoveScene(Vector2{ 0, differenceHeight });
 
 	// Score 
-	auto pFont{ ResourceManager::GetInstance().LoadFont("tron-arcade.otf",32) };
 	std::unique_ptr<Engine::GameObject> scoreTextObject;
 
 	if (mode != GameMode::VS)
 	{
 		scoreTextObject = std::make_unique<GameObject>();
-		scoreTextObject->AddComponent<TextRenderer>("Score", pFont, Engine::Color{ 0,0,255,255 });
+		scoreTextObject->AddComponent<TextRenderer>("Score", "tron-arcade.otf", 32, Engine::Color{ 0,0,255,255 });
 		scene->Add(std::move(scoreTextObject));
 	}
 
-	pFont = ResourceManager::GetInstance().LoadFont("tron-arcade.otf", 22);
 	scoreTextObject = std::make_unique<GameObject>();
 	scoreTextObject->GetTransform()->SetLocalPosition({ 0,32 });
-	scoreTextObject->AddComponent<TextRenderer>("", pFont, Engine::Color{ 0,0,255,255 });
+	scoreTextObject->AddComponent<TextRenderer>("", "tron-arcade.otf", 22, Engine::Color{ 0,0,255,255 });
 	auto scoreComponent{ scoreTextObject->AddComponent<ScoreComponent>() };
 	scene->Add(std::move(scoreTextObject));
 

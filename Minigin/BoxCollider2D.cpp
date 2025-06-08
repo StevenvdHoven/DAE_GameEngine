@@ -3,11 +3,12 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Renderer.h"
+#include "imgui.h"
 
 using namespace Engine;
 
 Engine::BoxCollider2D::BoxCollider2D(GameObject* pOwner):
-	BoxCollider2D{pOwner,{},false}
+	BoxCollider2D{pOwner,{}}
 {
 }
 
@@ -137,20 +138,32 @@ void Engine::BoxCollider2D::Serialize(nlohmann::json& out) const
 {
 	Collider::Serialize(out);
 
-	nlohmann::json boxColliderJson;
-	boxColliderJson["box_collider_size"] = m_Size.Serialize();
-	out["component_box_collider"] = boxColliderJson;
+	out["box_collider_size"] = m_Size.Serialize();
 }
 
 void Engine::BoxCollider2D::Deserialize(const nlohmann::json& in)
 {
 	Collider::Deserialize(in);
 
-	nlohmann::json boxColliderJson{ in["component_box_collider"] };
-	m_Size.Deserialize(boxColliderJson["box_collider_size"]);
+	nlohmann::json sizeJson{ in["box_collider_size"] };
+	m_Size.Deserialize(sizeJson);
 }
 
 std::string Engine::BoxCollider2D::GetTypeName() const
 {
 	return "BoxCollider";
+}
+
+void Engine::BoxCollider2D::GUI()
+{
+	Collider::GUI();
+
+	ImGui::Separator();
+	ImGui::Text("Box Collider");
+
+	Vector2 size = m_Size;
+	if (ImGui::InputFloat2("Size", &size.x))
+	{
+		m_Size = size;
+	}
 }

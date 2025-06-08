@@ -33,20 +33,19 @@ void MainMenu::CreateScene()
 	menuObject->AddComponent<MenuComponent>();
 	scene->Add(std::move(menuObject));
 
-	auto pFont{ ResourceManager::GetInstance().LoadFont("tron-arcade.otf",32) };
 	auto singlePlayerText{ std::make_unique<GameObject>() };
 	singlePlayerText->GetTransform()->SetLocalPosition(CENTER_SCREEN + Vector2{ -200,-50 });
-	singlePlayerText->AddComponent<TextRenderer>("Single Player",pFont,Engine::Color{0,0,255,255});
+	singlePlayerText->AddComponent<TextRenderer>("Single Player", "tron-arcade.otf", 32,Engine::Color{0,0,255,255});
 	scene->Add(std::move(singlePlayerText));
 
 	auto CoOpText{ std::make_unique<GameObject>() };
 	CoOpText->GetTransform()->SetLocalPosition(CENTER_SCREEN + Vector2{ -200,50 });
-	CoOpText->AddComponent<TextRenderer>("Co Op", pFont, Engine::Color{ 0,0,255,255 });
+	CoOpText->AddComponent<TextRenderer>("Co Op", "tron-arcade.otf", 32, Engine::Color{ 0,0,255,255 });
 	scene->Add(std::move(CoOpText));
 
 	auto pvpText{ std::make_unique<GameObject>() };
 	pvpText->GetTransform()->SetLocalPosition(CENTER_SCREEN + Vector2{ -25,175 });
-	pvpText->AddComponent<TextRenderer>("PVP", pFont, Engine::Color{ 0,0,255,255 });
+	pvpText->AddComponent<TextRenderer>("PVP", "tron-arcade.otf", 32, Engine::Color{ 0,0,255,255 });
 	scene->Add(std::move(pvpText));
 	
 }

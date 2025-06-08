@@ -113,8 +113,8 @@ namespace Engine
 
 		void Deserialize(nlohmann::json& json)
 		{
-			x = json["x"];
-			y = json["y"];
+			x = json["x"].get<float>();
+			y = json["y"].get<float>();
 		}
 		
 

@@ -30,17 +30,29 @@ namespace Engine
 		void OnTriggerExit(GameObject* other);
 
 		void Serialize(nlohmann::json& json);
-		void Deserialize(nlohmann::json& json);
+		void Deserialize(nlohmann::json& json, std::vector<std::unique_ptr<GameObject>>& spawnChilderen);
 
 		void SetActive(bool active);
 
-		GameObject();
+
+		std::string Name() const { return m_Name; }
+		bool PreviewGUI(GameObject*& selectedObject);
+		void GUI();
+
+		GameObject(const std::string& name = "GameObject");
 		~GameObject();
 
 		template<typename ComponentType, typename... Args>
 		ComponentType* AddComponent(Args&&... args);
 
 		void RemoveComponent(Component* pComponent);
+		bool HasComponent(const std::string& typeName) const
+		{
+			return std::any_of(m_Components.begin(), m_Components.end(),
+				[&typeName](const std::unique_ptr<Component>& component) {
+					return component->GetTypeName() == typeName;
+				});
+		}
 
 		template<typename ComponentType>
 		ComponentType* GetComponent();
@@ -51,10 +63,11 @@ namespace Engine
 	private:
 		friend class Scene;
 
+		std::string m_Name;
 		bool m_IsActive;
 		bool m_IsDestroyed;
-		Transform* m_pTransform;
 		std::vector<std::unique_ptr<Component>> m_Components;
+		Transform* m_pTransform;
 	};
 
 	template<typename ComponentType, typename ...Args>

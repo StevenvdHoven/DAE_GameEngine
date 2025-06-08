@@ -1,6 +1,7 @@
 #include "Transform.h"
 #include "GameObject.h"
 #include "Matrix3x3.h"
+#include "imgui.h"
 
 using namespace Engine;
 
@@ -121,22 +122,54 @@ void Engine::Transform::SetParent(GameObject* pParent, bool keepWorldPosition)
 
 void Engine::Transform::Serialize(nlohmann::json& json) const
 {
-	nlohmann::json transformJson;
-	transformJson["transform_local_pos"] = m_LocalPosition.Serialize();
-	transformJson["transform_local_rot"] = m_LocalRotation;
-	json["component_transform"] = transformJson;
+	json["transform_local_pos"] = m_LocalPosition.Serialize();
+	json["transform_local_rot"] = m_LocalRotation;
 }
 
 void Engine::Transform::Deserialize(const nlohmann::json& json)
 {
-	nlohmann::json transformJson = json["component_transform"];
-	m_LocalPosition.Deserialize(transformJson["tranform_local_pos"]);
-	m_LocalRotation = transformJson["transform_local_rot"];
+	auto positonIt = json["transform_local_pos"];
+	m_LocalPosition.Deserialize(positonIt);
+	m_LocalRotation = json["transform_local_rot"];
+	m_PositionIsDirty = true;
+	m_RotationIsDirty = true;
 }
 
 std::string Engine::Transform::GetTypeName() const
 {
 	return "TransformComponent";
+}
+
+void Engine::Transform::GUI()
+{
+	ImGui::Text("Transform Component");
+	ImGui::Separator();
+
+	Engine::Vector2 localPos = m_LocalPosition;
+	if (ImGui::InputFloat2("Local Position", &localPos.x))
+	{
+		SetLocalPosition(localPos);
+	}
+
+	Engine::Vector2 worldPos = GetWorldLocation();
+	ImGui::InputFloat2("World Position", &worldPos.x, "%.2f", ImGuiInputTextFlags_ReadOnly);
+
+	float localRot = m_LocalRotation;
+	if (ImGui::InputFloat("Local Rotation", &localRot))
+	{
+		SetLocalRotation(localRot);
+	}
+
+	float worldRot = GetWorldRotation();
+	ImGui::InputFloat("World Rotation", &worldRot, 0.0f, 0.0f, "%.2f", ImGuiInputTextFlags_ReadOnly);
+
+	ImGui::Spacing();
+
+	if (ImGui::Button("Reset Transform"))
+	{
+		SetLocalPosition(0, 0);
+		SetLocalRotation(0);
+	}
 }
 
 void Engine::Transform::SetPositionDirty(bool flag)

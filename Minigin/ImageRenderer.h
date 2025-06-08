@@ -34,12 +34,14 @@ namespace Engine
 		void ChangeImageAllignment(ImageAllignment allignment) { m_ImageAllignment = allignment; }
 		void SetPivot(const Vector2& pivot) { m_Pivot = pivot; }
 
+		void GUI() override;
+
 		void Serialize(nlohmann::json& json) const override;
 		void Deserialize(const nlohmann::json& json) override;
 		std::string GetTypeName() const override;
 
 	private:
-		const std::string m_ImagePath;
+		std::string m_ImagePath;
 		Texture2D* m_pTexture;
 		ImageAllignment m_ImageAllignment;
 		Vector2 m_Pivot;

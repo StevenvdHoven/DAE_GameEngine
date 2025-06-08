@@ -37,10 +37,10 @@ namespace Engine
 
 		void Desrialize(nlohmann::json& json)
 		{
-			r = json["r"];
-			g = json["g"];
-			b = json["b"];
-			a = json["a"];
+			r = json["r"].get<Uint8>();
+			g = json["g"].get<Uint8>();
+			b = json["b"].get<Uint8>();
+			a = json["a"].get<Uint8>();
 		}
 	};
 

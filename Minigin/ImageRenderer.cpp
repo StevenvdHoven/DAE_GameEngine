@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "GameObject.h"
 #include "json.hpp"
+#include "imgui.h"
 
 using namespace Engine;
 
@@ -73,25 +74,61 @@ void Engine::ImageRenderer::Render() const
 	pivot.y += static_cast<int>(m_Pivot.y);
 
 	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, rot,&pivot);
-	/*Renderer::GetInstance().SetColor(SDL_Color{ 0, 0, 255, 255 });
-	Renderer::GetInstance().RenderRectangle(pos, size.x, size.y);*/
+	Renderer::GetInstance().SetColor(SDL_Color{ 0, 0, 255, 255 });
+	Renderer::GetInstance().RenderRectangle(pos, size.x, size.y);
+}
+
+void Engine::ImageRenderer::GUI()
+{
+	ImGui::Text("Image Renderer Component");
+	ImGui::Separator();
+
+	char pathBuffer[256];
+	strcpy_s(pathBuffer, m_ImagePath.c_str());
+
+	if (ImGui::InputText("Image Path", pathBuffer, sizeof(pathBuffer)))
+	{
+		m_ImagePath = pathBuffer;
+		m_pTexture = ResourceManager::GetInstance().LoadTexture(m_ImagePath);
+	}
+
+	const char* alignmentOptions[] = {
+		"Top Left", "Top Right", "Bottom Left", "Bottom Right",
+		"Left", "Right", "Top", "Bottom", "Centre", "Custom"
+	};
+
+	int currentSelection = static_cast<int>(m_ImageAllignment);
+	if (ImGui::Combo("Alignment", &currentSelection, alignmentOptions, IM_ARRAYSIZE(alignmentOptions)))
+	{
+		m_ImageAllignment = static_cast<ImageAllignment>(currentSelection);
+	}
+
+	// Show pivot if Custom alignment
+	if (m_ImageAllignment == ImageAllignment::Custom)
+	{
+		Vector2 pivot = m_Pivot;
+		if (ImGui::InputFloat2("Pivot", &pivot.x))
+		{
+			SetPivot(pivot);
+		}
+	}
+
 }
 
 void Engine::ImageRenderer::Serialize(nlohmann::json& json) const
 {
-	nlohmann::json imageRendererJson;
-	imageRendererJson["image_path"] = m_ImagePath;
-	imageRendererJson["image_allignment"] = static_cast<int>(m_ImageAllignment);
-	imageRendererJson["image_pivot"] = m_Pivot.Serialize();
-	json["component_image_renderer"] = imageRendererJson;
+	json["image_path"] = m_ImagePath;
+	json["image_allignment"] = static_cast<int>(m_ImageAllignment);
+	json["image_pivot"] = m_Pivot.Serialize();
 }
 
 void Engine::ImageRenderer::Deserialize(const nlohmann::json& json)
 {
-	nlohmann::json imageRendererJson{ json["component_image_renderer"] };
-	m_pTexture = ResourceManager::GetInstance().LoadTexture(imageRendererJson["image_path"]);
-	m_ImageAllignment = static_cast<ImageAllignment>(imageRendererJson["image_allignment"]);
-	m_Pivot.Deserialize(imageRendererJson["image_pivot"]);
+	m_ImagePath = json["image_path"].get<std::string>();
+	m_pTexture = ResourceManager::GetInstance().LoadTexture(m_ImagePath);
+	m_ImageAllignment = static_cast<ImageAllignment>(json["image_allignment"].get<int>());
+	auto pivotJson{ json["image_pivot"] };
+	m_Pivot.Deserialize(pivotJson);
 }
 
 std::string Engine::ImageRenderer::GetTypeName() const

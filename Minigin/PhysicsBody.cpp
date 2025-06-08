@@ -3,8 +3,9 @@
 #include "Transform.h"
 #include "PhysicsSystem.h"
 #include "ServiceLocator.h"
+#include "imgui.h"
 
-Engine::PhysicsBody::PhysicsBody(GameObject* pOwner):
+Engine::PhysicsBody::PhysicsBody(GameObject* pOwner) :
 	Component(pOwner),
 	Velocity{ 0.f, 0.f }
 {
@@ -32,4 +33,10 @@ void Engine::PhysicsBody::Deserialize(const nlohmann::json& json)
 std::string Engine::PhysicsBody::GetTypeName() const
 {
 	return "PhysicsBody";
+}
+
+void Engine::PhysicsBody::GUI()
+{
+	ImGui::Text("Velocity: (%.2f, %.2f)", Velocity.x, Velocity.y);
+	ImGui::DragFloat2("Velocity", &Velocity.x, 0.1f);
 }
