@@ -14,6 +14,7 @@
 #include "ColliderTestScene.h"
 #include "ServiceLocator.h"
 #include "SimpleTriggerComponent.h"
+#include "Scoreboard.h"
 #include "GameEngine.h"
 
 using namespace Engine;
@@ -21,6 +22,7 @@ using namespace Engine;
 void load()
 {
 	ServiceLocator::GetComponentRegistery().Register<SimpleTriggerComponent>("SimpleTriggerComponent");
+	ServiceLocator::GetComponentRegistery().Register<Scoreboard>("Scoreboard");
 	//TestScene::CreateScene();
 	//BattleScene::CreateScene);
 	//MainMenu::CreateScene();

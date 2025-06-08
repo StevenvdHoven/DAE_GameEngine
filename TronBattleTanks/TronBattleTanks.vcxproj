@@ -174,10 +174,12 @@
     <ClCompile Include="PlayerAimCommand.cpp" />
     <ClCompile Include="PlayerDamageCommand.cpp" />
     <ClCompile Include="PlayerHealthComponent.cpp" />
+    <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="PlayerShootCommand.cpp" />
     <ClCompile Include="PrefabFactory.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
+    <ClCompile Include="Scoreboard.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="SimpleTriggerComponent.cpp" />
     <ClCompile Include="StartGameCommand.cpp" />
@@ -208,10 +210,12 @@
     <ClInclude Include="PlayerAimCommand.h" />
     <ClInclude Include="PlayerDamageCommand.h" />
     <ClInclude Include="PlayerHealthComponent.h" />
+    <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="PlayerShootCommand.h" />
     <ClInclude Include="PrefabFactory.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RotatorComponent.h" />
+    <ClInclude Include="Scoreboard.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="SimpleTriggerComponent.h" />
     <ClInclude Include="StartGameCommand.h" />

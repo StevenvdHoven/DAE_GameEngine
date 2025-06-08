@@ -3,6 +3,7 @@
 #include "Command.h"
 #include <vector>
 #include "MenuComponent.h"
+#include "Observers.h"
 
 namespace Engine
 {
@@ -10,11 +11,12 @@ namespace Engine
 }
 
 class SubmitMenu;
+class Scoreboard;
 
-class GameOverMenuComponent final : public Engine::Component
+class GameOverMenuComponent final : public Engine::Component, public Engine::IObserver
 {
 public:
-	GameOverMenuComponent(Engine::GameObject* pOwner, GameMode mode = GameMode::SinglePlayer);
+	GameOverMenuComponent(Engine::GameObject* pOwner,int score = 0, GameMode mode = GameMode::SinglePlayer);
 	virtual ~GameOverMenuComponent();
 
 	void Start() override;
@@ -22,22 +24,29 @@ public:
 	void NavigateMenu(const Engine::Vector2& direction);
 	void OnButtonPress();
 
+	void OnNotify(Component* sender) override;
 
 	std::string GetTypeName() const override;
+
+
 private:
 	void CreateNavigationTexts();
 
 	GameMode m_Mode;
 	bool m_HasFocus;
+	int m_Score;
 
 	int m_CurrentSelectedText;
 	std::vector<Engine::TextRenderer*> m_pTextComponents;
 	Engine::GameObject* m_SumbitWindow;
 	SubmitMenu* m_SubmitComp;
+	Scoreboard* m_pScoreBoard;
 
 
 	void* m_NavigationCommand;
 	void* m_ButtonCommand;
+
+	
 };
 
 namespace GameOverMenu

@@ -7,16 +7,16 @@ namespace Engine
 	class Collider;
 }
 
+class PlayerMovement;
+
 class MovePlayerCommand : public Engine::GameActorCommand2D
 {
 public:
-	MovePlayerCommand(Engine::GameObject* pActor, InputType inputType, float speed);
+	MovePlayerCommand(Engine::GameObject* pActor, InputType inputType);
 	void Execute(const Engine::Vector2& value) override;
 private:
 	float m_Speed;
-	Engine::Transform* m_pTransform;
-	Engine::PhysicsBody* m_pBody;
-	Engine::Collider* m_pCollider;
+	PlayerMovement* m_pPlayerMovement;
 
 };
 

@@ -1,0 +1,167 @@
+{
+    "root_game_objects": [
+        {
+            "children": [
+                {
+                    "children": [],
+                    "game_object_component_types": [
+                        "TransformComponent",
+                        "TextRenderer"
+                    ],
+                    "game_object_components": {
+                        "TextRenderer": {
+                            "render_component_order": 0,
+                            "text_renderer_color": {
+                                "a": 255,
+                                "b": 255,
+                                "g": 0,
+                                "r": 0
+                            },
+                            "text_renderer_font": "tron-arcade.otf",
+                            "text_renderer_font_size": 20,
+                            "text_renderer_text": "1 STE 10000"
+                        },
+                        "TransformComponent": {
+                            "transform_local_pos": {
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "transform_local_rot": 0.0
+                        }
+                    },
+                    "game_object_name": "0-RANKTEXT"
+                },
+                {
+                    "children": [],
+                    "game_object_component_types": [
+                        "TransformComponent",
+                        "TextRenderer"
+                    ],
+                    "game_object_components": {
+                        "TextRenderer": {
+                            "render_component_order": 0,
+                            "text_renderer_color": {
+                                "a": 255,
+                                "b": 255,
+                                "g": 0,
+                                "r": 0
+                            },
+                            "text_renderer_font": "tron-arcade.otf",
+                            "text_renderer_font_size": 20,
+                            "text_renderer_text": "2 TWA 10000"
+                        },
+                        "TransformComponent": {
+                            "transform_local_pos": {
+                                "x": 0.0,
+                                "y": 30.0
+                            },
+                            "transform_local_rot": 0.0
+                        }
+                    },
+                    "game_object_name": "1-RANKTEXT"
+                },
+                {
+                    "children": [],
+                    "game_object_component_types": [
+                        "TransformComponent",
+                        "TextRenderer"
+                    ],
+                    "game_object_components": {
+                        "TextRenderer": {
+                            "render_component_order": 0,
+                            "text_renderer_color": {
+                                "a": 255,
+                                "b": 255,
+                                "g": 0,
+                                "r": 0
+                            },
+                            "text_renderer_font": "tron-arcade.otf",
+                            "text_renderer_font_size": 20,
+                            "text_renderer_text": "3 FEN 10000"
+                        },
+                        "TransformComponent": {
+                            "transform_local_pos": {
+                                "x": 0.0,
+                                "y": 60.0
+                            },
+                            "transform_local_rot": 0.0
+                        }
+                    },
+                    "game_object_name": "2-RANKTEXT"
+                },
+                {
+                    "children": [],
+                    "game_object_component_types": [
+                        "TransformComponent",
+                        "TextRenderer"
+                    ],
+                    "game_object_components": {
+                        "TextRenderer": {
+                            "render_component_order": 0,
+                            "text_renderer_color": {
+                                "a": 255,
+                                "b": 255,
+                                "g": 0,
+                                "r": 0
+                            },
+                            "text_renderer_font": "tron-arcade.otf",
+                            "text_renderer_font_size": 20,
+                            "text_renderer_text": "4 UNC 10000"
+                        },
+                        "TransformComponent": {
+                            "transform_local_pos": {
+                                "x": 0.0,
+                                "y": 90.0
+                            },
+                            "transform_local_rot": 0.0
+                        }
+                    },
+                    "game_object_name": "3-RANKTEXT"
+                },
+                {
+                    "children": [],
+                    "game_object_component_types": [
+                        "TransformComponent",
+                        "TextRenderer"
+                    ],
+                    "game_object_components": {
+                        "TextRenderer": {
+                            "render_component_order": 0,
+                            "text_renderer_color": {
+                                "a": 255,
+                                "b": 255,
+                                "g": 0,
+                                "r": 0
+                            },
+                            "text_renderer_font": "tron-arcade.otf",
+                            "text_renderer_font_size": 20,
+                            "text_renderer_text": "5 LUC 10000"
+                        },
+                        "TransformComponent": {
+                            "transform_local_pos": {
+                                "x": 0.0,
+                                "y": 120.0
+                            },
+                            "transform_local_rot": 0.0
+                        }
+                    },
+                    "game_object_name": "4-RANKTEXT"
+                }
+            ],
+            "game_object_component_types": [
+                "TransformComponent"
+            ],
+            "game_object_components": {
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": 10.0,
+                        "y": 300.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "parent_highscore"
+        }
+    ],
+    "scene_name": "prefab_highscore_board_scene"
+}

@@ -24,7 +24,7 @@ void GameOverScene::CreateScene(EGameOverType type, GameMode mode, int score)
 	auto scene{ SceneManager::GetInstance().CreateScene("GameOver Scene") };
 
 	auto gameOverObject{ std::make_unique<GameObject>() };
-	gameOverObject->AddComponent<GameOverMenuComponent>(mode);
+	gameOverObject->AddComponent<GameOverMenuComponent>(score,mode);
 
 	std::string text{ "Game Over" };
 
@@ -45,6 +45,9 @@ void GameOverScene::CreateScene(EGameOverType type, GameMode mode, int score)
 
 		scene->Add(std::move(ScoreText));
 	}
+
+	PrefabResult result{ Engine::EnginePrefabFactory::LoadPrefabs("parent_highscore.json") };
+	EnginePrefabFactory::AddPrefabToScene(std::move(result),scene);
 	
 	scene->Add(std::move(gameOverText));
 	scene->Add(std::move(gameOverObject));

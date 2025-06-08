@@ -145,7 +145,13 @@
       <Filter>Game\Tools</Filter>
     </ClCompile>
     <ClCompile Include="SubmitMenu.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Game\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Scoreboard.cpp">
+      <Filter>Game\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMovement.cpp">
+      <Filter>Game\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -243,7 +249,13 @@
       <Filter>Game\Tools</Filter>
     </ClInclude>
     <ClInclude Include="SubmitMenu.h">
-      <Filter>Header Files</Filter>
+      <Filter>Game\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Scoreboard.h">
+      <Filter>Game\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMovement.h">
+      <Filter>Game\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

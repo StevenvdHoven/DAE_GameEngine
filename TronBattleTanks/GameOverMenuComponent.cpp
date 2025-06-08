@@ -6,6 +6,7 @@
 #include "SceneManager.h"
 #include "MainMenu.h"
 #include "ServiceLocator.h"
+#include "Scoreboard.h"
 #include "SubmitMenu.h"
 
 #define DEFAULT_COLOR Engine::Color{0,0,255,255}
@@ -26,9 +27,11 @@ void GameOverMenu::NavigationCommand::Execute(const Engine::Vector2& input)
 	m_pGameOverMenu->NavigateMenu(input);
 }
 
-GameOverMenuComponent::GameOverMenuComponent(Engine::GameObject* pOwner, GameMode mode):
+GameOverMenuComponent::GameOverMenuComponent(Engine::GameObject* pOwner, int score, GameMode mode):
 	Engine::Component{pOwner},
+	m_HasFocus{ true },
 	m_Mode{mode},
+	m_Score{ score },
 	m_CurrentSelectedText{0},
 	m_pTextComponents{},
 	m_NavigationCommand{nullptr}
@@ -52,7 +55,7 @@ void GameOverMenuComponent::Start()
 
 	auto buttonCommand{ std::make_unique<GameOverMenu::PressButtonCommand>(this) };
 	buttonCommand->ChangeDeviceType(DeviceType::GAMEPAD);
-	buttonCommand->SetTriggerState(TriggerState::RELEASED);
+	buttonCommand->SetTriggerState(TriggerState::PRESSED);
 	m_ButtonCommand = buttonCommand.get();
 	InputManager::GetInstance().BindButton(0, PRESS_BUTTON, std::move(buttonCommand));
 
@@ -60,7 +63,9 @@ void GameOverMenuComponent::Start()
 	if (result.bSuccesfull)
 	{
 		m_SumbitWindow = result.Parent.get();
-		m_SubmitComp = m_SumbitWindow->AddComponent<SubmitMenu>(this);
+		m_SubmitComp = m_SumbitWindow->AddComponent<SubmitMenu>();
+		m_SubmitComp->SetScore(m_Score);
+		m_SubmitComp->GetOnSaved().AddObserver(this);
 		SceneManager::GetInstance().GetActiveScene()->Add(std::move(result.Parent));
 		auto& childeren{ result.childeren };
 		for (auto& child : childeren)
@@ -70,6 +75,8 @@ void GameOverMenuComponent::Start()
 
 		m_SumbitWindow->GetTransform()->SetWorldLocation({ 1000,1000 });
 	}
+
+	m_pScoreBoard = SceneManager::GetInstance().GetActiveScene()->FindObjectByName("parent_highscore")->GetComponent<Scoreboard>();
 
 	CreateNavigationTexts();
 
@@ -97,6 +104,8 @@ void GameOverMenuComponent::NavigateMenu(const Engine::Vector2& direction)
 
 void GameOverMenuComponent::OnButtonPress()
 {
+	if (!m_HasFocus) return;
+
 	if (m_CurrentSelectedText == 0)
 	{
 		MainMenu::CreateScene();
@@ -131,6 +140,17 @@ void GameOverMenuComponent::CreateNavigationTexts()
 		sumbitObject->GetTransform()->SetLocalPosition({ 50,150 });
 		auto sumbitText{ sumbitObject->AddComponent<TextRenderer>("Submit Score","tron-arcade.otf", 20,DEFAULT_COLOR) };
 		m_pTextComponents.emplace_back(sumbitText); pScene->Add(std::move(sumbitObject));
+	}
+}
+
+void GameOverMenuComponent::OnNotify(Component* sender)
+{
+	if (sender == m_SubmitComp)
+	{
+		m_HasFocus = true;
+		m_SubmitComp->TakeFocus();
+		m_SumbitWindow->GetTransform()->SetWorldLocation({ 1000,1000 });
+		m_pScoreBoard->Refresh();
 	}
 }
 

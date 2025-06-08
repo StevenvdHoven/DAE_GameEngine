@@ -7,6 +7,7 @@
 #include "ImageRenderer.h"
 #include "InputManager.h"
 #include "BoxCollider2D.h"
+#include <memory>
 #include <SDL.h>
 
 #define LEVEL_DIRECTORY "../Data/Levels/"
@@ -226,5 +227,20 @@ void Engine::EnginePrefabFactory::SavePrefab(Engine::GameObject* gameObject)
 	{
 		file << json.dump(4);
 		file.close();
+	}
+}
+
+
+void Engine::EnginePrefabFactory::AddPrefabToScene(Engine::PrefabResult&& result, Scene* const pScene)
+{
+	if (!result.bSuccesfull || !pScene)
+	{
+		return;
+	}
+
+	pScene->Add(std::move(result.Parent));
+	for (auto& child : result.childeren)
+	{
+		pScene->Add(std::move(child));
 	}
 }

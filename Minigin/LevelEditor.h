@@ -60,6 +60,8 @@ namespace Engine
 		static PrefabResult LoadPrefabs(const std::string& prefabPath);
 
 		static void SavePrefab(Engine::GameObject* gameObject);
+
+		static void AddPrefabToScene(PrefabResult&& result,Scene* const pScene);
 	};
 
 }
