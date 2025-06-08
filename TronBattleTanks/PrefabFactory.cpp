@@ -13,6 +13,8 @@
 #include "EnemyHealthComponent.h"
 #include "EnemyMovement.h"
 #include "EnemyBrain.h"
+#include <fstream>
+#include <filesystem>
 
 #include "InputManager.h"
 #include "MovePlayerCommand.h"
@@ -21,6 +23,8 @@
 #include "PlayerAimCommand.h"
 #include "EnemyShootCommand.h"
 #include <SDL.h>
+
+#define PREFAB_FILEPATH "../Data/Prefabs/"
 
 #define ENEMY_IMAGE_PATH "enemy_body.png"
 #define UNIT_COLLIDER_SIZE Engine::Vector2{ 28, 28 }
@@ -542,4 +546,3 @@ Engine::GameObject* PrefabFactory::CreateEnemy(Engine::Scene* const scene, GameL
 
 	return rawPtr;
 }
-

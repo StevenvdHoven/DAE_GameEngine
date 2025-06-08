@@ -31,6 +31,8 @@ namespace Engine
 		Engine::Vector2 GetForward() const;
 		Engine::Vector2 GetUp() const;
 
+		GameObject* FindObjectByNameInChilderen(const std::string& name);
+
 		void SetParent(GameObject* pParent, bool keepWorldPosition = false);
 		GameObject* GetParent() const { return m_pParent; }
 		const std::vector<GameObject*>& GetChildren() const { return m_pChildren; }

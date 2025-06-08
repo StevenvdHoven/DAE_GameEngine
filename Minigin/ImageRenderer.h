@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Component.h"
+#include "RenderComponent.h"
 #include "Vector2.h"
 
 namespace Engine
@@ -22,12 +22,12 @@ namespace Engine
 		Custom,
 	};
 
-	class ImageRenderer final : public Component
+	class ImageRenderer final : public RenderComponent
 	{
 	public:
 		ImageRenderer(GameObject* pOwner);
 		ImageRenderer(GameObject* pOwner, const std::string& imagePath);
-		virtual ~ImageRenderer();
+		virtual ~ImageRenderer() = default;
 
 		void Update() override;
 		void Render() const override;
@@ -41,10 +41,7 @@ namespace Engine
 		void Deserialize(const nlohmann::json& json) override;
 		std::string GetTypeName() const override;
 
-		int Order() const {return m_Order;}
-
 	private:
-		int m_Order;
 		std::string m_ImagePath;
 		Texture2D* m_pTexture;
 		ImageAllignment m_ImageAllignment;

@@ -9,6 +9,8 @@ namespace Engine
 	class TextRenderer;
 }
 
+class SubmitMenu;
+
 class GameOverMenuComponent final : public Engine::Component
 {
 public:
@@ -26,9 +28,12 @@ private:
 	void CreateNavigationTexts();
 
 	GameMode m_Mode;
+	bool m_HasFocus;
 
 	int m_CurrentSelectedText;
 	std::vector<Engine::TextRenderer*> m_pTextComponents;
+	Engine::GameObject* m_SumbitWindow;
+	SubmitMenu* m_SubmitComp;
 
 
 	void* m_NavigationCommand;

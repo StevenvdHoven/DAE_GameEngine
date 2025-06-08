@@ -182,6 +182,7 @@
     <ClCompile Include="SimpleTriggerComponent.cpp" />
     <ClCompile Include="StartGameCommand.cpp" />
     <ClCompile Include="StaticRotaterComponent.cpp" />
+    <ClCompile Include="SubmitMenu.cpp" />
     <ClCompile Include="TestMapScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +216,7 @@
     <ClInclude Include="SimpleTriggerComponent.h" />
     <ClInclude Include="StartGameCommand.h" />
     <ClInclude Include="StaticRotaterComponent.h" />
+    <ClInclude Include="SubmitMenu.h" />
     <ClInclude Include="TestMapScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

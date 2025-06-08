@@ -12,6 +12,7 @@
 #include "InputManager.h"
 #include "MenuComponent.h"
 #include "GameOverMenuComponent.h"
+#include "ServiceLocator.h"
 #include "TextRenderer.h"
 #include "Scene.h"
 #include <SDL.h>
@@ -47,5 +48,7 @@ void GameOverScene::CreateScene(EGameOverType type, GameMode mode, int score)
 	
 	scene->Add(std::move(gameOverText));
 	scene->Add(std::move(gameOverObject));
+
+	
 	
 }

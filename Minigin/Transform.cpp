@@ -93,6 +93,23 @@ Engine::Vector2 Engine::Transform::GetUp() const
 	return rotationMatrix * Engine::Vector2(0, 1);
 }
 
+GameObject* Engine::Transform::FindObjectByNameInChilderen(const std::string& name)
+{
+	if (GetGameObject()->Name() == name) return GetGameObject();
+	else
+	{
+		for (auto child : m_pChildren)
+		{
+			auto result{ child->GetTransform()->FindObjectByNameInChilderen(name) };
+			if (result)
+			{
+				return result;
+			}
+		}
+		return nullptr;
+	}
+}
+
 void Engine::Transform::SetParent(GameObject* pParent, bool keepWorldPosition)
 {
 	if (IsChild(pParent) || pParent == GetGameObject() || m_pParent == pParent)

@@ -17,7 +17,7 @@ Engine::TextRenderer::TextRenderer(GameObject* pOwner) :
 }
 
 Engine::TextRenderer::TextRenderer(GameObject* pOwner, const std::string& text, const std::string& fontText, int size, const Engine::Color& textColor) :
-	Component{ pOwner },
+	RenderComponent{ pOwner },
 	m_needsUpdate{ true },
 	m_text{ text },
 	m_FontSize{ size },
@@ -26,25 +26,18 @@ Engine::TextRenderer::TextRenderer(GameObject* pOwner, const std::string& text, 
 	m_font{ ResourceManager::GetInstance().LoadFont(fontText, static_cast<uint8_t>(size)) },
 	m_textTexture{ nullptr }
 {
-	Renderer::GetInstance().Add(this);
 }
 
 Engine::TextRenderer::~TextRenderer()
 {
-	Renderer::GetInstance().Remove(this);
 }
 
 void Engine::TextRenderer::GUI()
 {
+	RenderComponent::GUI();
+
 	ImGui::Text("Text Renderer Component");
 	ImGui::Separator();
-
-	int order{ m_Order };
-	if (ImGui::InputInt("Order", &order))
-	{
-		m_Order = order;
-		Renderer::GetInstance().Reorder();
-	}
 
 	char textBuffer[256];
 	strcpy_s(textBuffer, sizeof(textBuffer), m_text.c_str());
@@ -93,8 +86,7 @@ void Engine::TextRenderer::GUI()
 
 void Engine::TextRenderer::Serialize(nlohmann::json& json) const
 {
-	
-	json["text_renderer_order"] = m_Order;
+	RenderComponent::Serialize(json);
 	json["text_renderer_text"] = m_text;
 	json["text_renderer_font"] = m_FontText;
 	json["text_renderer_font_size"] = m_FontSize;
@@ -103,8 +95,9 @@ void Engine::TextRenderer::Serialize(nlohmann::json& json) const
 
 void Engine::TextRenderer::Deserialize(const nlohmann::json& json)
 {
+	RenderComponent::Deserialize(json);
+
 	m_needsUpdate = true;
-	m_Order = json["text_renderer_order"].get<int>();
 	m_text = json["text_renderer_text"].get<std::string>();
 	m_FontText = json["text_renderer_font"].get<std::string>();
 	m_FontSize = json["text_renderer_font_size"].get<int>();

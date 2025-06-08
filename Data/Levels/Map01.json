@@ -11,12 +11,12 @@
                     "game_object_components": {
                         "ImageRenderer": {
                             "image_allignment": 0,
-                            "image_order": 0,
                             "image_path": "gameBackground.png",
                             "image_pivot": {
                                 "x": 0.0,
                                 "y": 0.0
-                            }
+                            },
+                            "render_component_order": 0
                         },
                         "TransformComponent": {
                             "transform_local_pos": {
@@ -1747,7 +1747,7 @@
                         1
                     ],
                     "collider_is_trigger": true,
-                    "collider_layer_mask": 0
+                    "collider_layer_mask": 8
                 },
                 "SimpleTriggerComponent": null,
                 "TransformComponent": {

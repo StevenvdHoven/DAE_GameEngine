@@ -10,6 +10,7 @@
 #include <SDL.h>
 
 #define LEVEL_DIRECTORY "../Data/Levels/"
+#define PREFAB_FILEPATH "../Data/Prefabs/"
 
 using namespace Engine;
 
@@ -191,5 +192,39 @@ void Engine::LevelEditor::ImGuiScene()
 			m_SelectedGameObject = nullptr;
 			return;
 		}
+	}
+}
+
+Engine::PrefabResult Engine::EnginePrefabFactory::LoadPrefabs(const std::string& prefabPath)
+{
+	Engine::PrefabResult result{};
+
+	std::string fullPath{ PREFAB_FILEPATH + prefabPath };
+	std::ifstream file(fullPath);
+	if (!file.is_open())
+	{
+		printf("Couldn't load prefab");
+		return result;
+	}
+
+	nlohmann::json prefabData;
+	file >> prefabData;
+
+	result.Parent = std::make_unique<Engine::GameObject>();
+	result.Parent->Deserialize(prefabData, result.childeren);
+	result.bSuccesfull = true;
+	return result;
+}
+
+void Engine::EnginePrefabFactory::SavePrefab(Engine::GameObject* gameObject)
+{
+	nlohmann::json json;
+	gameObject->Serialize(json);
+	std::string scenePath{ PREFAB_FILEPATH + gameObject->Name() + ".json" };
+	std::ofstream file(scenePath);
+	if (file.is_open())
+	{
+		file << json.dump(4);
+		file.close();
 	}
 }

@@ -195,6 +195,9 @@
     <ClInclude Include="LevelEditorCommands.h">
       <Filter>EngineCommands</Filter>
     </ClInclude>
+    <ClInclude Include="RenderComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -319,6 +322,9 @@
     </ClCompile>
     <ClCompile Include="LevelEditorCommands.cpp">
       <Filter>EngineCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

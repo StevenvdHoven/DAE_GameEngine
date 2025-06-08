@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <memory>
-#include "Component.h"
+#include "RenderComponent.h"
 #include "Texture2D.h"
 #include "Renderer.h"
 
@@ -9,7 +9,7 @@ class Font;
 namespace Engine
 {
 
-	class TextRenderer final : public Component
+	class TextRenderer final : public RenderComponent
 	{
 	public:
 		TextRenderer(GameObject* pOwner);
@@ -38,12 +38,9 @@ namespace Engine
 		void Serialize(nlohmann::json& json) const override;
 		void Deserialize(const nlohmann::json& json) override;
 		std::string GetTypeName() const override;
-
-		int Order() const { return m_Order; }
 	private:
 
 		bool m_needsUpdate;
-		int m_Order;
 		std::string m_text;
 		int m_FontSize;
 		std::string m_FontText;

@@ -1,0 +1,217 @@
+{
+    "children": [
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "ImageRenderer"
+            ],
+            "game_object_components": {
+                "ImageRenderer": {
+                    "image_allignment": 8,
+                    "image_path": "score_board_background.png",
+                    "image_pivot": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "render_component_order": 1
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "Background"
+        },
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "TextRenderer"
+            ],
+            "game_object_components": {
+                "TextRenderer": {
+                    "render_component_order": 2,
+                    "text_renderer_color": {
+                        "a": 255,
+                        "b": 255,
+                        "g": 0,
+                        "r": 0
+                    },
+                    "text_renderer_font": "tron-arcade.otf",
+                    "text_renderer_font_size": 30,
+                    "text_renderer_text": "Sumbit Score"
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": -180.0,
+                        "y": -180.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "Title"
+        },
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "TextRenderer"
+            ],
+            "game_object_components": {
+                "TextRenderer": {
+                    "render_component_order": 2,
+                    "text_renderer_color": {
+                        "a": 255,
+                        "b": 255,
+                        "g": 0,
+                        "r": 0
+                    },
+                    "text_renderer_font": "tron-arcade.otf",
+                    "text_renderer_font_size": 120,
+                    "text_renderer_text": "A"
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": -180.0,
+                        "y": 60.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "FIRST_LETTER"
+        },
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "TextRenderer"
+            ],
+            "game_object_components": {
+                "TextRenderer": {
+                    "render_component_order": 2,
+                    "text_renderer_color": {
+                        "a": 255,
+                        "b": 255,
+                        "g": 0,
+                        "r": 0
+                    },
+                    "text_renderer_font": "tron-arcade.otf",
+                    "text_renderer_font_size": 120,
+                    "text_renderer_text": "B"
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": -50.0,
+                        "y": 60.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "SECOND_LETTER"
+        },
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "TextRenderer"
+            ],
+            "game_object_components": {
+                "TextRenderer": {
+                    "render_component_order": 2,
+                    "text_renderer_color": {
+                        "a": 255,
+                        "b": 255,
+                        "g": 0,
+                        "r": 0
+                    },
+                    "text_renderer_font": "tron-arcade.otf",
+                    "text_renderer_font_size": 120,
+                    "text_renderer_text": "C"
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": 80.0,
+                        "y": 60.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "THIRD_LETTER"
+        },
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "TextRenderer"
+            ],
+            "game_object_components": {
+                "TextRenderer": {
+                    "render_component_order": 2,
+                    "text_renderer_color": {
+                        "a": 255,
+                        "b": 255,
+                        "g": 0,
+                        "r": 0
+                    },
+                    "text_renderer_font": "tron-arcade.otf",
+                    "text_renderer_font_size": 40,
+                    "text_renderer_text": "00000000"
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": -180.0,
+                        "y": 0.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "SCORE_TEXT"
+        },
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "TextRenderer"
+            ],
+            "game_object_components": {
+                "TextRenderer": {
+                    "render_component_order": 2,
+                    "text_renderer_color": {
+                        "a": 255,
+                        "b": 255,
+                        "g": 0,
+                        "r": 0
+                    },
+                    "text_renderer_font": "tron-arcade.otf",
+                    "text_renderer_font_size": 30,
+                    "text_renderer_text": "Score"
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": -180.0,
+                        "y": -40.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "Display-text"
+        }
+    ],
+    "game_object_component_types": [
+        "TransformComponent"
+    ],
+    "game_object_components": {
+        "TransformComponent": {
+            "transform_local_pos": {
+                "x": 240.0,
+                "y": 300.0
+            },
+            "transform_local_rot": 0.0
+        }
+    },
+    "game_object_name": "ScoreSumbit-Parent"
+}

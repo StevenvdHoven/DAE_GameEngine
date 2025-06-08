@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+#include <vector>
 #include <string>
 
 namespace Engine
@@ -6,6 +8,20 @@ namespace Engine
 	class Scene;
 	class GameObject;
 
+	struct PrefabResult
+	{
+	public:
+		bool bSuccesfull;
+		std::unique_ptr<Engine::GameObject> Parent;
+		std::vector<std::unique_ptr<Engine::GameObject>> childeren;
+
+		PrefabResult()
+		{
+			bSuccesfull = false;
+			Parent = nullptr;
+			childeren = std::vector<std::unique_ptr<Engine::GameObject>>{};
+		}
+	};
 
 	class LevelEditor final
 	{
@@ -36,6 +52,14 @@ namespace Engine
 		std::string m_LevelLoadFilePath;
 		Scene* m_EditingScene;
 		GameObject* m_SelectedGameObject;
+	};
+
+	class EnginePrefabFactory
+	{
+	public:
+		static PrefabResult LoadPrefabs(const std::string& prefabPath);
+
+		static void SavePrefab(Engine::GameObject* gameObject);
 	};
 
 }

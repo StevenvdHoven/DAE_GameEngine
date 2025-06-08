@@ -144,6 +144,9 @@
     <ClCompile Include="SimpleTriggerComponent.cpp">
       <Filter>Game\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="SubmitMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Achievements.h">
@@ -238,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="SimpleTriggerComponent.h">
       <Filter>Game\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="SubmitMenu.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

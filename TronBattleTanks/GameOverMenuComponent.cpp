@@ -5,6 +5,8 @@
 #include "Renderer.h"
 #include "SceneManager.h"
 #include "MainMenu.h"
+#include "ServiceLocator.h"
+#include "SubmitMenu.h"
 
 #define DEFAULT_COLOR Engine::Color{0,0,255,255}
 #define SELECTED_COLOR Engine::Color{255,0,0,255}
@@ -54,6 +56,21 @@ void GameOverMenuComponent::Start()
 	m_ButtonCommand = buttonCommand.get();
 	InputManager::GetInstance().BindButton(0, PRESS_BUTTON, std::move(buttonCommand));
 
+	Engine::PrefabResult result{ Engine::EnginePrefabFactory::LoadPrefabs("ScoreSumbit-Parent.json") };
+	if (result.bSuccesfull)
+	{
+		m_SumbitWindow = result.Parent.get();
+		m_SubmitComp = m_SumbitWindow->AddComponent<SubmitMenu>(this);
+		SceneManager::GetInstance().GetActiveScene()->Add(std::move(result.Parent));
+		auto& childeren{ result.childeren };
+		for (auto& child : childeren)
+		{
+			SceneManager::GetInstance().GetActiveScene()->Add(std::move(child));
+		}
+
+		m_SumbitWindow->GetTransform()->SetWorldLocation({ 1000,1000 });
+	}
+
 	CreateNavigationTexts();
 
 	NavigateMenu({});
@@ -86,7 +103,10 @@ void GameOverMenuComponent::OnButtonPress()
 	}
 	else
 	{
+		m_HasFocus = false;
+		m_SumbitWindow->GetTransform()->SetWorldLocation({ 240.0,300.0 });
 
+		m_SubmitComp->GiveFocus();
 	}
 }
 

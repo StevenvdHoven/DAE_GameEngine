@@ -23,8 +23,8 @@ void load()
 	ServiceLocator::GetComponentRegistery().Register<SimpleTriggerComponent>("SimpleTriggerComponent");
 	//TestScene::CreateScene();
 	//BattleScene::CreateScene);
-	MainMenu::CreateScene();
-	//GameOverScene::CreateScene(EGameOverType::LOST,GameMode::VS,1000);
+	//MainMenu::CreateScene();
+	GameOverScene::CreateScene(EGameOverType::LOST,GameMode::SinglePlayer,1000);
 	//TestMapScene::CreateScene();
 	//ColliderTestScene::CreateScene();
 	//MultiPlayerTestScene::CreateScene();

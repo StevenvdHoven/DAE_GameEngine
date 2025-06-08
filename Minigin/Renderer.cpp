@@ -49,16 +49,10 @@ void Engine::Renderer::Render() const
 	SDL_RenderClear(m_renderer);
 
 	//SceneManager::GetInstance().Render();
-	for (auto& image : m_RenderImages)
+	for (auto& renderComp : m_RenderComponents)
 	{
-		if (image->IsEnabled)
-			image->Render();
-	}
-
-	for (auto& textRenderer : m_TextRenderers)
-	{
-		if (textRenderer->IsEnabled)
-			textRenderer->Render();
+		if (renderComp->IsEnabled)
+			renderComp->Render();
 	}
 
 	if (ServiceLocator::GetGraphEditor().IsActive())
@@ -88,36 +82,27 @@ void Engine::Renderer::Destroy()
 	}
 }
 
-void Engine::Renderer::Add(ImageRenderer* const pImage)
+void Engine::Renderer::Add(RenderComponent* const pRenderComponent)
 {
-	m_RenderImages.emplace_back(pImage);
+	m_RenderComponents.emplace_back(pRenderComponent);
 	Reorder();
 }
 
-void Engine::Renderer::Add(TextRenderer* const pTextRenderer)
+void Engine::Renderer::Remove(RenderComponent* const pRenderComponent)
 {
-	m_TextRenderers.emplace_back(pTextRenderer);
-	Reorder();
+	auto it{ std::find(m_RenderComponents.begin(), m_RenderComponents.end(), pRenderComponent) };
+	if (it != m_RenderComponents.end())
+	{
+		m_RenderComponents.erase(it);
+	}
+	
 }
 
-void Engine::Renderer::Remove(ImageRenderer* const pImage)
-{
-	m_RenderImages.erase(std::find(m_RenderImages.begin(), m_RenderImages.end(), pImage));
-}
 
-void Engine::Renderer::Remove(TextRenderer* const pTextRenderer)
-{
-	m_TextRenderers.erase(std::find(m_TextRenderers.begin(), m_TextRenderers.end(), pTextRenderer));
-}
 
 void Engine::Renderer::Reorder()
 {
-	std::sort(m_RenderImages.begin(), m_RenderImages.end(), [](const ImageRenderer* first, const ImageRenderer* second)
-		{
-			return first->Order() < second->Order();
-		});
-
-	std::sort(m_TextRenderers.begin(), m_TextRenderers.end(), [](const TextRenderer* first, const TextRenderer* second)
+	std::sort(m_RenderComponents.begin(), m_RenderComponents.end(), [](const RenderComponent* first, const RenderComponent* second)
 		{
 			return first->Order() < second->Order();
 		});
@@ -240,13 +225,3 @@ void Engine::Renderer::RenderTexture(const Texture2D& texture, float x, float y,
 
 SDL_Renderer* Engine::Renderer::GetSDLRenderer() const { return m_renderer; }
 
-bool Engine::TextComparer::operator()(const Engine::TextRenderer* lhs, const Engine::TextRenderer* rhs) const
-{
-	return lhs->Order() > rhs->Order();
-}
-
-bool Engine::ImageComparer::operator()(const Engine::ImageRenderer* lhs, const Engine::ImageRenderer* rhs) const
-{
-
-	return lhs->Order() > rhs->Order();
-}

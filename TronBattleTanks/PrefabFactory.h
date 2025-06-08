@@ -1,6 +1,10 @@
 #pragma once
 #include "GameObject.h"
+#include <string>
+#include <vector>
 #include <memory>
+
+
 
 namespace Engine
 {
@@ -21,6 +25,8 @@ public:
 	static Engine::GameObject* Map1Parent(Engine::Scene* const scene);
 
 	static Engine::GameObject* CreateEnemy(Engine::Scene* const scene, GameLoop* const gameLoop);
+
+	static Engine::GameObject* CreateScoreSubmitMenu(Engine::Scene* const scene);
 
 };
 

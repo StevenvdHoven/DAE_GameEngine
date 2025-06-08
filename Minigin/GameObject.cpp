@@ -307,9 +307,13 @@ void Engine::GameObject::GUI()
 		m_Name = std::string(buffer);
 	}
 
+	if (ImGui::Button("Make Prefab"))
+	{
+		Engine::EnginePrefabFactory::SavePrefab(this);
+	}
+
 	ImGui::Separator();
 
-	// --- Add Component Dropdown ---
 	static std::string selectedToAdd;
 	const auto& registeredTypes = ServiceLocator::GetComponentRegistery().GetRegisteredTypes();
 

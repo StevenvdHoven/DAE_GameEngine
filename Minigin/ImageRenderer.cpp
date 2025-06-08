@@ -14,18 +14,11 @@ Engine::ImageRenderer::ImageRenderer(GameObject* pOwner):
 }
 
 Engine::ImageRenderer::ImageRenderer(GameObject* pOwner,const std::string& imagePath):
-	Component{pOwner},
-	m_Order{0},
+	RenderComponent{pOwner},
 	m_ImagePath{imagePath},
 	m_pTexture{ ResourceManager::GetInstance().LoadTexture(imagePath)},
 	m_ImageAllignment{ ImageAllignment::TopLeft }
 {
-	Renderer::GetInstance().Add(this);
-}
-
-Engine::ImageRenderer::~ImageRenderer()
-{
-	Renderer::GetInstance().Remove(this);
 }
 
 void Engine::ImageRenderer::Update()
@@ -86,18 +79,13 @@ void Engine::ImageRenderer::Render() const
 
 void Engine::ImageRenderer::GUI()
 {
+	RenderComponent::GUI();
+
 	ImGui::Text("Image Renderer Component");
 	ImGui::Separator();
 
 	char pathBuffer[256];
 	strcpy_s(pathBuffer, m_ImagePath.c_str());
-
-	int order{ m_Order };
-	if (ImGui::InputInt("Order", &order))
-	{
-		m_Order = order;
-		Renderer::GetInstance().Reorder();
-	}
 
 	if (ImGui::InputText("Image Path", pathBuffer, sizeof(pathBuffer)))
 	{
@@ -130,7 +118,7 @@ void Engine::ImageRenderer::GUI()
 
 void Engine::ImageRenderer::Serialize(nlohmann::json& json) const
 {
-	json["image_order"] = m_Order;
+	RenderComponent::Serialize(json);
 	json["image_path"] = m_ImagePath;
 	json["image_allignment"] = static_cast<int>(m_ImageAllignment);
 	json["image_pivot"] = m_Pivot.Serialize();
@@ -138,7 +126,7 @@ void Engine::ImageRenderer::Serialize(nlohmann::json& json) const
 
 void Engine::ImageRenderer::Deserialize(const nlohmann::json& json)
 {
-	m_Order = json["image_order"].get<int>();
+	RenderComponent::Deserialize(json);
 	m_ImagePath = json["image_path"].get<std::string>();
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(m_ImagePath);
 	m_ImageAllignment = static_cast<ImageAllignment>(json["image_allignment"].get<int>());

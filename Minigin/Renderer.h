@@ -12,18 +12,7 @@ namespace Engine
 {
 	class Texture2D;
 
-	class TextRenderer;
-	class ImageRenderer;
-
-	struct TextComparer
-	{
-		bool operator()(const Engine::TextRenderer* lhs, const Engine::TextRenderer* rhs) const;
-	};
-
-	struct ImageComparer
-	{
-		bool operator()(const Engine::ImageRenderer* lhs, const Engine::ImageRenderer* rhs) const;
-	};
+	class RenderComponent;
 
 	struct Color
 	{
@@ -69,10 +58,8 @@ namespace Engine
 		void Render() const;
 		void Destroy();
 
-		void Add(ImageRenderer* const pImage);
-		void Add(TextRenderer* const pTextRenderer);
-		void Remove(ImageRenderer* const pImage);
-		void Remove(TextRenderer* const pTextRenderer);
+		void Add(RenderComponent* const pRenderComponent);
+		void Remove(RenderComponent* const pRenderComponent);
 		
 		void Reorder();
 
@@ -107,8 +94,7 @@ namespace Engine
 		}
 
 	private:
-		std::vector<ImageRenderer*> m_RenderImages;
-		std::vector<TextRenderer*> m_TextRenderers;
+		std::vector<RenderComponent*> m_RenderComponents;
 	};
 }
 
