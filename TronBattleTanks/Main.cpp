@@ -14,6 +14,7 @@
 #include "ColliderTestScene.h"
 #include "ServiceLocator.h"
 #include "SimpleTriggerComponent.h"
+#include "AutoDestroyComponent.h"
 #include "Scoreboard.h"
 #include "GameEngine.h"
 
@@ -23,10 +24,11 @@ void load()
 {
 	ServiceLocator::GetComponentRegistery().Register<SimpleTriggerComponent>("SimpleTriggerComponent");
 	ServiceLocator::GetComponentRegistery().Register<Scoreboard>("Scoreboard");
+	ServiceLocator::GetComponentRegistery().Register<AutoDestroyComponent>("AutoDestroyComponent");
 	//TestScene::CreateScene();
 	//BattleScene::CreateScene);
-	//MainMenu::CreateScene();
-	GameOverScene::CreateScene(EGameOverType::LOST,GameMode::SinglePlayer,1000);
+	MainMenu::CreateScene();
+	//GameOverScene::CreateScene(EGameOverType::LOST,GameMode::SinglePlayer,1000);
 	//TestMapScene::CreateScene();
 	//ColliderTestScene::CreateScene();
 	//MultiPlayerTestScene::CreateScene();

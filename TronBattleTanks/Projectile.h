@@ -30,6 +30,8 @@ private:
 	bool HandlePlayer(Engine::GameObject* other);
 	bool HandleEnemy(Engine::GameObject* other);
 
+	void SpawnExplosion();
+
 	EProjectileTarget m_TargetType;
 	int m_Damage;
 	int m_Bounces;

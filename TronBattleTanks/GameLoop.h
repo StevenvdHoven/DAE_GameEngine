@@ -4,12 +4,14 @@
 #include <vector>
 #include <forward_list>
 #include "StartGameCommand.h"
+#include "SoundSystem.h"
 
 namespace Engine
 {
 	class TextRenderer;
 	class Scene;
 	struct Vector2;
+	struct SoundClip;
 }
 
 enum struct GameMode;
@@ -89,6 +91,7 @@ private:
 
 	Engine::TextRenderer* m_pStartText{ nullptr };
 
+	Engine::SoundClip m_CrystalClip;
 	GameState m_GameState;
 	GameMode m_Mode;
 	

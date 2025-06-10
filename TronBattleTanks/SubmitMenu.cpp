@@ -17,8 +17,6 @@ SubmitMenu::SubmitMenu(Engine::GameObject* pOwner):
 	m_SubmitCommand{ nullptr },
 	m_pOnSaved{ std::make_unique<Engine::Subject>() }
 {
-	
-
 	LoadCharSlots();
 }
 

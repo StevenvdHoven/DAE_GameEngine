@@ -20,6 +20,7 @@ void Engine::PhysicsSystem::FixedUpdate()
 	const float fixedDeltaTime = Time::GetInstance().GetFixedDeltaTime();
 	for (auto& physicsBody : m_PhysicsBodies)
 	{
+		if (physicsBody == nullptr) continue;
 		if (!physicsBody->IsEnabled) continue;
 
 		auto* bodyTransform = physicsBody->GetGameObject()->GetTransform();

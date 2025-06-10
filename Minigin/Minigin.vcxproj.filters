@@ -198,6 +198,9 @@
     <ClInclude Include="RenderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Animaton.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -324,6 +327,9 @@
       <Filter>EngineCommands</Filter>
     </ClCompile>
     <ClCompile Include="RenderComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Animaton.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

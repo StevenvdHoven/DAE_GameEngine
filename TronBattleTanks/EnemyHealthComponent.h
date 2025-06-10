@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "IDamageable.h"
 #include "Observers.h"
+#include "SoundSystem.h"
 #include <memory>
 
 class EnemyHealthComponent final : public Engine::Component, public  IDamageable
@@ -19,6 +20,7 @@ public:
 	std::string GetTypeName() const override;
 private:
 	mutable int m_Health;
+	Engine::SoundClip m_ExplosionClip;
 	std::unique_ptr<Engine::Subject> OnTakeDamageEvent;
 };
 

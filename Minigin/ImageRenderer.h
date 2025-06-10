@@ -34,6 +34,7 @@ namespace Engine
 
 		void ChangeImageAllignment(ImageAllignment allignment) { m_ImageAllignment = allignment; }
 		void SetPivot(const Vector2& pivot) { m_Pivot = pivot; }
+		void SetImage(Texture2D* pImage) { m_pTexture = pImage; }
 
 		void GUI() override;
 

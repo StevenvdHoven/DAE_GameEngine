@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "json.hpp"
 #include "imgui.h"
+#include "ServiceLocator.h"
 
 using namespace Engine;
 
@@ -72,9 +73,13 @@ void Engine::ImageRenderer::Render() const
 	pivot.x += static_cast<int>(m_Pivot.x);
 	pivot.y += static_cast<int>(m_Pivot.y);
 
-	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, rot,&pivot);
-	Renderer::GetInstance().SetColor(SDL_Color{ 0, 0, 255, 255 });
-	Renderer::GetInstance().RenderRectangle(pos, size.x, size.y);
+	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, rot, &pivot);
+
+	if (ServiceLocator::GetLevelEditor().IsActive())
+	{
+		Renderer::GetInstance().SetColor(SDL_Color{ 0, 0, 255, 255 });
+		Renderer::GetInstance().RenderRectangle(pos, size.x, size.y);
+	}
 }
 
 void Engine::ImageRenderer::GUI()

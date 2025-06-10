@@ -26,6 +26,7 @@ GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pS
 	Component(pOwner),
 	m_pScoreComponent{ pScoreComponent },
 	m_CristalTrigger{nullptr},
+	m_CrystalClip{ServiceLocator::GetSoundSystem().LoadSound("crystalsound.wav")},
 	m_GameState{ GameState::Start },
 	m_Mode{ mode }
 {
@@ -94,6 +95,7 @@ void GameLoop::OnNotify(Component* sender)
 		{
 			const auto randomPos{ GetRandomMapLocation() };
 			lastHit->GetTransform()->SetWorldLocation(randomPos);
+			ServiceLocator::GetSoundSystem().PlaySound(m_CrystalClip);
 			return;
 		}
 	}

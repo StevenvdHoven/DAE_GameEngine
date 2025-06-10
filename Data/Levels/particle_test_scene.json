@@ -1,0 +1,48 @@
+{
+    "root_game_objects": [
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "ImageRenderer",
+                "Animation",
+                "AutoDestroyComponent"
+            ],
+            "game_object_components": {
+                "Animation": {
+                    "animation_image_paths": [
+                        "explosion_01.png",
+                        "explosion_04.png",
+                        "explosion_02.png",
+                        "explosion_04.png",
+                        "explosion_01.png",
+                        "explosion_04.png",
+                        "explosion_02.png"
+                    ],
+                    "animation_loop": false,
+                    "animation_play_at_start": true,
+                    "animation_play_rate": 0.07000000029802322
+                },
+                "AutoDestroyComponent": null,
+                "ImageRenderer": {
+                    "image_allignment": 8,
+                    "image_path": "explosion_01.png",
+                    "image_pivot": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "render_component_order": 0
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": 150.0,
+                        "y": 150.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "bullet_particle"
+        }
+    ],
+    "scene_name": "particle_test_scene"
+}

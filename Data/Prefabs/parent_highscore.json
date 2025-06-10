@@ -144,6 +144,35 @@
                 }
             },
             "game_object_name": "4-RANKTEXT"
+        },
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "TextRenderer"
+            ],
+            "game_object_components": {
+                "TextRenderer": {
+                    "render_component_order": 0,
+                    "text_renderer_color": {
+                        "a": 255,
+                        "b": 255,
+                        "g": 0,
+                        "r": 0
+                    },
+                    "text_renderer_font": "tron-arcade.otf",
+                    "text_renderer_font_size": 22,
+                    "text_renderer_text": "highscores"
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": 0.0,
+                        "y": -30.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "header-text"
         }
     ],
     "game_object_component_types": [

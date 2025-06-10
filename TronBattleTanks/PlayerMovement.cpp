@@ -7,9 +7,9 @@
 #include "ServiceLocator.h"
 #include "Vector2.h"
 
-#define BOX_SIZE Engine::Vector2{ 28.f, 28.f }
-#define DIRECTION_ERROR 6.f
-#define OFFSET_SCALAR 2.f
+#define BOX_SIZE Engine::Vector2{ 26.f, 26.f }
+#define DIRECTION_ERROR 8.f
+#define OFFSET_SCALAR 5.f
 
 using namespace Engine;
 
@@ -39,18 +39,20 @@ void PlayerMovement::SetDirection(const Engine::Vector2& newDirection)
 		m_CurrentDirection = newDirection;
 		m_Body->Velocity = newDirection * m_Speed;
 
+		if (newDirection != Vector2::Zero())
+		{
+			float rotation = 0.f;
+			if (newDirection.y > 0.f)
+				rotation = 90.f;
+			else if (newDirection.y < 0.f)
+				rotation = -90.f;
+			else if (newDirection.x > 0.f)
+				rotation = 0.f;
+			else if (newDirection.x < 0.f)
+				rotation = 180.f;
 
-		float rotation = 0.f;
-		if (newDirection.y > 0.f)
-			rotation = 90.f;
-		else if (newDirection.y < 0.f)
-			rotation = -90.f;
-		else if (newDirection.x > 0.f)
-			rotation = 0.f;
-		else if (newDirection.x < 0.f)
-			rotation = 180.f;
-
-		GetGameObject()->GetTransform()->SetWorldRotation(rotation);
+			GetGameObject()->GetTransform()->SetWorldRotation(rotation);
+		}
 	}
 }
 

@@ -5,6 +5,7 @@
 #include "PhysicsBody.h"
 #include "TextRenderer.h"
 #include "Transform.h"
+#include "Animaton.h"
 
 using namespace Engine;
 
@@ -16,4 +17,5 @@ ComponentRegistery::ComponentRegistery()
 	Register<PhysicsBody>("PhyscisBody");
 	Register<TextRenderer>("TextRenderer");
 	Register<Transform>("Transform");
+	Register<Animation>("Animation");
 }

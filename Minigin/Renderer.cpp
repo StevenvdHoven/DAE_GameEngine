@@ -59,9 +59,10 @@ void Engine::Renderer::Render() const
 		ServiceLocator::GetGraphEditor().Draw();
 
 	if (ServiceLocator::GetLevelEditor().IsActive())
+	{
 		ServiceLocator::GetLevelEditor().Render();
-
-	ServiceLocator::GetPhysicsSystem().Render();
+		ServiceLocator::GetPhysicsSystem().Render();
+	}
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -95,7 +96,7 @@ void Engine::Renderer::Remove(RenderComponent* const pRenderComponent)
 	{
 		m_RenderComponents.erase(it);
 	}
-	
+
 }
 
 

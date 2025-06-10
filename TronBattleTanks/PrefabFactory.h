@@ -4,8 +4,6 @@
 #include <vector>
 #include <memory>
 
-
-
 namespace Engine
 {
 	class Scene;
@@ -25,8 +23,6 @@ public:
 	static Engine::GameObject* Map1Parent(Engine::Scene* const scene);
 
 	static Engine::GameObject* CreateEnemy(Engine::Scene* const scene, GameLoop* const gameLoop);
-
-	static Engine::GameObject* CreateScoreSubmitMenu(Engine::Scene* const scene);
 
 };
 

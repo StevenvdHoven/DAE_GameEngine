@@ -43,7 +43,6 @@ namespace Engine
 
 		void SetActive(bool active);
 		bool IsActive() const;
-			
 	private:
 		void ImGuiSelectedGameObject();
 		void ImGuiScene();
@@ -52,6 +51,8 @@ namespace Engine
 		std::string m_LevelLoadFilePath;
 		Scene* m_EditingScene;
 		GameObject* m_SelectedGameObject;
+
+		
 	};
 
 	class EnginePrefabFactory

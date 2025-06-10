@@ -28,7 +28,7 @@
 #define PREFAB_FILEPATH "../Data/Prefabs/"
 
 #define ENEMY_IMAGE_PATH "enemy_body.png"
-#define UNIT_COLLIDER_SIZE Engine::Vector2{ 28, 28 }
+#define UNIT_COLLIDER_SIZE Engine::Vector2{ 25, 25 }
 #define UNIT_SPEED 2000.0f
 #define PROJECTILE_SPEED 10000.f
 

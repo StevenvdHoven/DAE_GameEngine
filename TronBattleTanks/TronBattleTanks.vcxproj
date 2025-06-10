@@ -154,6 +154,7 @@
     <ClCompile Include="AchievementHandler.cpp" />
     <ClCompile Include="Achievements.cpp" />
     <ClCompile Include="AddScoreCommand.cpp" />
+    <ClCompile Include="AutoDestroyComponent.cpp" />
     <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="ColliderTestScene.cpp" />
     <ClCompile Include="EnemyBrain.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="AchievementHandler.h" />
     <ClInclude Include="Achievements.h" />
     <ClInclude Include="AddScoreCommand.h" />
+    <ClInclude Include="AutoDestroyComponent.h" />
     <ClInclude Include="BattleScene.h" />
     <ClInclude Include="ColliderTestScene.h" />
     <ClInclude Include="EnemyBrain.h" />

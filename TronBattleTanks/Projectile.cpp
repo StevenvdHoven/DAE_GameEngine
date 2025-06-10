@@ -5,6 +5,8 @@
 #include "EnemyHealthComponent.h"
 #include "PlayerHealthComponent.h"
 #include "EngineTime.h"
+#include "ServiceLocator.h"
+#include "SceneManager.h"
 
 using namespace Engine;
 
@@ -62,13 +64,16 @@ void Projectile::OnTriggerEnter(Engine::GameObject* other)
 
 	if (HandleEnemy(other) || HandlePlayer(other))
 	{
+		SpawnExplosion();
 		Destroy(GetGameObject());
 		return;
 	}
 
+	SpawnExplosion();
 	m_Bounces--;
 	if (m_Bounces < 0)
 	{
+		
 		Destroy(GetGameObject());
 	}
 	else
@@ -122,6 +127,14 @@ bool Projectile::HandleEnemy(Engine::GameObject* other)
 	}
 
 	return false;
+}
+
+void Projectile::SpawnExplosion()
+{
+	auto result{ Engine::EnginePrefabFactory::LoadPrefabs("bullet_particle.json") };
+	result.Parent->GetTransform()->SetWorldLocation(GetGameObject()->GetTransform()->GetWorldLocation());
+	Engine::EnginePrefabFactory::AddPrefabToScene(std::move(result), SceneManager::GetInstance().GetActiveScene());
+
 }
 
 std::string Projectile::GetTypeName() const
