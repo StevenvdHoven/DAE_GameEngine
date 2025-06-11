@@ -1,4 +1,6 @@
 #include "SimpleTriggerComponent.h"
+#include "PlayerHealthComponent.h"
+#include "GameObject.h"
 
 SimpleTriggerComponent::SimpleTriggerComponent(Engine::GameObject* pOwner):
 	Engine::Component{pOwner},
@@ -9,8 +11,12 @@ SimpleTriggerComponent::SimpleTriggerComponent(Engine::GameObject* pOwner):
 
 void SimpleTriggerComponent::OnTriggerEnter(Engine::GameObject* other)
 {
-	m_LastHit = other;
-	m_OnTrigger->Notify(this);
+	auto player{ other->GetComponent<PlayerHealthComponent>() };
+	if (player)
+	{
+		m_LastHit = other;
+		m_OnTrigger->Notify(this);
+	}
 }
 
 std::string SimpleTriggerComponent::GetTypeName() const

@@ -24,8 +24,6 @@ MenuComponent::MenuComponent(Engine::GameObject* pGameObject) :
 	m_IntroSound{ServiceLocator::GetSoundSystem().LoadSound("tron_intro.wav")},
 	m_MenuMoveCommand{nullptr}
 {
-	
-
 }
 
 void MenuComponent::Start()
