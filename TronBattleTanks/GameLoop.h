@@ -49,13 +49,12 @@ class GameLoop final : public Engine::Component, public Engine::IObserver
 {
 public:
 	GameLoop(Engine::GameObject* pOwner,GameMode mode, ScoreComponent* pScoreComponent);
-	virtual ~GameLoop() = default;
+	virtual ~GameLoop();
 
 	void Start() override;
 
 	void BeginGame();
 
-	// Inherited via IObserver
 	void OnNotify(Component* sender) override;
 
 	const GameState& GetGameState() const { return m_GameState; }
@@ -91,12 +90,14 @@ private:
 
 	Engine::TextRenderer* m_pStartText{ nullptr };
 
+	Engine::MusicClip m_GameMusic;
 	Engine::SoundClip m_CrystalClip;
 	GameState m_GameState;
 	GameMode m_Mode;
 	
 	void* m_pStarGameCommand;
 	void* m_pKeyboardStartCommand;
+	void* m_pSkipSceneCommand;
 
 };
 

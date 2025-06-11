@@ -6,11 +6,14 @@
 #include "EngineTime.h"
 #include "GameObject.h"
 #include "BattleScene.h"
+#include "SkipSceneCommand.h"
+#include "ServiceLocator.h"
 #include <memory>
+#include <SDL.h>
 
 using namespace Engine;
 
-MenuComponent::MenuComponent(Engine::GameObject* pGameObject): 
+MenuComponent::MenuComponent(Engine::GameObject* pGameObject) :
 	Component{ pGameObject },
 	m_pMenuPlayer{ nullptr },
 	m_GameModeSelected{ false },
@@ -18,6 +21,7 @@ MenuComponent::MenuComponent(Engine::GameObject* pGameObject):
 	m_MenuPlayerStartLocation{ 240.0f, 340.0f },
 	m_MenuPlayerTargetLocation{ 0.0f, 0.0f },
 	m_SelectedGameMode{ GameMode::SinglePlayer },
+	m_IntroSound{ServiceLocator::GetSoundSystem().LoadSound("tron_intro.wav")},
 	m_MenuMoveCommand{nullptr}
 {
 	
@@ -36,10 +40,22 @@ void MenuComponent::Start()
 	keyboardMoveCommand->SetInputType(ValueCommand<Engine::Vector2>::InputType::ARROW_KEYS);
 	m_MenuKeyboardMoveCommand = keyboardMoveCommand.get();
 
+	auto skipSceneCommand{ std::make_unique<SkipSceneCommand>([]()
+		{
+			BattleScene::CreateScene(GameMode::SinglePlayer);
+		}) };
+	skipSceneCommand->ChangeDeviceType(DeviceType::KEYBOARD);
+	skipSceneCommand->SetTriggerState(TriggerState::PRESSED);
+	m_SkipSceneCommand = skipSceneCommand.get();
+
+
 	InputManager::GetInstance().Bind2DValue(0, std::move(moveCommand));
 	InputManager::GetInstance().Bind2DValue(0, std::move(keyboardMoveCommand));
+	InputManager::GetInstance().BindButton(0,SDL_SCANCODE_F1, std::move(skipSceneCommand));
 
 	CreateMenuPlayer();
+
+	ServiceLocator::GetSoundSystem().PlaySound(m_IntroSound);
 }
 
 void MenuComponent::Update()
@@ -57,6 +73,7 @@ void MenuComponent::Update()
 	{
 		InputManager::GetInstance().Unbind(0, m_MenuMoveCommand);
 		InputManager::GetInstance().Unbind(0, m_MenuKeyboardMoveCommand);
+		InputManager::GetInstance().Unbind(0, m_SkipSceneCommand);
 		BattleScene::CreateScene(m_SelectedGameMode);
 	}
 	

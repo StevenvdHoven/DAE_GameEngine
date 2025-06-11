@@ -34,6 +34,7 @@ private:
 
 	GameMode m_Mode;
 	bool m_HasFocus;
+	bool m_HasSumbitted;
 	int m_Score;
 
 	int m_CurrentSelectedText;
@@ -46,6 +47,8 @@ private:
 	void* m_NavigationCommand;
 	void* m_ButtonCommand;
 
+	void* m_KeyboardNavigationCommand;
+	void* m_KeyboardButtonCommand;
 	
 };
 

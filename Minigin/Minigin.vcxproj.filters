@@ -201,6 +201,9 @@
     <ClInclude Include="Animaton.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="SoundSystemCommands.h">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -331,6 +334,9 @@
     </ClCompile>
     <ClCompile Include="Animaton.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundSystemCommands.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

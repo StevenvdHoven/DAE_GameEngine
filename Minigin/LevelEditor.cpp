@@ -23,7 +23,7 @@ LevelEditor::LevelEditor():
 	m_SelectedGameObject{ nullptr }
 {	
 	auto toggleCommand{ std::make_unique<ToggleLevelEditorCommand>() };
-	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_F2, std::move(toggleCommand));
+	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_F4, std::move(toggleCommand));
 }
 
 LevelEditor::~LevelEditor()

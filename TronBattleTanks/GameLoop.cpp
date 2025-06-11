@@ -12,6 +12,8 @@
 #include "ServiceLocator.h"
 #include "PathFinding.h"
 #include "GameOverScene.h"
+#include "SkipSceneCommand.h"
+#include <SDL.h>
 #include "SimpleTriggerComponent.h"
 
 #define MAP_01_POSITION Engine::Vector2{0, 72}
@@ -26,6 +28,7 @@ GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pS
 	Component(pOwner),
 	m_pScoreComponent{ pScoreComponent },
 	m_CristalTrigger{nullptr},
+	m_GameMusic{ServiceLocator::GetSoundSystem().LoadMusic("tron-music.wav")},
 	m_CrystalClip{ServiceLocator::GetSoundSystem().LoadSound("crystalsound.wav")},
 	m_GameState{ GameState::Start },
 	m_Mode{ mode }
@@ -40,15 +43,30 @@ GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pS
 	keyboardStartCommand->ChangeDeviceType(Engine::DeviceType::KEYBOARD);
 	keyboardStartCommand->SetTriggerState(Engine::TriggerState::PRESSED);
 
+	auto skipSceneCommand{ std::make_unique<SkipSceneCommand>([this]()
+		{
+			GameOverScene::CreateScene(EGameOverType::LOST,m_Mode,0);
+		}) };
+
 	m_pStarGameCommand = startGameCommand.get();
 	m_pKeyboardStartCommand = keyboardStartCommand.get();
+	m_pSkipSceneCommand = skipSceneCommand.get();
+
 	InputManager::GetInstance().BindButton(0, PRESS_BUTTON, std::move(startGameCommand));
 	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_Z, std::move(keyboardStartCommand));
+	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_F1, std::move(skipSceneCommand));
 
 	if (mode == GameMode::VS)
 	{
 		pScoreComponent->GetGameObject()->SetActive(false);
 	}
+}
+
+GameLoop::~GameLoop()
+{
+	InputManager::GetInstance().Unbind(0,m_pSkipSceneCommand);
+	InputManager::GetInstance().Unbind(0, m_pStarGameCommand);
+	InputManager::GetInstance().Unbind(0, m_pKeyboardStartCommand);
 }
 
 void GameLoop::Start()
@@ -69,7 +87,7 @@ void GameLoop::BeginGame()
 	InputManager::GetInstance().Unbind(0, m_pStarGameCommand);
 	InputManager::GetInstance().Unbind(0, m_pKeyboardStartCommand);
 
-	//Spawn Player
+	ServiceLocator::GetSoundSystem().PlayMusic(m_GameMusic);
 	switch (m_Mode)
 	{
 	case GameMode::SinglePlayer:
@@ -287,8 +305,8 @@ void GameLoop::SpawnPlayer(int index, const Engine::Vector2& pos, Engine::Scene*
 		m_pPlayers[index].pPlayer->GetTransform()->SetWorldLocation(pos);
 		m_pPlayers[index].pHealthComp = m_pPlayers[index].pPlayer->GetComponent<PlayerHealthComponent>();
 		m_pPlayers[index].pHealthComp->GetOnTakeDamage()->AddObserver(this);
-		m_pPlayers[index].Lives = 3;
+		m_pPlayers[index].Lives = 4;
 		m_pPlayers[index].pTextComp = m_pLivesTexts[index];
-		m_pPlayers[index].pTextComp->SetText("P" + std::to_string(index) + " Lives 3");
+		m_pPlayers[index].pTextComp->SetText("P" + std::to_string(index) + " Lives " + std::to_string(m_pPlayers[index].Lives));
 	}
 }

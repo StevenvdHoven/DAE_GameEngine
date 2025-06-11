@@ -43,6 +43,10 @@ private:
 
 	void* m_NavigationCommand;
 	void* m_SubmitCommand;
+
+	void* m_KeyboardNavigationCommand;
+	void* m_KeyboardSumbitCommand;
+
 	std::unique_ptr<Engine::Subject> m_pOnSaved;
 };
 

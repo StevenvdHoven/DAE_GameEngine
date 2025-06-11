@@ -9,6 +9,9 @@
 #include <unordered_map>
 #include <string>
 #include <iostream>
+#include <SDL.h>
+#include "InputManager.h"
+#include "SoundSystemCommands.h"
 
 using namespace Engine;
 
@@ -50,6 +53,7 @@ class SDL_SoundSystem::SDL_SoundSystem_Pimpl final
 public:
 	SDL_SoundSystem_Pimpl():
 		m_PlaySounds{false},
+		m_Muted{false},
 		m_SoundClips{},
 		m_MusicClips{}
 	{
@@ -59,6 +63,11 @@ public:
 				SoundLoop(stopToken);
 			} 
 		};
+
+		auto muteAudioCommand{ std::make_unique<MuteSoundCommand>() };
+		muteAudioCommand->ChangeDeviceType(DeviceType::KEYBOARD);
+		muteAudioCommand->SetTriggerState(TriggerState::PRESSED);
+		InputManager::GetInstance().BindButton(0, SDL_SCANCODE_F2, std::move(muteAudioCommand));
 	}
 	~SDL_SoundSystem_Pimpl()
 	{
@@ -220,12 +229,32 @@ public:
 		return clip;
 	}
 
+	void Mute()
+	{
+		Mix_Volume(-1, 0);
+		Mix_VolumeMusic(0);
+		m_Muted = true;
+	}
+
+	void UnMute()
+	{
+		Mix_Volume(-1, MIX_MAX_VOLUME);
+		Mix_VolumeMusic(MIX_MAX_VOLUME);
+		m_Muted = false;
+	}
+
+	bool Muted() 
+	{
+		return m_Muted;
+	}
+
 private:
 	std::mutex m_LoopMutex;
 	std::mutex m_SoundMutex;
 	std::mutex m_MusicMutex;
 	std::condition_variable m_SoundCondition;
 	bool m_PlaySounds;
+	bool m_Muted;
 
 	std::unordered_map<std::string, std::unique_ptr<Mix_Chunk, Custom_MixChunk_Deleter>> m_SoundClips;
 	std::unordered_map<std::string,std::unique_ptr<Mix_Music,Custom_MixMusic_Deleter>> m_MusicClips;
@@ -263,6 +292,21 @@ SoundClip SDL_SoundSystem::LoadSound(const std::string& filePath)
 MusicClip Engine::SDL_SoundSystem::LoadMusic(const std::string& filePath)
 {
 	return m_pimpl->LoadMusic(filePath);
+}
+
+void Engine::SDL_SoundSystem::Mute()
+{
+	m_pimpl->Mute();
+}
+
+void Engine::SDL_SoundSystem::UnMute()
+{
+	m_pimpl->UnMute();
+}
+
+bool Engine::SDL_SoundSystem::Muted()
+{
+	return m_pimpl->Muted();
 }
 
 

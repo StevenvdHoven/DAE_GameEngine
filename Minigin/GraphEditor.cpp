@@ -18,7 +18,7 @@ Engine::GraphEditor::GraphEditor() :
 	m_SelectedNode{ nullptr }
 {
 	auto openGraphEditorCommand = std::make_unique<OpenGraphEditor>();
-	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_F1, std::move(openGraphEditorCommand));
+	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_F3, std::move(openGraphEditorCommand));
 
 	auto addGraphNodeCommand = std::make_unique<AddGraphNodeCommand>();
 	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_INSERT, std::move(addGraphNodeCommand));

@@ -4,6 +4,7 @@
 #include "TextRenderer.h"
 #include "InputManager.h"
 #include "Scoreboard.h"
+#include "SDL.h"
 
 using namespace Engine;
 
@@ -22,8 +23,7 @@ SubmitMenu::SubmitMenu(Engine::GameObject* pOwner):
 
 SubmitMenu::~SubmitMenu()
 {
-	InputManager::GetInstance().Unbind(0, m_NavigationCommand);
-	InputManager::GetInstance().Unbind(0, m_SubmitCommand);
+	TakeFocus();
 }
 
 void SubmitMenu::SetScore(int score)
@@ -104,7 +104,8 @@ void SubmitMenu::OnSubmit()
 void SubmitMenu::GiveFocus()
 {
 	m_Focus = true;
-	m_CurrentSelectedText = 0; // Reset selection to the first character slot
+	m_CurrentSelectedText = 0;
+
 	OnNavigation({});
 
 	auto navigationCommand{ std::make_unique<SubmitMenuNavigation>(this) };
@@ -116,15 +117,30 @@ void SubmitMenu::GiveFocus()
 	auto submitCommand{ std::make_unique<SumbitMenuSubmitCommand>(this) };
 	submitCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
 	submitCommand->SetTriggerState(Engine::TriggerState::PRESSED);
-
+	m_SubmitCommand = submitCommand.get();
 	InputManager::GetInstance().BindButton(0, 0x1000, std::move(submitCommand));
+
+	auto keyboardNavigationCommand{ std::make_unique<SubmitMenuNavigation>(this) };
+	keyboardNavigationCommand->ChangeDeviceType(Engine::DeviceType::KEYBOARD);
+	keyboardNavigationCommand->SetInputType(Engine::ValueCommand<Engine::Vector2>::InputType::ARROW_KEYS);
+	m_KeyboardNavigationCommand = keyboardNavigationCommand.get();
+	InputManager::GetInstance().Bind2DValue(0, std::move(keyboardNavigationCommand));
+
+	auto keyboardSubmitCommand{ std::make_unique<SumbitMenuSubmitCommand>(this) };
+	keyboardSubmitCommand->ChangeDeviceType(Engine::DeviceType::KEYBOARD);
+	keyboardSubmitCommand->SetTriggerState(Engine::TriggerState::PRESSED);
+	m_KeyboardSumbitCommand = keyboardSubmitCommand.get();
+	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_SPACE, std::move(keyboardSubmitCommand));
 }
 
 void SubmitMenu::TakeFocus()
 {
 	m_Focus = false;
+
 	InputManager::GetInstance().Unbind(0, m_NavigationCommand);
 	InputManager::GetInstance().Unbind(0, m_SubmitCommand);
+	InputManager::GetInstance().Unbind(0, m_KeyboardNavigationCommand);
+	InputManager::GetInstance().Unbind(0, m_KeyboardSumbitCommand);
 }
 
 void SubmitMenu::LoadCharSlots()

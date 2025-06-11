@@ -25,6 +25,9 @@ namespace Engine
 		virtual void PlayMusic(const MusicClip& clip) = 0;
 		virtual SoundClip LoadSound(const std::string& filePath) = 0;
 		virtual MusicClip LoadMusic(const std::string& filePath) = 0;
+		virtual void Mute() = 0;
+		virtual void UnMute() = 0;
+		virtual bool Muted() = 0;
 
 	};
 }

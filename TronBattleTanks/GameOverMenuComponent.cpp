@@ -8,6 +8,7 @@
 #include "ServiceLocator.h"
 #include "Scoreboard.h"
 #include "SubmitMenu.h"
+#include "SDL.h"
 
 #define DEFAULT_COLOR Engine::Color{0,0,255,255}
 #define SELECTED_COLOR Engine::Color{255,0,0,255}
@@ -30,11 +31,15 @@ void GameOverMenu::NavigationCommand::Execute(const Engine::Vector2& input)
 GameOverMenuComponent::GameOverMenuComponent(Engine::GameObject* pOwner, int score, GameMode mode):
 	Engine::Component{pOwner},
 	m_HasFocus{ true },
+	m_HasSumbitted{false},
 	m_Mode{mode},
 	m_Score{ score },
 	m_CurrentSelectedText{0},
 	m_pTextComponents{},
-	m_NavigationCommand{nullptr}
+	m_NavigationCommand{nullptr},
+	m_ButtonCommand{nullptr},
+	m_KeyboardNavigationCommand{nullptr},
+	m_KeyboardButtonCommand{nullptr}
 {
 
 }
@@ -43,6 +48,8 @@ GameOverMenuComponent::~GameOverMenuComponent()
 {
 	InputManager::GetInstance().Unbind(0, m_ButtonCommand);
 	InputManager::GetInstance().Unbind(0, m_NavigationCommand);
+	InputManager::GetInstance().Unbind(0, m_KeyboardNavigationCommand);
+	InputManager::GetInstance().Unbind(0, m_KeyboardButtonCommand);
 }
 
 void GameOverMenuComponent::Start()
@@ -58,6 +65,18 @@ void GameOverMenuComponent::Start()
 	buttonCommand->SetTriggerState(TriggerState::PRESSED);
 	m_ButtonCommand = buttonCommand.get();
 	InputManager::GetInstance().BindButton(0, PRESS_BUTTON, std::move(buttonCommand));
+
+	auto keyboardNavigationCommand{ std::make_unique<GameOverMenu::NavigationCommand>(this) };
+	keyboardNavigationCommand->ChangeDeviceType(DeviceType::KEYBOARD);
+	keyboardNavigationCommand->SetInputType(Engine::ValueCommand<Engine::Vector2>::InputType::ARROW_KEYS);
+	m_KeyboardNavigationCommand = keyboardNavigationCommand.get();
+	InputManager::GetInstance().Bind2DValue(0, std::move(keyboardNavigationCommand));
+
+	auto keyboardButtonCommand{ std::make_unique<GameOverMenu::PressButtonCommand>(this) };
+	keyboardButtonCommand->ChangeDeviceType(DeviceType::KEYBOARD);
+	keyboardButtonCommand->SetTriggerState(TriggerState::PRESSED);
+	m_KeyboardButtonCommand = keyboardButtonCommand.get();
+	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_SPACE, std::move(keyboardButtonCommand));
 
 	Engine::PrefabResult result{ Engine::EnginePrefabFactory::LoadPrefabs("ScoreSumbit-Parent.json") };
 	if (result.bSuccesfull)
@@ -110,7 +129,7 @@ void GameOverMenuComponent::OnButtonPress()
 	{
 		MainMenu::CreateScene();
 	}
-	else
+	else if(!m_HasSumbitted)
 	{
 		m_HasFocus = false;
 		m_SumbitWindow->GetTransform()->SetWorldLocation({ 240.0,300.0 });
@@ -151,6 +170,7 @@ void GameOverMenuComponent::OnNotify(Component* sender)
 		m_SubmitComp->TakeFocus();
 		m_SumbitWindow->GetTransform()->SetWorldLocation({ 1000,1000 });
 		m_pScoreBoard->Refresh();
+		m_HasSumbitted = true;
 	}
 }
 

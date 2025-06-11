@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Vector2.h"
+#include "SoundSystem.h"
 
 enum struct GameMode
 {
@@ -30,8 +31,12 @@ private:
 	Engine::Vector2 m_MenuPlayerStartLocation;
 	Engine::Vector2 m_MenuPlayerTargetLocation;
 	GameMode m_SelectedGameMode;
+
+	Engine::SoundClip m_IntroSound;
+
 	void* m_MenuMoveCommand;
 	void* m_MenuKeyboardMoveCommand;
+	void* m_SkipSceneCommand;
 
 };
 

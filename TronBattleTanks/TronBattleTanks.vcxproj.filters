@@ -156,6 +156,9 @@
     <ClCompile Include="AutoDestroyComponent.cpp">
       <Filter>Game\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="SkipSceneCommand.cpp">
+      <Filter>Game\Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Achievements.h">
@@ -262,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="AutoDestroyComponent.h">
       <Filter>Game\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="SkipSceneCommand.h">
+      <Filter>Game\Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

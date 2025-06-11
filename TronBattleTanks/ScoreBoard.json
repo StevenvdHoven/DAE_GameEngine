@@ -4,6 +4,10 @@
         "score_entry_score": 5600
     },
     {
+        "score_entry_name": "CDD",
+        "score_entry_score": 2300
+    },
+    {
         "score_entry_name": "CDW",
         "score_entry_score": 2000
     },
@@ -14,9 +18,5 @@
     {
         "score_entry_name": "STE",
         "score_entry_score": 1400
-    },
-    {
-        "score_entry_name": "AAA",
-        "score_entry_score": 1100
     }
 ]

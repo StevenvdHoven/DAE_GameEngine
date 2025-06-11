@@ -13,17 +13,19 @@ namespace Engine
 		SDL_SoundSystem();
 		virtual ~SDL_SoundSystem() override;
 
-		// Inherited via SoundSystem
 		void PlaySound(const SoundClip& clip) override;
 
-		// Inherited via SoundSystem
 		void PlayMusic(const MusicClip& clip) override;
 
-		// Inherited via SoundSystem
 		SoundClip LoadSound(const std::string& filePath) override;
 
-		// Inherited via SoundSystem
 		MusicClip LoadMusic(const std::string& filePath) override;
+
+		void Mute() override;
+
+		void UnMute() override;
+
+		bool Muted() override;
 
 	};
 }

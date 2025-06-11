@@ -183,6 +183,7 @@
     <ClCompile Include="Scoreboard.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="SimpleTriggerComponent.cpp" />
+    <ClCompile Include="SkipSceneCommand.cpp" />
     <ClCompile Include="StartGameCommand.cpp" />
     <ClCompile Include="StaticRotaterComponent.cpp" />
     <ClCompile Include="SubmitMenu.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="Scoreboard.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="SimpleTriggerComponent.h" />
+    <ClInclude Include="SkipSceneCommand.h" />
     <ClInclude Include="StartGameCommand.h" />
     <ClInclude Include="StaticRotaterComponent.h" />
     <ClInclude Include="SubmitMenu.h" />
