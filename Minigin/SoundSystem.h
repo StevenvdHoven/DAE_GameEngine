@@ -28,7 +28,7 @@ namespace Engine
 		virtual void Mute() = 0;
 		virtual void UnMute() = 0;
 		virtual bool Muted() = 0;
-
+		virtual void StopAll() = 0;
 	};
 }
 

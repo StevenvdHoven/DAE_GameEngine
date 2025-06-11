@@ -73,7 +73,6 @@ bool PlayerMovement::CheckDirection(const Engine::Vector2& newDirection) const
 	}
 	else if (std::abs(newDirection.x) > std::abs(newDirection.y))
 	{
-
 		boxSize -= Engine::Vector2{ 0, DIRECTION_ERROR };
 	}
 	else

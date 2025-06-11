@@ -21,7 +21,7 @@ using namespace Engine;
 
 void BattleScene::CreateScene(GameMode mode = GameMode::SinglePlayer)
 {
-	auto scene{ ServiceLocator::GetLevelEditor().LoadLevel("Map01.json")};
+	auto scene{ ServiceLocator::GetLevelEditor().LoadLevel("GameLoopScene.json")};
 
 	// Score 
 	std::unique_ptr<Engine::GameObject> scoreTextObject;

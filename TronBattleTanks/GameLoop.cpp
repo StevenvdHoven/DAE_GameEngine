@@ -13,6 +13,8 @@
 #include "PathFinding.h"
 #include "GameOverScene.h"
 #include "SkipSceneCommand.h"
+#include "EnemyBrain.h"
+#include "EngineTime.h"
 #include <SDL.h>
 #include "SimpleTriggerComponent.h"
 
@@ -26,8 +28,12 @@ using namespace Engine;
 
 GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pScoreComponent) :
 	Component(pOwner),
+	m_RoundCount{ 0 },
 	m_pScoreComponent{ pScoreComponent },
 	m_CristalTrigger{nullptr},
+	m_SwitchMap{false},
+	m_SwitchDelay{ 0.f },
+	m_pMapObjects{},
 	m_GameMusic{ServiceLocator::GetSoundSystem().LoadMusic("tron-music.wav")},
 	m_CrystalClip{ServiceLocator::GetSoundSystem().LoadSound("crystalsound.wav")},
 	m_GameState{ GameState::Start },
@@ -64,6 +70,7 @@ GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pS
 
 GameLoop::~GameLoop()
 {
+	ServiceLocator::GetSoundSystem().StopAll();
 	InputManager::GetInstance().Unbind(0,m_pSkipSceneCommand);
 	InputManager::GetInstance().Unbind(0, m_pStarGameCommand);
 	InputManager::GetInstance().Unbind(0, m_pKeyboardStartCommand);
@@ -71,14 +78,28 @@ GameLoop::~GameLoop()
 
 void GameLoop::Start()
 {
-	m_pMapObject = SceneManager::GetInstance().GetActiveScene()->FindObjectByName("Parent");
-	m_pMapObject->GetTransform()->SetWorldLocation(1000, 1000);
+	
+	SpawnMaps();
 
 	m_CristalTrigger = SceneManager::GetInstance().GetActiveScene()->FindObjectByName("Cristal")->GetComponent<SimpleTriggerComponent>();
 	m_CristalTrigger->GetOnTrigger().AddObserver(this);
 	CreateStartText();
 
 	CreateLivesText();
+}
+
+void GameLoop::Update()
+{
+	if (m_SwitchMap)
+	{
+		m_SwitchDelay -= Engine::Time::GetInstance().GetDeltaTime();
+		if(m_SwitchDelay <= 0)
+		{
+			m_SwitchMap = false;	
+			NextMap();
+			SpawnEnemies(SceneManager::GetInstance().GetActiveScene());
+		}
+	}
 }
 
 void GameLoop::BeginGame()
@@ -181,6 +202,23 @@ bool GameLoop::IsAllPlayersDead()
 	return false;
 }
 
+void GameLoop::SpawnMaps()
+{
+	m_pMapObjects.resize(2);
+	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
+
+	for (int index{ 0 }; index < m_pMapObjects.size(); ++index)
+	{
+		const std::string prefabName{ "MAP0" + std::to_string(index + 1) + ".json"};
+		auto result{ Engine::EnginePrefabFactory::LoadPrefabs(prefabName) };
+		if (result.bSuccesfull) m_pMapObjects[index] = result.Parent.get();
+		Engine::EnginePrefabFactory::AddPrefabToScene(std::move(result), pScene);
+
+		m_pMapObjects[index]->GetTransform()->SetWorldLocation(Engine::Vector2{ 1000, 1000 });	
+	}
+
+}
+
 void GameLoop::CreateStartText()
 {
 	Scene* pScene{ SceneManager::GetInstance().GetActiveScene() };
@@ -215,7 +253,7 @@ void GameLoop::CreateSinglePlayerLoop()
 {
 	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
 	
-	m_pMapObject->GetTransform()->SetWorldLocation(MAP_01_POSITION);
+	m_pMapObjects[0]->GetTransform()->SetWorldLocation(MAP_01_POSITION);
 
 	SpawnPlayer(0, PLAYER_01_POSITION, pScene);
 
@@ -226,7 +264,7 @@ void GameLoop::CreatePVPPlayerLoop()
 {
 	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
 
-	m_pMapObject->GetTransform()->SetWorldLocation(MAP_01_POSITION);
+	m_pMapObjects[0]->GetTransform()->SetWorldLocation(MAP_01_POSITION);
 
 	SpawnPlayer(0, PLAYER_01_POSITION, pScene);
 	SpawnPlayer(1, PLAYER_02_POSITION, pScene);
@@ -236,7 +274,7 @@ void GameLoop::CreateCo_OpPlayerLoop()
 {
 	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
 
-	m_pMapObject->GetTransform()->SetWorldLocation(MAP_01_POSITION);
+	m_pMapObjects[0]->GetTransform()->SetWorldLocation(MAP_01_POSITION);
 
 	SpawnPlayer(0, PLAYER_01_POSITION, pScene);
 	SpawnPlayer(1, PLAYER_02_POSITION, pScene);
@@ -274,7 +312,19 @@ void GameLoop::EndGame()
 
 void GameLoop::NextRound()
 {
-	SpawnEnemies(SceneManager::GetInstance().GetActiveScene());
+	m_pMapObjects[m_CurrentMapIndex]->GetTransform()->SetWorldLocation(1000, 1000);
+	m_SwitchMap = true;
+	m_SwitchDelay = 3.f;
+}
+
+void GameLoop::NextMap()
+{
+	++m_CurrentMapIndex;
+	if (m_CurrentMapIndex >= m_pMapObjects.size())
+	{
+		m_CurrentMapIndex = 0;
+	}
+	m_pMapObjects[m_CurrentMapIndex]->GetTransform()->SetWorldLocation(MAP_01_POSITION);
 }
 
 void GameLoop::SpawnEnemies(Engine::Scene* const pScene)
@@ -289,7 +339,7 @@ void GameLoop::SpawnEnemies(Engine::Scene* const pScene)
 
 	for (const auto& spawnPos : spawnPositions)
 	{
-		auto enemy{ PrefabFactory::CreateEnemy(pScene,this) };
+		auto enemy{ PrefabFactory::CreateEnemy(pScene,EnemyType::TANK,this) };
 		enemy->GetTransform()->SetWorldLocation(spawnPos);
 		m_pSpawnedEnemies.emplace_front(enemy);
 		enemy->GetComponent<EnemyHealthComponent>()->OnTakeDamage().AddObserver(this);

@@ -20,5 +20,8 @@ using namespace Engine;
 
 void TestMapScene::CreateScene()
 {
-	ServiceLocator::GetLevelEditor().LoadLevel("Map01.json");
+	//ServiceLocator::GetLevelEditor().LoadLevel("Map01.json");
+	auto scene = SceneManager::GetInstance().CreateScene("TestMapScene");
+	auto pMapObject = PrefabFactory::Map2Parent(scene);
+	pMapObject->GetTransform()->SetWorldLocation(Vector2{ 0, 72 });
 }

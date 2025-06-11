@@ -1,0 +1,42 @@
+{
+    "root_game_objects": [
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "BoxCollider",
+                "SimpleTriggerComponent"
+            ],
+            "game_object_components": {
+                "BoxCollider": {
+                    "box_collider_size": {
+                        "x": 20.0,
+                        "y": 20.0
+                    },
+                    "collider_center": {
+                        "x": -10.0,
+                        "y": -10.0
+                    },
+                    "collider_ignore_mask": [
+                        16,
+                        8,
+                        4,
+                        1
+                    ],
+                    "collider_is_trigger": true,
+                    "collider_layer_mask": 8
+                },
+                "SimpleTriggerComponent": null,
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": 240.0,
+                        "y": 285.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "Cristal"
+        }
+    ],
+    "scene_name": "GameLoopScene"
+}

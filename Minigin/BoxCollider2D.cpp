@@ -113,8 +113,8 @@ bool Engine::BoxCollider2D::RayCast(const Vector2& origin, const Vector2& direct
 	const float ty1{ (min.y - origin.y) * invDir.y };
 	const float ty2{ (max.y - origin.y) * invDir.y };
 
-	const float tmin = std::max(std::min(tx1, tx2), std::min(ty1, ty2));
-	const float tmax = std::min(std::max(tx1, tx2), std::max(ty1, ty2));
+	const float tmin{ std::max(std::min(tx1, tx2), std::min(ty1, ty2)) };
+	const float tmax{ std::min(std::max(tx1, tx2), std::max(ty1, ty2)) };
 
 	const float caculatedT{ std::max(tmin, 0.0f) };
 	if (tmax >= caculatedT)

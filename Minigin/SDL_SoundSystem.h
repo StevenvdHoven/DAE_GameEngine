@@ -27,6 +27,8 @@ namespace Engine
 
 		bool Muted() override;
 
+		void StopAll() override;
+
 	};
 }
 

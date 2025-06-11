@@ -10,6 +10,7 @@ namespace Engine
 }
 
 class GameLoop;
+enum struct EnemyType;
 
 class PrefabFactory
 {
@@ -22,7 +23,11 @@ public:
 
 	static Engine::GameObject* Map1Parent(Engine::Scene* const scene);
 
-	static Engine::GameObject* CreateEnemy(Engine::Scene* const scene, GameLoop* const gameLoop);
+	static Engine::GameObject* Map2Parent(Engine::Scene* const scene);
+
+	static Engine::GameObject* Map3Parent(Engine::Scene* const scene);
+
+	static Engine::GameObject* CreateEnemy(Engine::Scene* const scene, EnemyType enemyType, GameLoop* const gameLoop);
 
 };
 

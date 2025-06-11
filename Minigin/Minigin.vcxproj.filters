@@ -202,7 +202,7 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="SoundSystemCommands.h">
-      <Filter>DataTypes</Filter>
+      <Filter>EngineCommands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -336,7 +336,7 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="SoundSystemCommands.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>EngineCommands</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

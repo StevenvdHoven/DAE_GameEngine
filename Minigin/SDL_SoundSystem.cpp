@@ -248,6 +248,12 @@ public:
 		return m_Muted;
 	}
 
+	void StopAll()
+	{
+		Mix_HaltChannel(-1);
+		Mix_HaltMusic();
+	}
+
 private:
 	std::mutex m_LoopMutex;
 	std::mutex m_SoundMutex;
@@ -307,6 +313,11 @@ void Engine::SDL_SoundSystem::UnMute()
 bool Engine::SDL_SoundSystem::Muted()
 {
 	return m_pimpl->Muted();
+}
+
+void Engine::SDL_SoundSystem::StopAll()
+{
+	m_pimpl->StopAll();
 }
 
 

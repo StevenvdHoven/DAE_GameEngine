@@ -6,22 +6,26 @@
 class EnemyMovement;
 class GameLoop;
 
+enum struct EnemyType
+{
+	TANK,
+	RECOGNIZER
+};
+
 class EnemyBrain final : public Engine::Component
 {
 public:
-	EnemyBrain(Engine::GameObject* pOwner, float pathUpdateTime, float shootRate, GameLoop* const pGame, std::unique_ptr<EnemyShootCommand>&& shootCommand);
+	EnemyBrain(Engine::GameObject* pOwner, EnemyType enemyType, float pathUpdateTime, float shootRate, GameLoop* const pGame, std::unique_ptr<EnemyShootCommand>&& shootCommand);
 	virtual ~EnemyBrain() = default;
 
 	void Start() override;
 	void Update() override;
-	//void Render() const override;
-
-
+	
 	std::string GetTypeName() const override;
 private:
 	void CheckForShoot();
 
-
+	EnemyType m_EnemyType;
 	float m_PathUpdateRate;
 	float m_PathUpdateTimer;
 	Engine::GameObject* m_pTargetPlayer;

@@ -52,6 +52,7 @@ public:
 	virtual ~GameLoop();
 
 	void Start() override;
+	void Update() override;
 
 	void BeginGame();
 
@@ -64,6 +65,8 @@ public:
 private:
 	bool IsPlayerEvent(Component* pSender, auto& iterator);
 	bool IsAllPlayersDead();
+
+	void SpawnMaps();
 	void CreateStartText();
 	void CreateLivesText();
 
@@ -76,14 +79,18 @@ private:
 	void EndGame();
 	void NextRound();
 
+	void NextMap();
 	void SpawnEnemies(Engine::Scene* const pScene);
 	void SpawnPlayer(int index, const Engine::Vector2& pos, Engine::Scene* const pScene);
 
-	
+	int m_RoundCount;
 	ScoreComponent* m_pScoreComponent;
 	SimpleTriggerComponent* m_CristalTrigger;
 
-	Engine::GameObject* m_pMapObject;
+	bool m_SwitchMap;
+	float m_SwitchDelay;
+	int m_CurrentMapIndex;
+	std::vector<Engine::GameObject*> m_pMapObjects;
 	std::vector< PlayerState> m_pPlayers;
 	std::vector<Engine::TextRenderer*> m_pLivesTexts;
 	std::forward_list<Engine::GameObject*> m_pSpawnedEnemies;

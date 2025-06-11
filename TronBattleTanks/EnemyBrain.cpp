@@ -12,8 +12,9 @@
 using namespace Engine;
 
 
-EnemyBrain::EnemyBrain(Engine::GameObject* pOwner, float pathUpdateTime, float shootRate, GameLoop* const pGame, std::unique_ptr<EnemyShootCommand>&& shootCommand) :
+EnemyBrain::EnemyBrain(Engine::GameObject* pOwner,EnemyType enemyType, float pathUpdateTime, float shootRate, GameLoop* const pGame, std::unique_ptr<EnemyShootCommand>&& shootCommand) :
 	Component{ pOwner },
+	m_EnemyType{ enemyType },
 	m_PathUpdateRate{ pathUpdateTime },
 	m_PathUpdateTimer{ pathUpdateTime },
 	m_pTargetPlayer{ nullptr },
@@ -44,7 +45,8 @@ void EnemyBrain::Update()
 			m_pEnemyMovement->SetTargetPosition(m_pTargetPlayer->GetTransform()->GetWorldLocation());
 		}
 
-		CheckForShoot();
+		if(m_EnemyType == EnemyType::TANK)
+			CheckForShoot();
 	}
 }
 
