@@ -24,9 +24,9 @@ public:
 
 	void Start() override;
 	void FixedUpdate() override;
-	//void Render() const override;
 
 	void SetTargetPosition(const Engine::Vector2& targetPos);
+	void SetGraph(Engine::Graph* pGraph);
 	bool CheckDirection(const Engine::Vector2& newDirection) const;
 
 	std::string GetTypeName() const override;

@@ -204,19 +204,24 @@ bool GameLoop::IsAllPlayersDead()
 
 void GameLoop::SpawnMaps()
 {
-	m_pMapObjects.resize(2);
+	m_pMapObjects.resize(3);
+	m_pGraphs.resize(3);
 	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
 
 	for (int index{ 0 }; index < m_pMapObjects.size(); ++index)
 	{
 		const std::string prefabName{ "MAP0" + std::to_string(index + 1) + ".json"};
+		const std::string graphName{ "map_0" + std::to_string(index + 1) + ".json" };
+
+		auto graph{ ServiceLocator::GetPathFinding().GetGraph(graphName) };
+
 		auto result{ Engine::EnginePrefabFactory::LoadPrefabs(prefabName) };
 		if (result.bSuccesfull) m_pMapObjects[index] = result.Parent.get();
-		Engine::EnginePrefabFactory::AddPrefabToScene(std::move(result), pScene);
+		m_pGraphs[index] = std::move(graph);
 
+		Engine::EnginePrefabFactory::AddPrefabToScene(std::move(result), pScene);
 		m_pMapObjects[index]->GetTransform()->SetWorldLocation(Engine::Vector2{ 1000, 1000 });	
 	}
-
 }
 
 void GameLoop::CreateStartText()
@@ -339,7 +344,7 @@ void GameLoop::SpawnEnemies(Engine::Scene* const pScene)
 
 	for (const auto& spawnPos : spawnPositions)
 	{
-		auto enemy{ PrefabFactory::CreateEnemy(pScene,EnemyType::TANK,this) };
+		auto enemy{ PrefabFactory::CreateEnemy(pScene,EnemyType::TANK,m_pGraphs[m_CurrentMapIndex],this)};
 		enemy->GetTransform()->SetWorldLocation(spawnPos);
 		m_pSpawnedEnemies.emplace_front(enemy);
 		enemy->GetComponent<EnemyHealthComponent>()->OnTakeDamage().AddObserver(this);

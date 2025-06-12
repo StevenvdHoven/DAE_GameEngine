@@ -110,6 +110,11 @@ void EnemyMovement::SetTargetPosition(const Engine::Vector2& targetPos)
 	
 }
 
+void EnemyMovement::SetGraph(Engine::Graph* pGraph)
+{
+	m_MapGraph = pGraph;
+}
+
 bool EnemyMovement::CheckDirection(const Engine::Vector2& newDirection) const
 {
 	auto transform{ GetGameObject()->GetTransform() };

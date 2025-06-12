@@ -7,6 +7,7 @@
 namespace Engine
 {
 	class Scene;
+	class Graph;
 }
 
 class GameLoop;
@@ -27,7 +28,7 @@ public:
 
 	static Engine::GameObject* Map3Parent(Engine::Scene* const scene);
 
-	static Engine::GameObject* CreateEnemy(Engine::Scene* const scene, EnemyType enemyType, GameLoop* const gameLoop);
+	static Engine::GameObject* CreateEnemy(Engine::Scene* const scene, EnemyType enemyType,Engine::Graph* pGraph, GameLoop* const gameLoop);
 
 };
 

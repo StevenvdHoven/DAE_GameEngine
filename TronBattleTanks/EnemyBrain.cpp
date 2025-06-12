@@ -12,7 +12,7 @@
 using namespace Engine;
 
 
-EnemyBrain::EnemyBrain(Engine::GameObject* pOwner,EnemyType enemyType, float pathUpdateTime, float shootRate, GameLoop* const pGame, std::unique_ptr<EnemyShootCommand>&& shootCommand) :
+EnemyBrain::EnemyBrain(Engine::GameObject* pOwner,EnemyType enemyType,Engine::Graph* pGraph, float pathUpdateTime, float shootRate, GameLoop* const pGame, std::unique_ptr<EnemyShootCommand>&& shootCommand) :
 	Component{ pOwner },
 	m_EnemyType{ enemyType },
 	m_PathUpdateRate{ pathUpdateTime },
@@ -20,6 +20,7 @@ EnemyBrain::EnemyBrain(Engine::GameObject* pOwner,EnemyType enemyType, float pat
 	m_pTargetPlayer{ nullptr },
 	m_pEnemyMovement{ nullptr },
 	m_pGame{ pGame },
+	m_pGraph{pGraph},
 	m_ShootRate{shootRate},
 	m_ShootTimer{ shootRate },
 	m_ShootCommand{ std::move(shootCommand) }
@@ -29,6 +30,7 @@ EnemyBrain::EnemyBrain(Engine::GameObject* pOwner,EnemyType enemyType, float pat
 void EnemyBrain::Start()
 {
 	m_pEnemyMovement = GetGameObject()->GetComponent<EnemyMovement>();
+	m_pEnemyMovement->SetGraph(m_pGraph);
 }
 
 void EnemyBrain::Update()

@@ -21,7 +21,7 @@ Engine::GraphEditor::GraphEditor() :
 	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_F3, std::move(openGraphEditorCommand));
 
 	auto addGraphNodeCommand = std::make_unique<AddGraphNodeCommand>();
-	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_INSERT, std::move(addGraphNodeCommand));
+	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_RCTRL, std::move(addGraphNodeCommand));
 
 	auto deleteGraphNodeCommand = std::make_unique<DeleteGraphNodeCommand>();
 	InputManager::GetInstance().BindButton(0, SDL_SCANCODE_DELETE, std::move(deleteGraphNodeCommand));

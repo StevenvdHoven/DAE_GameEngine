@@ -22,6 +22,6 @@ void TestMapScene::CreateScene()
 {
 	//ServiceLocator::GetLevelEditor().LoadLevel("Map01.json");
 	auto scene = SceneManager::GetInstance().CreateScene("TestMapScene");
-	auto pMapObject = PrefabFactory::Map2Parent(scene);
+	auto pMapObject = PrefabFactory::Map3Parent(scene);
 	pMapObject->GetTransform()->SetWorldLocation(Vector2{ 0, 72 });
 }

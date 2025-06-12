@@ -10,6 +10,7 @@ namespace Engine
 {
 	class TextRenderer;
 	class Scene;
+	class Graph;
 	struct Vector2;
 	struct SoundClip;
 }
@@ -91,6 +92,7 @@ private:
 	float m_SwitchDelay;
 	int m_CurrentMapIndex;
 	std::vector<Engine::GameObject*> m_pMapObjects;
+	std::vector<Engine::Graph*> m_pGraphs;
 	std::vector< PlayerState> m_pPlayers;
 	std::vector<Engine::TextRenderer*> m_pLivesTexts;
 	std::forward_list<Engine::GameObject*> m_pSpawnedEnemies;

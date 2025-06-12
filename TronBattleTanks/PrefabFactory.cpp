@@ -934,16 +934,320 @@ Engine::GameObject* PrefabFactory::Map3Parent(Engine::Scene* const scene)
 	pMediumCollider3->GetTransform()->SetParent(map2Parent.get());
 	scene->Add(std::move(pMediumCollider3));
 
-	return nullptr;
+	auto pMediumCollider4{ std::make_unique<GameObject>() };
+	pMediumCollider4->GetTransform()->SetLocalPosition(48, 375);
+	pMediumCollider4->AddComponent<BoxCollider2D>(Vector2{ 16, 49 }, false, LayerMask::Wall);
+	pMediumCollider4->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider4));
+
+	auto pMediumCollider5{ std::make_unique<GameObject>() };
+	pMediumCollider5->GetTransform()->SetLocalPosition(96, 132);
+	pMediumCollider5->AddComponent<BoxCollider2D>(Vector2{ 64, 17 }, false, LayerMask::Wall);
+	pMediumCollider5->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider5));
+
+	auto pMediumCollider6{ std::make_unique<GameObject>() };
+	pMediumCollider6->GetTransform()->SetLocalPosition(96, 149);
+	pMediumCollider6->AddComponent<BoxCollider2D>(Vector2{ 16, 49 }, false, LayerMask::Wall);
+	pMediumCollider6->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider6));
+
+	auto pMediumCollider7{ std::make_unique<GameObject>() };
+	pMediumCollider7->GetTransform()->SetLocalPosition(96, 278);
+	pMediumCollider7->AddComponent<BoxCollider2D>(Vector2{ 64, 17 }, false, LayerMask::Wall);
+	pMediumCollider7->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider7));
+
+	auto pMediumCollider8{ std::make_unique<GameObject>() };
+	pMediumCollider8->GetTransform()->SetLocalPosition(96, 295);
+	pMediumCollider8->AddComponent<BoxCollider2D>(Vector2{ 16, 48 }, false, LayerMask::Wall);
+	pMediumCollider8->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider8));
+
+	auto pMediumCollider9{ std::make_unique<GameObject>() };
+	pMediumCollider9->GetTransform()->SetLocalPosition(96, 375);
+	pMediumCollider9->AddComponent<BoxCollider2D>(Vector2{ 96, 17 }, false, LayerMask::Wall);
+	pMediumCollider9->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider9));
+
+	auto pMediumCollider10{ std::make_unique<GameObject>() };
+	pMediumCollider10->GetTransform()->SetLocalPosition(144, 181);
+	pMediumCollider10->AddComponent<BoxCollider2D>(Vector2{ 16, 65 }, false, LayerMask::Wall);
+	pMediumCollider10->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider10));
+
+	auto pMediumCollider11{ std::make_unique<GameObject>() };
+	pMediumCollider11->GetTransform()->SetLocalPosition(192, 35);
+	pMediumCollider11->AddComponent<BoxCollider2D>(Vector2{ 48, 17 }, false, LayerMask::Wall);
+	pMediumCollider11->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider11));
+
+	auto pMediumCollider12{ std::make_unique<GameObject>() };
+	pMediumCollider12->GetTransform()->SetLocalPosition(192, 84);
+	pMediumCollider12->AddComponent<BoxCollider2D>(Vector2{ 48, 17 }, false, LayerMask::Wall);
+	pMediumCollider12->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider12));
+
+	auto pMediumCollider13{ std::make_unique<GameObject>() };
+	pMediumCollider13->GetTransform()->SetLocalPosition(192, 84);
+	pMediumCollider13->AddComponent<BoxCollider2D>(Vector2{ 48, 17 }, false, LayerMask::Wall);
+	pMediumCollider13->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider13));
+
+	auto pMediumCollider14{ std::make_unique<GameObject>() };
+	pMediumCollider14->GetTransform()->SetLocalPosition(192, 132);
+	pMediumCollider14->AddComponent<BoxCollider2D>(Vector2{ 48, 17 }, false, LayerMask::Wall);
+	pMediumCollider14->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider14));
+
+	auto pMediumCollider15{ std::make_unique<GameObject>() };
+	pMediumCollider15->GetTransform()->SetLocalPosition(192, 181);
+	pMediumCollider15->AddComponent<BoxCollider2D>(Vector2{ 32, 16 }, false, LayerMask::Wall);
+	pMediumCollider15->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider15));
+
+	auto pMediumCollider16{ std::make_unique<GameObject>() };
+	pMediumCollider16->GetTransform()->SetLocalPosition(192, 198);
+	pMediumCollider16->AddComponent<BoxCollider2D>(Vector2{ 16, 32 }, false, LayerMask::Wall);
+	pMediumCollider16->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider16));
+
+	auto pMediumCollider17{ std::make_unique<GameObject>() };
+	pMediumCollider17->GetTransform()->SetLocalPosition(192, 230);
+	pMediumCollider17->AddComponent<BoxCollider2D>(Vector2{ 32, 16 }, false, LayerMask::Wall);
+	pMediumCollider17->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider17));
+
+	auto pMediumCollider18{ std::make_unique<GameObject>() };
+	pMediumCollider18->GetTransform()->SetLocalPosition(192, 278);
+	pMediumCollider18->AddComponent<BoxCollider2D>(Vector2{ 48, 17 }, false, LayerMask::Wall);
+	pMediumCollider18->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider18));
+
+	auto pMediumCollider19{ std::make_unique<GameObject>() };
+	pMediumCollider19->GetTransform()->SetLocalPosition(192, 327);
+	pMediumCollider19->AddComponent<BoxCollider2D>(Vector2{ 48, 16 }, false, LayerMask::Wall);
+	pMediumCollider19->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider19));
+
+	auto pMediumCollider20{ std::make_unique<GameObject>() };
+	pMediumCollider20->GetTransform()->SetLocalPosition(272, 35);
+	pMediumCollider20->AddComponent<BoxCollider2D>(Vector2{ 32, 17 }, false, LayerMask::Wall);
+	pMediumCollider20->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider20));
+
+	auto pMediumCollider21{ std::make_unique<GameObject>() };
+	pMediumCollider21->GetTransform()->SetLocalPosition(272, 84);
+	pMediumCollider21->AddComponent<BoxCollider2D>(Vector2{ 64, 17 }, false, LayerMask::Wall);
+	pMediumCollider21->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider21));
+
+	auto pMediumCollider22{ std::make_unique<GameObject>() };
+	pMediumCollider22->GetTransform()->SetLocalPosition(256, 181);
+	pMediumCollider22->AddComponent<BoxCollider2D>(Vector2{ 32, 17 }, false, LayerMask::Wall);
+	pMediumCollider22->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider22));
+
+	auto pMediumCollider23{ std::make_unique<GameObject>() };
+	pMediumCollider23->GetTransform()->SetLocalPosition(272, 198);
+	pMediumCollider23->AddComponent<BoxCollider2D>(Vector2{ 16, 32 }, false, LayerMask::Wall);
+	pMediumCollider23->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider23));
+
+	auto pMediumCollider24{ std::make_unique<GameObject>() };
+	pMediumCollider24->GetTransform()->SetLocalPosition(256, 230);
+	pMediumCollider24->AddComponent<BoxCollider2D>(Vector2{ 32, 16 }, false, LayerMask::Wall);
+	pMediumCollider24->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider24));
+
+	auto pMediumCollider25{ std::make_unique<GameObject>() };
+	pMediumCollider25->GetTransform()->SetLocalPosition(336, 35);
+	pMediumCollider25->AddComponent<BoxCollider2D>(Vector2{ 48, 17 }, false, LayerMask::Wall);
+	pMediumCollider25->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider25));
+
+	auto pMediumCollider26{ std::make_unique<GameObject>() };
+	pMediumCollider26->GetTransform()->SetLocalPosition(320, 181);
+	pMediumCollider26->AddComponent<BoxCollider2D>(Vector2{ 16, 65 }, false, LayerMask::Wall);
+	pMediumCollider26->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider26));
+
+	auto pMediumCollider27{ std::make_unique<GameObject>() };
+	pMediumCollider27->GetTransform()->SetLocalPosition(320, 327);
+	pMediumCollider27->AddComponent<BoxCollider2D>(Vector2{ 16, 48 }, false, LayerMask::Wall);
+	pMediumCollider27->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider27));
+
+	auto pMediumCollider28{ std::make_unique<GameObject>() };
+	pMediumCollider28->GetTransform()->SetLocalPosition(320, 375);
+	pMediumCollider28->AddComponent<BoxCollider2D>(Vector2{ 64, 17 }, false, LayerMask::Wall);
+	pMediumCollider28->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider28));
+
+	auto pMediumCollider29{ std::make_unique<GameObject>() };
+	pMediumCollider29->GetTransform()->SetLocalPosition(416, 35);
+	pMediumCollider29->AddComponent<BoxCollider2D>(Vector2{ 48, 17 }, false, LayerMask::Wall);
+	pMediumCollider29->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider29));
+
+	auto pMediumCollider30{ std::make_unique<GameObject>() };
+	pMediumCollider30->GetTransform()->SetLocalPosition(416, 84);
+	pMediumCollider30->AddComponent<BoxCollider2D>(Vector2{ 16, 65 }, false, LayerMask::Wall);
+	pMediumCollider30->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider30));
+
+	auto pMediumCollider31{ std::make_unique<GameObject>() };
+	pMediumCollider31->GetTransform()->SetLocalPosition(368, 132);
+	pMediumCollider31->AddComponent<BoxCollider2D>(Vector2{ 48, 17 }, false, LayerMask::Wall);
+	pMediumCollider31->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider31));
+
+	auto pMediumCollider32{ std::make_unique<GameObject>() };
+	pMediumCollider32->GetTransform()->SetLocalPosition(416, 181);
+	pMediumCollider32->AddComponent<BoxCollider2D>(Vector2{ 16, 65 }, false, LayerMask::Wall);
+	pMediumCollider32->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider32));
+
+	auto pMediumCollider33{ std::make_unique<GameObject>() };
+	pMediumCollider33->GetTransform()->SetLocalPosition(416, 278);
+	pMediumCollider33->AddComponent<BoxCollider2D>(Vector2{ 16, 49 }, false, LayerMask::Wall);
+	pMediumCollider33->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider33));
+
+	auto pMediumCollider34{ std::make_unique<GameObject>() };
+	pMediumCollider34->GetTransform()->SetLocalPosition(416, 359);
+	pMediumCollider34->AddComponent<BoxCollider2D>(Vector2{ 16, 33 }, false, LayerMask::Wall);
+	pMediumCollider34->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pMediumCollider34));
+
+	auto pSmallCollider01{ std::make_unique<GameObject>() };
+	pSmallCollider01->GetTransform()->SetLocalPosition(48, 132);
+	pSmallCollider01->AddComponent<BoxCollider2D>(Vector2{ 16, 17 }, false, LayerMask::Wall);
+	pSmallCollider01->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider01));
+
+	auto pSmallCollider02{ std::make_unique<GameObject>() };
+	pSmallCollider02->GetTransform()->SetLocalPosition(48, 181);
+	pSmallCollider02->AddComponent<BoxCollider2D>(Vector2{ 16, 17 }, false, LayerMask::Wall);
+	pSmallCollider02->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider02));
+
+	auto pSmallCollider03{ std::make_unique<GameObject>() };
+	pSmallCollider03->GetTransform()->SetLocalPosition(48, 327);
+	pSmallCollider03->AddComponent<BoxCollider2D>(Vector2{ 16, 16 }, false, LayerMask::Wall);
+	pSmallCollider03->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider03));
+
+	auto pSmallCollider04{ std::make_unique<GameObject>() };
+	pSmallCollider04->GetTransform()->SetLocalPosition(96, 84);
+	pSmallCollider04->AddComponent<BoxCollider2D>(Vector2{ 16, 17 }, false, LayerMask::Wall);
+	pSmallCollider04->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider04));
+
+	auto pSmallCollider05{ std::make_unique<GameObject>() };
+	pSmallCollider05->GetTransform()->SetLocalPosition(96, 229);
+	pSmallCollider05->AddComponent<BoxCollider2D>(Vector2{ 16, 17 }, false, LayerMask::Wall);
+	pSmallCollider05->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider05));
+
+	auto pSmallCollider06{ std::make_unique<GameObject>() };
+	pSmallCollider06->GetTransform()->SetLocalPosition(144, 84);
+	pSmallCollider06->AddComponent<BoxCollider2D>(Vector2{ 16, 17 }, false, LayerMask::Wall);
+	pSmallCollider06->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider06));
+
+	auto pSmallCollider07{ std::make_unique<GameObject>() };
+	pSmallCollider07->GetTransform()->SetLocalPosition(144, 327);
+	pSmallCollider07->AddComponent<BoxCollider2D>(Vector2{ 16, 16 }, false, LayerMask::Wall);
+	pSmallCollider07->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider07));
+
+	auto pSmallCollider08{ std::make_unique<GameObject>() };
+	pSmallCollider08->GetTransform()->SetLocalPosition(224, 375);
+	pSmallCollider08->AddComponent<BoxCollider2D>(Vector2{ 16, 17 }, false, LayerMask::Wall);
+	pSmallCollider08->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider08));
+
+	auto pSmallCollider09{ std::make_unique<GameObject>() };
+	pSmallCollider09->GetTransform()->SetLocalPosition(272, 132);
+	pSmallCollider09->AddComponent<BoxCollider2D>(Vector2{ 16, 17 }, false, LayerMask::Wall);
+	pSmallCollider09->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider09));
+
+	auto pSmallCollider10{ std::make_unique<GameObject>() };
+	pSmallCollider10->GetTransform()->SetLocalPosition(272, 278);
+	pSmallCollider10->AddComponent<BoxCollider2D>(Vector2{ 16, 17 }, false, LayerMask::Wall);
+	pSmallCollider10->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider10));
+
+	auto pSmallCollider11{ std::make_unique<GameObject>() };
+	pSmallCollider11->GetTransform()->SetLocalPosition(272, 327);
+	pSmallCollider11->AddComponent<BoxCollider2D>(Vector2{ 16, 16 }, false, LayerMask::Wall);
+	pSmallCollider11->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider11));
+
+	auto pSmallCollider12{ std::make_unique<GameObject>() };
+	pSmallCollider12->GetTransform()->SetLocalPosition(272, 375);
+	pSmallCollider12->AddComponent<BoxCollider2D>(Vector2{ 16, 17 }, false, LayerMask::Wall);
+	pSmallCollider12->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider12));
+
+	auto pSmallCollider13{ std::make_unique<GameObject>() };
+	pSmallCollider13->GetTransform()->SetLocalPosition(320, 132);
+	pSmallCollider13->AddComponent<BoxCollider2D>(Vector2{ 16, 17 }, false, LayerMask::Wall);
+	pSmallCollider13->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider13));
+
+	auto pSmallCollider14{ std::make_unique<GameObject>() };
+	pSmallCollider14->GetTransform()->SetLocalPosition(320, 278);
+	pSmallCollider14->AddComponent<BoxCollider2D>(Vector2{ 16, 17 }, false, LayerMask::Wall);
+	pSmallCollider14->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider14));
+
+	auto pSmallCollider15{ std::make_unique<GameObject>() };
+	pSmallCollider15->GetTransform()->SetLocalPosition(368, 84);
+	pSmallCollider15->AddComponent<BoxCollider2D>(Vector2{ 16, 17 }, false, LayerMask::Wall);
+	pSmallCollider15->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider15));
+
+	auto pSmallCollider16{ std::make_unique<GameObject>() };
+	pSmallCollider16->GetTransform()->SetLocalPosition(368, 181);
+	pSmallCollider16->AddComponent<BoxCollider2D>(Vector2{ 16, 17 }, false, LayerMask::Wall);
+	pSmallCollider16->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider16));
+
+	auto pSmallCollider17{ std::make_unique<GameObject>() };
+	pSmallCollider17->GetTransform()->SetLocalPosition(368, 230);
+	pSmallCollider17->AddComponent<BoxCollider2D>(Vector2{ 16, 16 }, false, LayerMask::Wall);
+	pSmallCollider17->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider17));
+
+	auto pSmallCollider18{ std::make_unique<GameObject>() };
+	pSmallCollider18->GetTransform()->SetLocalPosition(368, 278);
+	pSmallCollider18->AddComponent<BoxCollider2D>(Vector2{ 16, 17 }, false, LayerMask::Wall);
+	pSmallCollider18->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider18));
+
+	auto pSmallCollider19{ std::make_unique<GameObject>() };
+	pSmallCollider19->GetTransform()->SetLocalPosition(368, 327);
+	pSmallCollider19->AddComponent<BoxCollider2D>(Vector2{ 16, 16 }, false, LayerMask::Wall);
+	pSmallCollider19->GetTransform()->SetParent(map2Parent.get());
+	scene->Add(std::move(pSmallCollider19));
+
+
+	auto rawPtrParent{ map2Parent.get() };
+	scene->Add(std::move(map2Parent));
+
+	return rawPtrParent;
 }
 
-Engine::GameObject* PrefabFactory::CreateEnemy(Engine::Scene* const scene, EnemyType enemyType, GameLoop* const gameLoop)
+Engine::GameObject* PrefabFactory::CreateEnemy(Engine::Scene* const scene, EnemyType enemyType, Engine::Graph* pGraph, GameLoop* const gameLoop)
 {
 	auto enemyObject{ std::make_unique<GameObject>() };
 
 	auto shootCommand{ std::make_unique<EnemyShootCommand>(enemyObject.get(),Engine::Vector2{0,0},[scene]() { return AddEnemyBullet(scene); })};
 
-	enemyObject->AddComponent<EnemyBrain>(enemyType,2.f,4.f,gameLoop,std::move(shootCommand));
+	enemyObject->AddComponent<EnemyBrain>(enemyType,pGraph,2.f,4.f,gameLoop,std::move(shootCommand));
 	enemyObject->AddComponent<EnemyHealthComponent>();
 	enemyObject->AddComponent<EnemyMovement>(UNIT_SPEED);
 

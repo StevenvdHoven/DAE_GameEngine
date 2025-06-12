@@ -3,6 +3,11 @@
 #include "Component.h"
 #include "EnemyShootCommand.h"
 
+namespace Engine
+{
+	class Graph;
+}
+
 class EnemyMovement;
 class GameLoop;
 
@@ -15,7 +20,7 @@ enum struct EnemyType
 class EnemyBrain final : public Engine::Component
 {
 public:
-	EnemyBrain(Engine::GameObject* pOwner, EnemyType enemyType, float pathUpdateTime, float shootRate, GameLoop* const pGame, std::unique_ptr<EnemyShootCommand>&& shootCommand);
+	EnemyBrain(Engine::GameObject* pOwner, EnemyType enemyType, Engine::Graph* pGraph, float pathUpdateTime, float shootRate, GameLoop* const pGame, std::unique_ptr<EnemyShootCommand>&& shootCommand);
 	virtual ~EnemyBrain() = default;
 
 	void Start() override;
@@ -31,6 +36,7 @@ private:
 	Engine::GameObject* m_pTargetPlayer;
 	EnemyMovement* m_pEnemyMovement;
 	GameLoop* const m_pGame;
+	Engine::Graph* m_pGraph;
 
 	float m_ShootRate;
 	float m_ShootTimer;

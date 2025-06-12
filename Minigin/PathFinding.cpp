@@ -34,6 +34,8 @@ const std::list<NavigationNode> Engine::PathFinding::FindPath(Graph* const graph
 
 		for (const auto& neighbour : neighbours)
 		{
+			if (neighbour == nullptr) continue;
+
 			const float distanceToEnd{ Vector2::Distance(neighbour->Position,endNode->Position) };
 			if (distanceToEnd < closestDistanceToEnd)
 			{
