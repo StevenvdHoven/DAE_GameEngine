@@ -39,21 +39,22 @@ void SubmitMenu::OnNavigation(const Engine::Vector2& navigationDirection)
 {
 	if (!m_Focus) return;
 
+	const int charSlotsLength{ static_cast<int>(m_CharSlots.size()) };
+
 	m_CurrentSelectedText = m_CurrentSelectedText + static_cast<int>( navigationDirection.x);
 	if (m_CurrentSelectedText < 0)
 	{
-		m_CurrentSelectedText = static_cast<int>(m_CharSlots.size()) - 1; 
+		m_CurrentSelectedText = charSlotsLength - 1; 
 	}
-	else if (m_CurrentSelectedText >= static_cast<int>(m_CharSlots.size()))
+	else if (m_CurrentSelectedText >= charSlotsLength)
 	{
 		m_CurrentSelectedText = 0; 
 	}
 
 
-	const int length{ static_cast<int>(m_CharSlots.size()) };
-	for (int index{ 0 }; index < length; ++index)
+	for (size_t index = 0; index < m_CharSlots.size(); ++index)
 	{
-		if (index == m_CurrentSelectedText)
+		if (static_cast<int>(index) == m_CurrentSelectedText)
 		{
 			m_CharSlots[index].TextSlot->Color() = Engine::Color{ 255, 0, 0, 255 };
 		}

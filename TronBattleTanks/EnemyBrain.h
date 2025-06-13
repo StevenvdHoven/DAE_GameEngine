@@ -30,6 +30,8 @@ public:
 
 	void RefreshPlayer();
 
+	EnemyType GetEnemyType() const { return m_EnemyType; }
+
 	std::string GetTypeName() const override;
 private:
 	void CheckForShoot();

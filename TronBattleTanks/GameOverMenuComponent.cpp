@@ -171,6 +171,8 @@ void GameOverMenuComponent::OnNotify(Component* sender)
 		m_SubmitComp->TakeFocus();
 		m_SumbitWindow->GetTransform()->SetWorldLocation({ 1000,1000 });
 		m_pScoreBoard->Refresh();
+		m_CurrentSelectedText = 0;
+		NavigateMenu(Engine::Vector2{0,0});
 		m_HasSumbitted = true;
 	}
 }

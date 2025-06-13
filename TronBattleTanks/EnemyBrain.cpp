@@ -70,6 +70,7 @@ void EnemyBrain::OnCollisionEnter(Engine::GameObject* other)
 
 void EnemyBrain::RefreshPlayer()
 {
+	m_pTargetPlayer = nullptr;
 	m_pTargetPlayer = m_pGame->GetRandomPlayer();
 }
 

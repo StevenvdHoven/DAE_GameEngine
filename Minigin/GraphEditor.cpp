@@ -383,10 +383,10 @@ Engine::GraphNode* Engine::Graph::GetNodeByIndex(int index)
 std::unique_ptr<Engine::Graph> Engine::Graph::LoadGraph(const std::string& filePath)
 {
 	const std::string fullPath = "../Data/" + filePath;
-	std::ifstream file(filePath);
+	std::ifstream file(fullPath);
 	if (!file.is_open())
 	{
-		throw std::runtime_error("Could not open graph file");
+		throw std::runtime_error("Could not open graph file " + fullPath);
 	}
 
 	json graphData;

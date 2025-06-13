@@ -44,8 +44,8 @@ void PrintSDLVersion()
 		version.major, version.minor, version.patch);
 
 	SDL_TTF_VERSION(&version)
-	printf("We compiled against SDL_ttf version %u.%u.%u ...\n",
-		version.major, version.minor, version.patch);
+		printf("We compiled against SDL_ttf version %u.%u.%u ...\n",
+			version.major, version.minor, version.patch);
 
 	version = *TTF_Linked_Version();
 	printf("We are linking against SDL_ttf version %u.%u.%u.\n",
@@ -55,8 +55,8 @@ void PrintSDLVersion()
 Engine::GameEngine::GameEngine(const std::string& dataPath, int width, int height)
 {
 	PrintSDLVersion();
-	
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
+
+	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
@@ -69,7 +69,7 @@ Engine::GameEngine::GameEngine(const std::string& dataPath, int width, int heigh
 		height,
 		SDL_WINDOW_OPENGL
 	);
-	if (g_window == nullptr) 
+	if (g_window == nullptr)
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
@@ -77,7 +77,7 @@ Engine::GameEngine::GameEngine(const std::string& dataPath, int width, int heigh
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
-	
+
 }
 
 Engine::GameEngine::~GameEngine()
@@ -116,6 +116,7 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 	time.m_FixedDeltaTime = fixed_time_step;
 	while (doContinue)
 	{
+
 		const auto current_time = std::chrono::high_resolution_clock::now();
 		const float delta_time = std::chrono::duration<float>(current_time - last_time).count();
 
@@ -123,23 +124,29 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 		last_time = current_time;
 		lag += delta_time;
 
+
 		doContinue = input.ProcessInput();
-		
+
+
 		while (lag >= fixed_time_step)
 		{
+
 			sceneManager.FixedUpdate();
 			ServiceLocator::GetPhysicsSystem().FixedUpdate();
 			lag -= fixed_time_step;
+
 		}
-		
+
+
 		sceneManager.Update();
 		sceneManager.LateUpdate();
+
 
 		if (ServiceLocator::GetLevelEditor().IsActive())
 			ServiceLocator::GetLevelEditor().LateUpdate();
 
 		viewPort.Render();
-		if(ServiceLocator::GetGraphEditor().IsActive())
+		if (ServiceLocator::GetGraphEditor().IsActive())
 			ServiceLocator::GetGraphEditor().GUI();
 		if (ServiceLocator::GetLevelEditor().IsActive())
 			ServiceLocator::GetLevelEditor().GUI();
@@ -148,5 +155,6 @@ void Engine::GameEngine::Run(const std::function<void()>& load)
 
 		const auto sleep_time = current_time + std::chrono::milliseconds(ms_per_frame) - std::chrono::high_resolution_clock::now();
 		std::this_thread::sleep_for(sleep_time);
+
 	}
 }

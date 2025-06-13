@@ -30,7 +30,7 @@ void GameOverScene::CreateScene(EGameOverType type, GameMode mode, int score)
 
 	if (type != EGameOverType::LOST)
 	{
-		text = type == EGameOverType::PLAYER1WON ? "Player 1 Won!" : "Player 2 Won!";
+		text = type == EGameOverType::PLAYER1WON ? "Player 1 Won" : "Player 2 Won";
 	}
 
 	auto gameOverText{ std::make_unique<GameObject>() };

@@ -94,7 +94,10 @@ void GameLoop::Start()
 
 	CreateLivesText();
 
-	SetInstruction("Kill all enemies");
+	if (m_Mode != GameMode::VS)
+		SetInstruction("Kill all enemies");
+	else
+		SetInstruction("Kill the other player");
 }
 
 void GameLoop::Update()
@@ -190,13 +193,13 @@ void GameLoop::OnNotify(Component* sender)
 				EndGame();
 				return;
 			}
-			
+
 
 			Destroy(player.pPlayer);
-
 			UpdateEnemies();
 
-			
+
+
 		}
 		else
 		{
@@ -207,9 +210,11 @@ void GameLoop::OnNotify(Component* sender)
 	else
 	{
 		auto enemyComponent{ sender->GetGameObject()->GetComponent<EnemyHealthComponent>() };
+		auto enemyBrain{ sender->GetGameObject()->GetComponent<EnemyBrain>() };
 		if (enemyComponent && enemyComponent->IsDead())
 		{
-			m_pScoreComponent->AddScore(100);
+			auto type{ enemyBrain->GetEnemyType() };
+			m_pScoreComponent->AddScore(type == EnemyType::TANK ? 100 : 250);
 			m_pSpawnedEnemies.remove(sender->GetGameObject());
 		}
 
@@ -227,14 +232,23 @@ void GameLoop::OnNotify(Component* sender)
 
 Engine::GameObject* const GameLoop::GetRandomPlayer() const
 {
-	const int randomPlayer{ static_cast<int>(std::rand() % m_pPlayers.size()) };
-	auto playerObject{ m_pPlayers[randomPlayer] };
-	while (playerObject.pPlayer == nullptr || playerObject.pPlayer->IsDestroyed())
+	std::vector<PlayerState> validPlayers;
+
+	for (const auto& player : m_pPlayers)
 	{
-		playerObject = m_pPlayers[static_cast<int>(std::rand() % m_pPlayers.size())];
+		if (player.pPlayer != nullptr && !player.pPlayer->IsDestroyed())
+		{
+			validPlayers.push_back(player);
+		}
 	}
 
-	return playerObject.pPlayer;
+	if (validPlayers.empty())
+	{
+		return nullptr;
+	}
+
+	int randomIndex = static_cast<int>(std::rand() % validPlayers.size());
+	return validPlayers[randomIndex].pPlayer;
 }
 
 std::string GameLoop::GetTypeName() const
@@ -271,7 +285,8 @@ void GameLoop::SpawnMaps()
 	m_pGraphs.resize(3);
 	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
 
-	for (int index{ 0 }; index < m_pMapObjects.size(); ++index)
+	const int mapLength{ static_cast<int>(m_pMapObjects.size()) };
+	for (int index{ 0 }; index < mapLength; ++index)
 	{
 		const std::string prefabName{ "MAP0" + std::to_string(index + 1) + ".json" };
 		const std::string graphName{ "map_0" + std::to_string(index + 1) + ".json" };
@@ -287,7 +302,8 @@ void GameLoop::SpawnMaps()
 
 		std::vector<Engine::GameObject*> playerSpawns;
 		playerSpawns.resize(2);
-		for (int childIndex{ 0 }; childIndex < playerSpawns.size(); ++childIndex)
+		const int spawnLength{ static_cast<int>(playerSpawns.size()) };
+		for (int childIndex{ 0 }; childIndex < spawnLength; ++childIndex)
 		{
 			const std::string childName{ "PLAYER" + std::to_string(childIndex + 1) + "_SPAWN" };
 			playerSpawns[childIndex] = m_pMapObjects[index]->GetTransform()->FindObjectByNameInChilderen(childName);
@@ -441,7 +457,8 @@ void GameLoop::SetInstruction(const std::string& instruction)
 
 void GameLoop::UpdateInstructionText()
 {
-	if (m_InstructionTextIndex < m_TargetInstructionText.size())
+	const int length{ static_cast<int>(m_TargetInstructionText.size()) };
+	if (m_InstructionTextIndex < length)
 	{
 		m_InstructionTextTimer -= Engine::Time::GetInstance().GetDeltaTime();
 		if (m_InstructionTextTimer <= 0.f)
@@ -458,7 +475,8 @@ void GameLoop::UpdateInstructionText()
 void GameLoop::NextMap()
 {
 	++m_CurrentMapIndex;
-	if (m_CurrentMapIndex >= m_pMapObjects.size())
+	const int mapLength{ static_cast<int>(m_pMapObjects.size()) };
+	if (m_CurrentMapIndex >= mapLength)
 	{
 		m_CurrentMapIndex = 0;
 	}
@@ -501,7 +519,7 @@ void GameLoop::SpawnPlayer(int index, const Engine::Vector2& pos, Engine::Scene*
 		m_pPlayers[index].pPlayer->GetTransform()->SetWorldLocation(pos);
 		m_pPlayers[index].pHealthComp = m_pPlayers[index].pPlayer->GetComponent<PlayerHealthComponent>();
 		m_pPlayers[index].pHealthComp->GetOnTakeDamage()->AddObserver(this);
-		m_pPlayers[index].Lives = 1;
+		m_pPlayers[index].Lives = 4;
 		m_pPlayers[index].pTextComp = m_pLivesTexts[index];
 		m_pPlayers[index].pTextComp->SetText("P" + std::to_string(index) + " Lives " + std::to_string(m_pPlayers[index].Lives));
 	}
@@ -511,7 +529,14 @@ bool GameLoop::IsGameOver()
 {
 	if (m_Mode == GameMode::SinglePlayer || m_Mode == GameMode::CoOp)
 	{
-		return std::all_of(m_pPlayers.begin(), m_pPlayers.end(), [](const PlayerState& player) { return player.Lives <= 0; });
+		if (m_Mode == GameMode::SinglePlayer)
+		{
+			return m_pPlayers[0].Lives <= 0;
+		}
+		else
+		{
+			return std::all_of(m_pPlayers.begin(), m_pPlayers.end(), [](const PlayerState& player) { return player.Lives <= 0; });
+		}
 	}
 	else if (m_Mode == GameMode::VS)
 	{
