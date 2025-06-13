@@ -91,9 +91,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /E /Y /I "$(SolutionDir)Data" "$(OutDir)..\Data"
-
-</Command>
+      <Command>xcopy /E /Y /I "$(SolutionDir)Data" "$(SolutionDir)$(Platform)\Data"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -117,9 +115,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /E /Y /I "$(SolutionDir)Data" "$(OutDir)..\Data"
-
-</Command>
+      <Command>xcopy /E /Y /I "$(SolutionDir)Data" "$(SolutionDir)$(Platform)\Data"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
