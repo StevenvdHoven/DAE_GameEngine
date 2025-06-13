@@ -1,18 +1,77 @@
-# Minigin
+# Link to Source Repository  
+https://github.com/StevenvdHoven/DAE_GameEngine
 
-Minigin is a very small project using [SDL2](https://www.libsdl.org/) and [glm](https://github.com/g-truc/glm) for 2D c++ game projects. It is in no way a game engine, only a barebone start project where everything sdl related has been set up. It contains glm for vector math, to aleviate the need to write custom vector and matrix classes.
+---
 
-[![Build Status](https://github.com/avadae/minigin/actions/workflows/msbuild.yml/badge.svg)](https://github.com/avadae/msbuild/actions)
-[![GitHub Release](https://img.shields.io/github/v/release/avadae/minigin?logo=github&sort=semver)](https://github.com/avadae/minigin/releases/latest)
+# DAE Game Engine
 
-# Goal
+The **DAE Game Engine** is a component-based, single-scene game engine inspired by Unity. It is designed for simplicity and flexibility, offering essential systems such as rendering, audio, scene management, and a built-in level editor.
 
-Minigin can/may be used as a start project for the exam assignment in the course [Programming 4](https://youtu.be/j96Oh6vzhmg) at DAE. In that assignment students need to recreate a popular 80's arcade game with a game engine they need to program themselves. During the course we discuss several game programming patterns, using the book '[Game Programming Patterns](https://gameprogrammingpatterns.com/)' by [Robert Nystrom](https://github.com/munificent) as reading material. 
+---
 
-# Disclaimer
+## Engine Overview
 
-Minigin is, despite perhaps the suggestion in its name, **not** a game engine. It is just a very simple sdl2 ready project with some of the scaffolding in place to get started. None of the patterns discussed in the course are used yet (except singleton which use we challenge during the course). It is up to the students to implement their own vision for their engine, apply patterns as they see fit, create their game as efficient as possible.
+This engine adopts a **component-based architecture** similar to Unity. Everything—from rendering to game logic—is handled via components attached to `GameObject` instances. The engine supports a **single active scene**, which is cleared before loading or creating a new one.
 
-# Use
+---
 
-Either download the latest release of this project and compile/run in visual studio or, since students need to have their work on github too, they can use this repository as a template (see the "Use this template" button at the top right corner). There is no point in forking this project.
+## Components
+
+Components are central to the engine and responsible for most runtime behaviors:
+
+- Each component is tied to a `GameObject` and cannot exist independently.
+- Supports serialization and deserialization—users must override the relevant functions.
+- Custom components can be created and registered for use at runtime or in the level editor.
+
+---
+
+## Level Editor
+
+Press `F4` at runtime to open the built-in **Level Editor**. With the editor, you can:
+
+- Create and organize `GameObjects`
+- Attach built-in or custom components (if registered through the `ComponentRegistry`)
+- Save and load scenes and prefabs
+
+---
+
+## Observer Pattern
+
+The engine uses a basic **observer-subject** system:
+
+- Subjects notify observers by passing a reference to a `GameObject`.
+- `nullptr` can be returned if it's guaranteed only one subject is being observed.
+- Best practice is to always return the originating `GameObject` for clarity and reliability.
+
+---
+
+## Factory Pattern & Component Registry
+
+The engine supports scene and prefab saving/loading using a **factory pattern** via the `ComponentRegistry`:
+
+- Register custom components to allow instantiation from serialized data
+- Enables the Level Editor to list and instantiate these components dynamically
+
+---
+
+## Threaded Sound System
+
+Audio is handled on a **dedicated thread** for performance:
+
+- Thread-safe with mutexes and condition variables
+- Sounds are centrally managed and identified via `SoundID`s
+- The audio thread processes queued sound events asynchronously
+
+---
+
+## Graph Editor & Pathfinding
+
+A lightweight **Graph Editor** and simple **PathFinding** system are included:
+
+- Rapidly create, edit, save, and load graph-based maps
+- Integrated pathfinding system for small-scale navigation
+- Designed for games requiring basic AI movement or grid-based logic
+
+
+
+
