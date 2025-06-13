@@ -33,12 +33,12 @@ GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pS
 	Component(pOwner),
 	m_RoundCount{ 0 },
 	m_pScoreComponent{ pScoreComponent },
-	m_CristalTrigger{nullptr},
-	m_SwitchMap{false},
+	m_CristalTrigger{ nullptr },
+	m_SwitchMap{ false },
 	m_SwitchDelay{ 0.f },
 	m_pMapObjects{},
-	m_GameMusic{ServiceLocator::GetSoundSystem().LoadMusic("tron-music.wav")},
-	m_CrystalClip{ServiceLocator::GetSoundSystem().LoadSound("crystalsound.wav")},
+	m_GameMusic{ ServiceLocator::GetSoundSystem().LoadMusic("tron-music.wav") },
+	m_CrystalClip{ ServiceLocator::GetSoundSystem().LoadSound("crystalsound.wav") },
 	m_TypingTickClip{ ServiceLocator::GetSoundSystem().LoadSound("typing_tick.wav") },
 	m_GameState{ GameState::Start },
 	m_Mode{ mode }
@@ -49,7 +49,7 @@ GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pS
 	startGameCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
 	startGameCommand->SetTriggerState(Engine::TriggerState::PRESSED);
 
-	auto keyboardStartCommand{std::make_unique<StartGameCommand>(this)};
+	auto keyboardStartCommand{ std::make_unique<StartGameCommand>(this) };
 	keyboardStartCommand->ChangeDeviceType(Engine::DeviceType::KEYBOARD);
 	keyboardStartCommand->SetTriggerState(Engine::TriggerState::PRESSED);
 
@@ -75,14 +75,14 @@ GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pS
 GameLoop::~GameLoop()
 {
 	ServiceLocator::GetSoundSystem().StopAll();
-	InputManager::GetInstance().Unbind(0,m_pSkipSceneCommand);
+	InputManager::GetInstance().Unbind(0, m_pSkipSceneCommand);
 	InputManager::GetInstance().Unbind(0, m_pStartGameCommand);
 	InputManager::GetInstance().Unbind(0, m_pKeyboardStartCommand);
 }
 
 void GameLoop::Start()
 {
-	
+
 	SpawnMaps();
 
 	m_CristalTrigger = SceneManager::GetInstance().GetActiveScene()->FindObjectByName("Cristal")->GetComponent<SimpleTriggerComponent>();
@@ -103,7 +103,7 @@ void GameLoop::Update()
 	if (m_SwitchMap)
 	{
 		m_SwitchDelay -= Engine::Time::GetInstance().GetDeltaTime();
-		if(m_SwitchDelay <= 0)
+		if (m_SwitchDelay <= 0)
 		{
 			m_SwitchMap = false;
 			NextMap();
@@ -180,10 +180,23 @@ void GameLoop::OnNotify(Component* sender)
 		auto& player{ *it };
 		player.Lives--;
 		player.pTextComp->SetText("P" + std::to_string(player.Index) + " Lives " + std::to_string(player.Lives));
+
+
 		if (player.Lives <= 0)
 		{
-			player.pPlayer->SetActive(false);
-			EndGame();
+
+			if (IsGameOver())
+			{
+				EndGame();
+				return;
+			}
+			
+
+			Destroy(player.pPlayer);
+
+			UpdateEnemies();
+
+			
 		}
 		else
 		{
@@ -215,7 +228,13 @@ void GameLoop::OnNotify(Component* sender)
 Engine::GameObject* const GameLoop::GetRandomPlayer() const
 {
 	const int randomPlayer{ static_cast<int>(std::rand() % m_pPlayers.size()) };
-	return m_pPlayers[randomPlayer].pPlayer;
+	auto playerObject{ m_pPlayers[randomPlayer] };
+	while (playerObject.pPlayer == nullptr || playerObject.pPlayer->IsDestroyed())
+	{
+		playerObject = m_pPlayers[static_cast<int>(std::rand() % m_pPlayers.size())];
+	}
+
+	return playerObject.pPlayer;
 }
 
 std::string GameLoop::GetTypeName() const
@@ -237,6 +256,15 @@ bool GameLoop::IsAllPlayersDead()
 	return false;
 }
 
+void GameLoop::UpdateEnemies()
+{
+	for (auto& enemy : m_pSpawnedEnemies)
+	{
+		EnemyBrain* pEnemyBrain{ enemy->GetComponent<EnemyBrain>() };
+		pEnemyBrain->RefreshPlayer();
+	}
+}
+
 void GameLoop::SpawnMaps()
 {
 	m_pMapObjects.resize(3);
@@ -245,7 +273,7 @@ void GameLoop::SpawnMaps()
 
 	for (int index{ 0 }; index < m_pMapObjects.size(); ++index)
 	{
-		const std::string prefabName{ "MAP0" + std::to_string(index + 1) + ".json"};
+		const std::string prefabName{ "MAP0" + std::to_string(index + 1) + ".json" };
 		const std::string graphName{ "map_0" + std::to_string(index + 1) + ".json" };
 
 		auto graph{ ServiceLocator::GetPathFinding().GetGraph(graphName) };
@@ -255,7 +283,7 @@ void GameLoop::SpawnMaps()
 		m_pGraphs[index] = std::move(graph);
 
 		Engine::EnginePrefabFactory::AddPrefabToScene(std::move(result), pScene);
-		m_pMapObjects[index]->GetTransform()->SetWorldLocation(Engine::Vector2{ 1000, 1000 });	
+		m_pMapObjects[index]->GetTransform()->SetWorldLocation(Engine::Vector2{ 1000, 1000 });
 
 		std::vector<Engine::GameObject*> playerSpawns;
 		playerSpawns.resize(2);
@@ -302,7 +330,7 @@ void GameLoop::CreateLivesText()
 void GameLoop::CreateSinglePlayerLoop()
 {
 	auto pScene{ SceneManager::GetInstance().GetActiveScene() };
-	
+
 	m_pMapObjects[0]->GetTransform()->SetWorldLocation(MAP_01_POSITION);
 
 	auto playerSpawn{ m_pPlayerSpawns[m_CurrentMapIndex].first };
@@ -344,7 +372,7 @@ void GameLoop::CreateCo_OpPlayerLoop()
 
 Engine::Vector2 GameLoop::GetRandomMapLocation() const
 {
-	auto pGraph{ m_pGraphs[m_CurrentMapIndex]};
+	auto pGraph{ m_pGraphs[m_CurrentMapIndex] };
 	const auto& allNodes{ pGraph->GetNodes() };
 
 	int index{ static_cast<int>(rand() % allNodes.size()) };
@@ -358,13 +386,13 @@ void GameLoop::EndGame()
 	switch (m_Mode)
 	{
 	case GameMode::SinglePlayer:
-		GameOverScene::CreateScene(EGameOverType::LOST,m_Mode,m_pScoreComponent->GetScore());
+		GameOverScene::CreateScene(EGameOverType::LOST, m_Mode, m_pScoreComponent->GetScore());
 		break;
 	case GameMode::CoOp:
 		GameOverScene::CreateScene(EGameOverType::LOST, m_Mode, m_pScoreComponent->GetScore());
 		break;
 	case GameMode::VS:
-		if (m_pPlayers[0].Lives > 0) GameOverScene::CreateScene(EGameOverType::PLAYER1WON,m_Mode);
+		if (m_pPlayers[0].Lives > 0) GameOverScene::CreateScene(EGameOverType::PLAYER1WON, m_Mode);
 		else GameOverScene::CreateScene(EGameOverType::PLAYER2WON, m_Mode);
 		break;
 	}
@@ -388,10 +416,10 @@ void GameLoop::NextRound()
 	m_pMapObjects[m_CurrentMapIndex]->GetTransform()->SetWorldLocation(1000, 1000);
 	m_SwitchMap = true;
 	m_SwitchDelay = 3.f;
-	
+
 	std::vector<std::string> possibleInstructions
 	{
-		"Ýou are not done yet",
+		"You are not done yet",
 		"Another round",
 		"Keep going",
 		"Dont give up",
@@ -452,12 +480,12 @@ void GameLoop::SpawnEnemies(Engine::Scene* const pScene)
 		}
 		spawnPositions.emplace_back(randomPos);
 	}
-	
+
 
 	for (const auto& spawnPos : spawnPositions)
 	{
 		auto type{ GetRandomEnemyType() };
-		auto enemy{ PrefabFactory::CreateEnemy(pScene,type,m_pGraphs[m_CurrentMapIndex],this)};
+		auto enemy{ PrefabFactory::CreateEnemy(pScene,type,m_pGraphs[m_CurrentMapIndex],this) };
 		enemy->GetTransform()->SetWorldLocation(spawnPos);
 		m_pSpawnedEnemies.emplace_front(enemy);
 		enemy->GetComponent<EnemyHealthComponent>()->OnTakeDamage().AddObserver(this);
@@ -469,14 +497,27 @@ void GameLoop::SpawnPlayer(int index, const Engine::Vector2& pos, Engine::Scene*
 	if (m_pPlayers[index].pPlayer == nullptr)
 	{
 		m_pPlayers[index].Index = index;
-		m_pPlayers[index].pPlayer = PrefabFactory::AddPlayer(pScene, index,m_Mode);
+		m_pPlayers[index].pPlayer = PrefabFactory::AddPlayer(pScene, index, m_Mode);
 		m_pPlayers[index].pPlayer->GetTransform()->SetWorldLocation(pos);
 		m_pPlayers[index].pHealthComp = m_pPlayers[index].pPlayer->GetComponent<PlayerHealthComponent>();
 		m_pPlayers[index].pHealthComp->GetOnTakeDamage()->AddObserver(this);
-		m_pPlayers[index].Lives = 4;
+		m_pPlayers[index].Lives = 1;
 		m_pPlayers[index].pTextComp = m_pLivesTexts[index];
 		m_pPlayers[index].pTextComp->SetText("P" + std::to_string(index) + " Lives " + std::to_string(m_pPlayers[index].Lives));
 	}
+}
+
+bool GameLoop::IsGameOver()
+{
+	if (m_Mode == GameMode::SinglePlayer || m_Mode == GameMode::CoOp)
+	{
+		return std::all_of(m_pPlayers.begin(), m_pPlayers.end(), [](const PlayerState& player) { return player.Lives <= 0; });
+	}
+	else if (m_Mode == GameMode::VS)
+	{
+		return std::any_of(m_pPlayers.begin(), m_pPlayers.end(), [](const PlayerState& player) { return player.Lives <= 0; });
+	}
+	return false;
 }
 
 int GameLoop::GetAmountOfEnemies() const

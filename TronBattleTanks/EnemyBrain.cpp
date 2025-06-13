@@ -36,7 +36,7 @@ void EnemyBrain::Start()
 
 void EnemyBrain::Update()
 {
-	if (!m_pTargetPlayer) {
+	if (!m_pTargetPlayer || m_pTargetPlayer->IsDestroyed()) {
 		m_pTargetPlayer = m_pGame->GetRandomPlayer();
 	}
 	else
@@ -66,6 +66,11 @@ void EnemyBrain::OnCollisionEnter(Engine::GameObject* other)
 			m_pGame->OnNotify(this);
 		}
 	}
+}
+
+void EnemyBrain::RefreshPlayer()
+{
+	m_pTargetPlayer = m_pGame->GetRandomPlayer();
 }
 
 //void EnemyBrain::Render() const

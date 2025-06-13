@@ -70,6 +70,8 @@ private:
 	bool IsPlayerEvent(Component* pSender, auto& iterator);
 	bool IsAllPlayersDead();
 
+	void UpdateEnemies();
+
 	void SpawnMaps();
 	void CreateStartText();
 	void CreateLivesText();
@@ -89,6 +91,8 @@ private:
 	void NextMap();
 	void SpawnEnemies(Engine::Scene* const pScene);
 	void SpawnPlayer(int index, const Engine::Vector2& pos, Engine::Scene* const pScene);
+
+	bool IsGameOver();
 
 	int GetAmountOfEnemies() const;
 	EnemyType GetRandomEnemyType() const;

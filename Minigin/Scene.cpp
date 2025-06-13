@@ -24,10 +24,18 @@ void Engine::Scene::Remove(GameObject* object)
 {
 	object->m_IsDestroyed = true;
 
+	auto childeren = object->GetTransform()->GetChildren();
+	for (auto& child : childeren)
+	{
+		Remove(child);
+	}
+
 	for (auto& pComponent : object->m_Components)
 	{
 		object->RemoveComponent(pComponent.get());
 	}
+
+	
 }
 
 void Engine::Scene::RemoveAll()

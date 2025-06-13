@@ -28,6 +28,8 @@ public:
 	
 	void OnCollisionEnter(Engine::GameObject* other) override;
 
+	void RefreshPlayer();
+
 	std::string GetTypeName() const override;
 private:
 	void CheckForShoot();
