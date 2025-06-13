@@ -31,6 +31,7 @@ void Engine::Transform::Update()
 void Engine::Transform::SetWorldLocation(const Engine::Vector2& pos)
 {
 	SetWorldLocation(pos.x, pos.y);
+
 }
 
 void Engine::Transform::SetWorldLocation(float x, float y)
@@ -200,7 +201,7 @@ void Engine::Transform::SetRotationDirty(bool flag)
 	}
 }
 
-void Engine::Transform::CaculateWorldPosition()
+void Engine::Transform::CaculateWorldPosition() const
 {
 	if (m_PositionIsDirty)
 	{

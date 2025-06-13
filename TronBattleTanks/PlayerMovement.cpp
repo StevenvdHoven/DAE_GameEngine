@@ -15,6 +15,7 @@ using namespace Engine;
 
 PlayerMovement::PlayerMovement(Engine::GameObject* pOwner, float speed):
 	Engine::Component{ pOwner },
+	m_Active{ true },
 	m_CurrentDirection{ 0.f, 0.f },
 	m_Body{ nullptr },
 	m_Speed{ speed }
@@ -29,7 +30,7 @@ void PlayerMovement::Start()
 
 void PlayerMovement::SetDirection(const Engine::Vector2& newDirection)
 {
-	if (m_CurrentDirection == newDirection)
+	if (m_CurrentDirection == newDirection || !m_Active)
 	{
 		return;
 	}
@@ -54,6 +55,18 @@ void PlayerMovement::SetDirection(const Engine::Vector2& newDirection)
 			GetGameObject()->GetTransform()->SetWorldRotation(rotation);
 		}
 	}
+}
+
+void PlayerMovement::EnableMovement()
+{
+	m_Active = true;
+}
+
+void PlayerMovement::DisableMovement()
+{
+	m_Active = false;
+	m_CurrentDirection = Vector2::Zero();
+	m_Body->Velocity = Vector2::Zero();
 }
 
 std::string PlayerMovement::GetTypeName() const

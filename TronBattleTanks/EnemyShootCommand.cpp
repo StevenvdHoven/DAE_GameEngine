@@ -26,6 +26,6 @@ void EnemyShootCommand::Execute()
 		const Vector2 direction{ GetActor()->GetTransform()->GetForward() };
 		const float orientation{ std::atan2(direction.y,direction.x) * (180.f / 3.14f) };
 		projectile->GetTransform()->SetLocalRotation(orientation);
-		projectileComponent->Launch(GetActor()->GetTransform()->GetParent(), direction);
+		projectileComponent->Launch(GetActor(), direction);
 	}
 }

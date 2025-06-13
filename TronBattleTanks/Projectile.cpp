@@ -50,6 +50,8 @@ void Projectile::Launch(Engine::GameObject* pSender, const Engine::Vector2& dire
 
 void Projectile::OnTriggerEnter(Engine::GameObject* other)
 {
+	if (m_pSender == nullptr) return;
+
 	auto pCollider = other->GetComponent<Collider>();
 	if (other == m_pSender 
 		|| pCollider == nullptr 

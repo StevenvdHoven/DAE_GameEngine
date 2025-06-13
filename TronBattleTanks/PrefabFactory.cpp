@@ -16,6 +16,7 @@
 #include "EnemyBrain.h"
 #include <fstream>
 #include <filesystem>
+#include "MenuComponent.h"
 
 #include "InputManager.h"
 #include "MovePlayerCommand.h"
@@ -36,7 +37,7 @@
 using namespace Engine;
 
 
-Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene, int playerIndex)
+Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene, int playerIndex, const GameMode mode)
 {
 	auto player{ std::make_unique<GameObject>() };
 		
@@ -114,8 +115,10 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene, int playerIndex
 	playerGun->GetTransform()->SetParent(playerGunRotator.get());
 	playerGun->GetTransform()->SetLocalPosition(Vector2{ 8.f, 0.f });
 
+	auto targetType{ mode == GameMode::SinglePlayer || mode == GameMode::CoOp ? EProjectileTarget::ENEMY : EProjectileTarget::PLAYER };
+
 	// Bind Input
-	auto shootCommand = std::make_unique<PlayerShootCommand>(playerGun.get(),Vector2{10,0}, [scene]() { return AddPlayerBullet(scene); });
+	auto shootCommand = std::make_unique<PlayerShootCommand>(playerGun.get(),Vector2{10,0}, [scene,targetType]() { return AddPlayerBullet(scene, targetType); });
 	shootCommand->ChangeDeviceType(Engine::DeviceType::GAMEPAD);
 	shootCommand->SetInputType(Engine::ValueCommand<float>::InputType::RIGHT_TRIGGER);
 	shootCommand->SetTriggerState(TriggerState::PRESSED);
@@ -124,7 +127,7 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene, int playerIndex
 
 	if (playerIndex == 0)
 	{
-		auto keyboardShoot{ std::make_unique<PlayerShootCommand>(playerGun.get(),Vector2{10,0}, [scene]() { return AddPlayerBullet(scene); }) };
+		auto keyboardShoot{ std::make_unique<PlayerShootCommand>(playerGun.get(),Vector2{10,0}, [scene,targetType]() { return AddPlayerBullet(scene,targetType); }) };
 		keyboardShoot->ChangeDeviceType(Engine::DeviceType::KEYBOARD);
 		keyboardShoot->SetTriggerState(TriggerState::PRESSED);
 		inputCommands.emplace_back(keyboardShoot.get());
@@ -133,11 +136,6 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene, int playerIndex
 	
 	player->AddComponent<InputUnbinder>(playerIndex,std::move(inputCommands));
 
-	
-
-
-	
-
 	auto rawPtr = player.get();
 	scene->Add(std::move(player));
 	scene->Add(std::move(playerGunRotator));
@@ -145,7 +143,7 @@ Engine::GameObject* PrefabFactory::AddPlayer(Scene* const scene, int playerIndex
 	return rawPtr;
 }
 
-Engine::GameObject* PrefabFactory::AddPlayerBullet(Engine::Scene* const scene)
+Engine::GameObject* PrefabFactory::AddPlayerBullet(Engine::Scene* const scene,const EProjectileTarget targetType)
 {
 	auto bullet{ std::make_unique<GameObject>() };
 	bullet->GetTransform()->SetLocalPosition(0, 0);
@@ -153,9 +151,10 @@ Engine::GameObject* PrefabFactory::AddPlayerBullet(Engine::Scene* const scene)
 	imageRender->ChangeImageAllignment(ImageAllignment::Centre);
 
 	auto bulletCollider = bullet->AddComponent<CircleCollider>(5.f,true);
+	LayerMask ignoreLayer{ targetType == EProjectileTarget::PLAYER ? LayerMask::Enemy : LayerMask::Player };
 	bulletCollider->SetLayerMask(LayerMask::Projectile);
 	bullet->AddComponent<PhysicsBody>();
-	bullet->AddComponent<Projectile>(EProjectileTarget::ENEMY,1, PROJECTILE_SPEED, 5, 1.f, LayerMask::Player);
+	bullet->AddComponent<Projectile>(targetType,1, PROJECTILE_SPEED, 5, 1.f, ignoreLayer);
 
 	auto rawPtr = bullet.get();
 	scene->Add(std::move(bullet));

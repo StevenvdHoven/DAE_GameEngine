@@ -24,7 +24,7 @@ void PlayerShootCommand::Execute(const float&)
 	if (projectileComponent)
 	{
 		Vector2 direction{ GetActor()->GetTransform()->GetForward() };
-		projectileComponent->Launch(GetActor()->GetTransform()->GetParent(), direction);
+		projectileComponent->Launch(GetActor()->GetTransform()->GetParent()->GetTransform()->GetParent(), direction);
 	}
 }
 

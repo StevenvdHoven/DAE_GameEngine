@@ -26,6 +26,9 @@ public:
 	void Launch(Engine::GameObject* pSender, const Engine::Vector2& direction);
 
 	void OnTriggerEnter(Engine::GameObject* other) override;
+
+	std::string GetTypeName() const override;
+
 private:
 	bool HandlePlayer(Engine::GameObject* other);
 	bool HandleEnemy(Engine::GameObject* other);
@@ -41,7 +44,6 @@ private:
 	Engine::GameObject* m_pSender;
 	Engine::PhysicsBody* m_pBody;
 
-	// Inherited via Component
-	std::string GetTypeName() const override;
+	
 };
 

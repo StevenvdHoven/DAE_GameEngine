@@ -5,6 +5,7 @@
 #include <forward_list>
 #include "StartGameCommand.h"
 #include "SoundSystem.h"
+#include <map>
 
 namespace Engine
 {
@@ -80,6 +81,9 @@ private:
 	void EndGame();
 	void NextRound();
 
+	void SetInstruction(const std::string& instruction);
+	void UpdateInstructionText();
+
 	void NextMap();
 	void SpawnEnemies(Engine::Scene* const pScene);
 	void SpawnPlayer(int index, const Engine::Vector2& pos, Engine::Scene* const pScene);
@@ -92,6 +96,7 @@ private:
 	float m_SwitchDelay;
 	int m_CurrentMapIndex;
 	std::vector<Engine::GameObject*> m_pMapObjects;
+	std::map<int, std::pair<Engine::GameObject*, Engine::GameObject*>> m_pPlayerSpawns;
 	std::vector<Engine::Graph*> m_pGraphs;
 	std::vector< PlayerState> m_pPlayers;
 	std::vector<Engine::TextRenderer*> m_pLivesTexts;
@@ -99,12 +104,19 @@ private:
 
 	Engine::TextRenderer* m_pStartText{ nullptr };
 
+	std::string m_InstructionText;
+	std::string m_TargetInstructionText;
+	int m_InstructionTextIndex{ 0 };
+	float m_InstructionTextTimer{ 0.0f };
+	Engine::TextRenderer* m_pInstructionText{ nullptr };
+
 	Engine::MusicClip m_GameMusic;
 	Engine::SoundClip m_CrystalClip;
+	Engine::SoundClip m_TypingTickClip;
 	GameState m_GameState;
 	GameMode m_Mode;
 	
-	void* m_pStarGameCommand;
+	void* m_pStartGameCommand;
 	void* m_pKeyboardStartCommand;
 	void* m_pSkipSceneCommand;
 

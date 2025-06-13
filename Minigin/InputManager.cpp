@@ -530,6 +530,10 @@ void Engine::InputManager::InputManagerImpl::Bind2DValue(int playerIndex, std::u
 
 void Engine::InputManager::InputManagerImpl::Unbind(int playerIndex, void* pCommand)
 {
+	if (m_Controllers.size() <= playerIndex)
+	{
+		return; // Invalid player index
+	}
 	m_Controllers[playerIndex]->Unbind(pCommand);
 }
 

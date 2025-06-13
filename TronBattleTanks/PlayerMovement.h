@@ -17,10 +17,15 @@ public:
 
 	void SetDirection(const Engine::Vector2& newDirection);
 
+	void EnableMovement();
+	void DisableMovement();
+
+
 	std::string GetTypeName() const override;
 private:
 	bool CheckDirection(const Engine::Vector2& newDirection) const;
 
+	bool m_Active;
 	Engine::Vector2 m_CurrentDirection;
 	Engine::PhysicsBody* m_Body;
 	float m_Speed;

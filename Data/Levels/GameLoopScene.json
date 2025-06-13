@@ -18,8 +18,8 @@
                         "y": -10.0
                     },
                     "collider_ignore_mask": [
-                        16,
                         8,
+                        16,
                         4,
                         1
                     ],
@@ -36,6 +36,35 @@
                 }
             },
             "game_object_name": "Cristal"
+        },
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "TextRenderer"
+            ],
+            "game_object_components": {
+                "TextRenderer": {
+                    "render_component_order": 0,
+                    "text_renderer_color": {
+                        "a": 255,
+                        "b": 255,
+                        "g": 0,
+                        "r": 0
+                    },
+                    "text_renderer_font": "tron-arcade.otf",
+                    "text_renderer_font_size": 18,
+                    "text_renderer_text": "kill all enemy tanks"
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": 30.0,
+                        "y": 100.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "INSTRUCTION_TEXT"
         }
     ],
     "scene_name": "GameLoopScene"

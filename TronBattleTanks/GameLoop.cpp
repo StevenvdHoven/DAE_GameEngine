@@ -17,10 +17,13 @@
 #include "EngineTime.h"
 #include <SDL.h>
 #include "SimpleTriggerComponent.h"
+#include "PlayerMovement.h"
+#include <ImageRenderer.h>
 
 #define MAP_01_POSITION Engine::Vector2{0, 72}
 #define PLAYER_01_POSITION Engine::Vector2{ 128, 188 }
 #define PLAYER_02_POSITION Engine::Vector2{ 228, 188 }
+#define TEXT_TYPE_RATE 0.1f
 
 #define PRESS_BUTTON 0x010
 
@@ -36,6 +39,7 @@ GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pS
 	m_pMapObjects{},
 	m_GameMusic{ServiceLocator::GetSoundSystem().LoadMusic("tron-music.wav")},
 	m_CrystalClip{ServiceLocator::GetSoundSystem().LoadSound("crystalsound.wav")},
+	m_TypingTickClip{ ServiceLocator::GetSoundSystem().LoadSound("typing_tick.wav") },
 	m_GameState{ GameState::Start },
 	m_Mode{ mode }
 {
@@ -54,7 +58,7 @@ GameLoop::GameLoop(Engine::GameObject* pOwner, GameMode mode, ScoreComponent* pS
 			GameOverScene::CreateScene(EGameOverType::LOST,m_Mode,0);
 		}) };
 
-	m_pStarGameCommand = startGameCommand.get();
+	m_pStartGameCommand = startGameCommand.get();
 	m_pKeyboardStartCommand = keyboardStartCommand.get();
 	m_pSkipSceneCommand = skipSceneCommand.get();
 
@@ -72,7 +76,7 @@ GameLoop::~GameLoop()
 {
 	ServiceLocator::GetSoundSystem().StopAll();
 	InputManager::GetInstance().Unbind(0,m_pSkipSceneCommand);
-	InputManager::GetInstance().Unbind(0, m_pStarGameCommand);
+	InputManager::GetInstance().Unbind(0, m_pStartGameCommand);
 	InputManager::GetInstance().Unbind(0, m_pKeyboardStartCommand);
 }
 
@@ -83,21 +87,51 @@ void GameLoop::Start()
 
 	m_CristalTrigger = SceneManager::GetInstance().GetActiveScene()->FindObjectByName("Cristal")->GetComponent<SimpleTriggerComponent>();
 	m_CristalTrigger->GetOnTrigger().AddObserver(this);
+
+	m_pInstructionText = SceneManager::GetInstance().GetActiveScene()->FindObjectByName("INSTRUCTION_TEXT")->GetComponent<TextRenderer>();
+
 	CreateStartText();
 
 	CreateLivesText();
+
+	SetInstruction("Kill all enemies");
 }
 
 void GameLoop::Update()
 {
+	UpdateInstructionText();
 	if (m_SwitchMap)
 	{
 		m_SwitchDelay -= Engine::Time::GetInstance().GetDeltaTime();
 		if(m_SwitchDelay <= 0)
 		{
-			m_SwitchMap = false;	
+			m_SwitchMap = false;
 			NextMap();
 			SpawnEnemies(SceneManager::GetInstance().GetActiveScene());
+
+			auto pPlayer1Spawn{ m_pPlayerSpawns[m_CurrentMapIndex].first };
+			auto pPlayer2Spawn{ m_pPlayerSpawns[m_CurrentMapIndex].second };
+
+
+			for (int index{ 0 }; index < m_pPlayers.size(); ++index)
+			{
+				if (m_pPlayers[index].pPlayer == nullptr) continue;
+				auto playerTransform{ m_pPlayers[index].pPlayer->GetTransform() };
+				if (index == 0)
+				{
+					playerTransform->SetWorldLocation(pPlayer1Spawn->GetTransform()->GetWorldLocation());
+				}
+				else if (index == 1)
+				{
+					playerTransform->SetWorldLocation(pPlayer2Spawn->GetTransform()->GetWorldLocation());
+				}
+
+				auto playerMovement{ m_pPlayers[index].pPlayer->GetComponent<PlayerMovement>() };
+				if (playerMovement)
+				{
+					playerMovement->EnableMovement();
+				}
+			}
 		}
 	}
 }
@@ -105,7 +139,7 @@ void GameLoop::Update()
 void GameLoop::BeginGame()
 {
 	m_GameState = GameState::Running;
-	InputManager::GetInstance().Unbind(0, m_pStarGameCommand);
+	InputManager::GetInstance().Unbind(0, m_pStartGameCommand);
 	InputManager::GetInstance().Unbind(0, m_pKeyboardStartCommand);
 
 	ServiceLocator::GetSoundSystem().PlayMusic(m_GameMusic);
@@ -123,6 +157,7 @@ void GameLoop::BeginGame()
 	}
 
 	m_pStartText->IsEnabled = false;
+	m_pInstructionText->IsEnabled = false;
 }
 
 void GameLoop::OnNotify(Component* sender)
@@ -221,6 +256,16 @@ void GameLoop::SpawnMaps()
 
 		Engine::EnginePrefabFactory::AddPrefabToScene(std::move(result), pScene);
 		m_pMapObjects[index]->GetTransform()->SetWorldLocation(Engine::Vector2{ 1000, 1000 });	
+
+		std::vector<Engine::GameObject*> playerSpawns;
+		playerSpawns.resize(2);
+		for (int childIndex{ 0 }; childIndex < playerSpawns.size(); ++childIndex)
+		{
+			const std::string childName{ "PLAYER" + std::to_string(childIndex + 1) + "_SPAWN" };
+			playerSpawns[childIndex] = m_pMapObjects[index]->GetTransform()->FindObjectByNameInChilderen(childName);
+			playerSpawns[childIndex]->GetComponent<Engine::ImageRenderer>()->IsEnabled = false;
+		}
+		m_pPlayerSpawns[index] = std::make_pair(playerSpawns[0], playerSpawns[1]);
 	}
 }
 
@@ -260,7 +305,9 @@ void GameLoop::CreateSinglePlayerLoop()
 	
 	m_pMapObjects[0]->GetTransform()->SetWorldLocation(MAP_01_POSITION);
 
-	SpawnPlayer(0, PLAYER_01_POSITION, pScene);
+	auto playerSpawn{ m_pPlayerSpawns[m_CurrentMapIndex].first };
+
+	SpawnPlayer(0, playerSpawn->GetTransform()->GetWorldLocation(), pScene);
 
 	SpawnEnemies(pScene);
 }
@@ -271,8 +318,12 @@ void GameLoop::CreatePVPPlayerLoop()
 
 	m_pMapObjects[0]->GetTransform()->SetWorldLocation(MAP_01_POSITION);
 
-	SpawnPlayer(0, PLAYER_01_POSITION, pScene);
-	SpawnPlayer(1, PLAYER_02_POSITION, pScene);
+	// Spawn players at their respective spawn points
+	auto playerSpawn1{ m_pPlayerSpawns[m_CurrentMapIndex].first };
+	auto playerSpawn2{ m_pPlayerSpawns[m_CurrentMapIndex].second };
+
+	SpawnPlayer(0, playerSpawn1->GetTransform()->GetWorldLocation(), pScene);
+	SpawnPlayer(1, playerSpawn2->GetTransform()->GetWorldLocation(), pScene);
 }
 
 void GameLoop::CreateCo_OpPlayerLoop()
@@ -281,15 +332,19 @@ void GameLoop::CreateCo_OpPlayerLoop()
 
 	m_pMapObjects[0]->GetTransform()->SetWorldLocation(MAP_01_POSITION);
 
-	SpawnPlayer(0, PLAYER_01_POSITION, pScene);
-	SpawnPlayer(1, PLAYER_02_POSITION, pScene);
+	// Spawn players at their respective spawn points
+	auto playerSpawn1{ m_pPlayerSpawns[m_CurrentMapIndex].first };
+	auto playerSpawn2{ m_pPlayerSpawns[m_CurrentMapIndex].second };
+
+	SpawnPlayer(0, playerSpawn1->GetTransform()->GetWorldLocation(), pScene);
+	SpawnPlayer(1, playerSpawn2->GetTransform()->GetWorldLocation(), pScene);
 
 	SpawnEnemies(pScene);
 }
 
 Engine::Vector2 GameLoop::GetRandomMapLocation() const
 {
-	auto pGraph{ ServiceLocator::GetPathFinding().GetGraph("map_01.json") };
+	auto pGraph{ m_pGraphs[m_CurrentMapIndex]};
 	const auto& allNodes{ pGraph->GetNodes() };
 
 	int index{ static_cast<int>(rand() % allNodes.size()) };
@@ -299,7 +354,7 @@ Engine::Vector2 GameLoop::GetRandomMapLocation() const
 
 void GameLoop::EndGame()
 {
-	InputManager::GetInstance().Unbind(0, m_pStarGameCommand);
+	InputManager::GetInstance().Unbind(0, m_pStartGameCommand);
 	switch (m_Mode)
 	{
 	case GameMode::SinglePlayer:
@@ -317,9 +372,59 @@ void GameLoop::EndGame()
 
 void GameLoop::NextRound()
 {
+	for (auto& player : m_pPlayers)
+	{
+		if (player.pPlayer)
+		{
+			auto playerMovement{ player.pPlayer->GetComponent<PlayerMovement>() };
+			if (playerMovement)
+			{
+				playerMovement->DisableMovement();
+			}
+		}
+	}
+
+	m_RoundCount++;
 	m_pMapObjects[m_CurrentMapIndex]->GetTransform()->SetWorldLocation(1000, 1000);
 	m_SwitchMap = true;
 	m_SwitchDelay = 3.f;
+	
+	std::vector<std::string> possibleInstructions
+	{
+		"Ýou are not done yet",
+		"Another round",
+		"Keep going",
+		"Dont give up",
+	};
+	int randomIndex{ static_cast<int>(std::rand() % possibleInstructions.size()) };
+	SetInstruction(possibleInstructions[randomIndex]);
+}
+
+void GameLoop::SetInstruction(const std::string& instruction)
+{
+	m_InstructionText = "";
+	m_TargetInstructionText = instruction;
+	m_InstructionTextIndex = 0;
+
+	m_pInstructionText->IsEnabled = true;
+	m_pInstructionText->SetText(" ");
+	m_InstructionTextTimer = TEXT_TYPE_RATE;
+}
+
+void GameLoop::UpdateInstructionText()
+{
+	if (m_InstructionTextIndex < m_TargetInstructionText.size())
+	{
+		m_InstructionTextTimer -= Engine::Time::GetInstance().GetDeltaTime();
+		if (m_InstructionTextTimer <= 0.f)
+		{
+			m_InstructionText += m_TargetInstructionText[m_InstructionTextIndex];
+			ServiceLocator::GetSoundSystem().PlaySound(m_TypingTickClip);
+			m_pInstructionText->SetText(m_InstructionText);
+			m_InstructionTextIndex++;
+			m_InstructionTextTimer = TEXT_TYPE_RATE;
+		}
+	}
 }
 
 void GameLoop::NextMap()
@@ -353,10 +458,12 @@ void GameLoop::SpawnEnemies(Engine::Scene* const pScene)
 
 void GameLoop::SpawnPlayer(int index, const Engine::Vector2& pos, Engine::Scene* const pScene)
 {
+	
+
 	if (m_pPlayers[index].pPlayer == nullptr)
 	{
 		m_pPlayers[index].Index = index;
-		m_pPlayers[index].pPlayer = PrefabFactory::AddPlayer(pScene, index);
+		m_pPlayers[index].pPlayer = PrefabFactory::AddPlayer(pScene, index,m_Mode);
 		m_pPlayers[index].pPlayer->GetTransform()->SetWorldLocation(pos);
 		m_pPlayers[index].pHealthComp = m_pPlayers[index].pPlayer->GetComponent<PlayerHealthComponent>();
 		m_pPlayers[index].pHealthComp->GetOnTakeDamage()->AddObserver(this);

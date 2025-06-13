@@ -1705,6 +1705,58 @@
                 }
             },
             "game_object_name": "wall58"
+        },
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "ImageRenderer"
+            ],
+            "game_object_components": {
+                "ImageRenderer": {
+                    "image_allignment": 8,
+                    "image_path": "player_body.png",
+                    "image_pivot": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "render_component_order": 0
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": 175.0,
+                        "y": 220.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "PLAYER1_SPAWN"
+        },
+        {
+            "children": [],
+            "game_object_component_types": [
+                "TransformComponent",
+                "ImageRenderer"
+            ],
+            "game_object_components": {
+                "ImageRenderer": {
+                    "image_allignment": 8,
+                    "image_path": "player_02_body.png",
+                    "image_pivot": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "render_component_order": 0
+                },
+                "TransformComponent": {
+                    "transform_local_pos": {
+                        "x": 305.0,
+                        "y": 220.0
+                    },
+                    "transform_local_rot": 0.0
+                }
+            },
+            "game_object_name": "PLAYER2_SPAWN"
         }
     ],
     "game_object_component_types": [

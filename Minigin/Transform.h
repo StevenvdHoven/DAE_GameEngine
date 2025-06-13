@@ -13,7 +13,15 @@ namespace Engine
 
 		void Update() override;
 
-		Engine::Vector2 GetWorldLocation() const { return m_WorldPosition; }
+		Engine::Vector2 GetWorldLocation() const 
+		{ 
+			if (m_PositionIsDirty)
+			{
+				CaculateWorldPosition();
+				m_PositionIsDirty = false;
+			}
+			return m_WorldPosition; 
+		}
 		Engine::Vector2 GetLocalPosition() const { return m_LocalPosition; }
 
 		void SetWorldLocation(const Engine::Vector2& pos);
@@ -47,18 +55,18 @@ namespace Engine
 		void SetPositionDirty(bool flag = true);
 		void SetRotationDirty(bool flag = true);
 
-		void CaculateWorldPosition();
+		void CaculateWorldPosition() const;
 		void CaculateWorldRotation();
 
 		void AddChild(GameObject* pChild);
 		void RemoveChild(GameObject* pChild);
 		bool IsChild(GameObject* pChild) const;
 
-		bool m_PositionIsDirty;
-		bool m_RotationIsDirty;
+		mutable bool m_PositionIsDirty;
+		mutable bool m_RotationIsDirty;
 
 		Engine::Vector2 m_LocalPosition;
-		Engine::Vector2 m_WorldPosition;
+		mutable Engine::Vector2 m_WorldPosition;
 
 		float m_LocalRotation;
 		float m_WorldRotation;
