@@ -31,7 +31,8 @@ std::string Scoreboard::GetTypeName() const
 void Scoreboard::LoadTextComponents()
 {
 	m_pTextComponents.resize(5);
-	for (int index{ 0 }; index < m_pTextComponents.size(); ++index)
+	const int length{ static_cast<int>(m_pTextComponents.size()) };
+	for (int index{ 0 }; index < length; ++index)
 	{
 		auto textName{ std::to_string(index) + "-RANKTEXT" };
 		m_pTextComponents[index] = GetGameObject()->GetTransform()->FindObjectByNameInChilderen(textName)->GetComponent<Engine::TextRenderer>();

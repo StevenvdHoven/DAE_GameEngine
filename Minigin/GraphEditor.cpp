@@ -382,6 +382,7 @@ Engine::GraphNode* Engine::Graph::GetNodeByIndex(int index)
 
 std::unique_ptr<Engine::Graph> Engine::Graph::LoadGraph(const std::string& filePath)
 {
+	const std::string fullPath = "../Data/" + filePath;
 	std::ifstream file(filePath);
 	if (!file.is_open())
 	{

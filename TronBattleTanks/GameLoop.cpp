@@ -112,8 +112,8 @@ void GameLoop::Update()
 			auto pPlayer1Spawn{ m_pPlayerSpawns[m_CurrentMapIndex].first };
 			auto pPlayer2Spawn{ m_pPlayerSpawns[m_CurrentMapIndex].second };
 
-
-			for (int index{ 0 }; index < m_pPlayers.size(); ++index)
+			const int length{ static_cast<int>(m_pPlayers.size()) };
+			for (int index{ 0 }; index < length; ++index)
 			{
 				if (m_pPlayers[index].pPlayer == nullptr) continue;
 				auto playerTransform{ m_pPlayers[index].pPlayer->GetTransform() };

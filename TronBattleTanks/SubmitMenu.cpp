@@ -50,15 +50,16 @@ void SubmitMenu::OnNavigation(const Engine::Vector2& navigationDirection)
 	}
 
 
-	for (size_t i = 0; i < m_CharSlots.size(); ++i)
+	const int length{ static_cast<int>(m_CharSlots.size()) };
+	for (int index{ 0 }; index < length; ++index)
 	{
-		if (i == m_CurrentSelectedText)
+		if (index == m_CurrentSelectedText)
 		{
-			m_CharSlots[i].TextSlot->Color() = Engine::Color{ 255, 0, 0, 255 };
+			m_CharSlots[index].TextSlot->Color() = Engine::Color{ 255, 0, 0, 255 };
 		}
 		else
 		{
-			m_CharSlots[i].TextSlot->Color() = Engine::Color{ 0, 0, 255, 255 };
+			m_CharSlots[index].TextSlot->Color() = Engine::Color{ 0, 0, 255, 255 };
 		}
 	}
 

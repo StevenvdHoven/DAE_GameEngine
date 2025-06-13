@@ -105,9 +105,10 @@ void GameOverMenuComponent::Start()
 void GameOverMenuComponent::NavigateMenu(const Engine::Vector2& direction)
 {
 	m_CurrentSelectedText += static_cast<int>(direction.y);
-	if (m_CurrentSelectedText >= m_pTextComponents.size()) m_CurrentSelectedText = 0;
+	const int length{ static_cast<int>(m_pTextComponents.size()) };
+	if (m_CurrentSelectedText >= length) m_CurrentSelectedText = 0;
 
-	for (int index{ 0 }; index < m_pTextComponents.size(); ++index)
+	for (int index{ 0 }; index < length; ++index)
 	{
 		if (m_CurrentSelectedText == index)
 		{
