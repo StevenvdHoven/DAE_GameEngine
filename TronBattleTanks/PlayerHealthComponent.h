@@ -2,6 +2,7 @@
 #include "Component.h"
 #include <memory>
 #include "Observers.h"
+#include "SoundSystem.h"
 
 
 
@@ -17,7 +18,7 @@ public:
 
 private:
 	std::unique_ptr<Engine::Subject> m_OnTakeDamage;
-
+	Engine::SoundClip m_ExplosionSound;
 	
 };
 

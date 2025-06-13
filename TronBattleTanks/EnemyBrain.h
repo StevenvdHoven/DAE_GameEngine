@@ -26,6 +26,8 @@ public:
 	void Start() override;
 	void Update() override;
 	
+	void OnCollisionEnter(Engine::GameObject* other) override;
+
 	std::string GetTypeName() const override;
 private:
 	void CheckForShoot();

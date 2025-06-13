@@ -440,16 +440,24 @@ void GameLoop::NextMap()
 void GameLoop::SpawnEnemies(Engine::Scene* const pScene)
 {
 	m_pSpawnedEnemies.clear();
-	const std::vector<Engine::Vector2> spawnPositions
+	std::vector<Engine::Vector2> spawnPositions;
+	int amountOfEnemies{ GetAmountOfEnemies() };
+	for (int i{ 0 }; i < amountOfEnemies; ++i)
 	{
-		Engine::Vector2{80,330},
-		Engine::Vector2{222,430},
-		Engine::Vector2{400,242}
-	};
+		Engine::Vector2 randomPos{ GetRandomMapLocation() };
+		while (std::find(spawnPositions.begin(), spawnPositions.end(), randomPos) != spawnPositions.end())
+		{
+			// If the position is already taken, get a new random position
+			randomPos = GetRandomMapLocation();
+		}
+		spawnPositions.emplace_back(randomPos);
+	}
+	
 
 	for (const auto& spawnPos : spawnPositions)
 	{
-		auto enemy{ PrefabFactory::CreateEnemy(pScene,EnemyType::TANK,m_pGraphs[m_CurrentMapIndex],this)};
+		auto type{ GetRandomEnemyType() };
+		auto enemy{ PrefabFactory::CreateEnemy(pScene,type,m_pGraphs[m_CurrentMapIndex],this)};
 		enemy->GetTransform()->SetWorldLocation(spawnPos);
 		m_pSpawnedEnemies.emplace_front(enemy);
 		enemy->GetComponent<EnemyHealthComponent>()->OnTakeDamage().AddObserver(this);
@@ -458,8 +466,6 @@ void GameLoop::SpawnEnemies(Engine::Scene* const pScene)
 
 void GameLoop::SpawnPlayer(int index, const Engine::Vector2& pos, Engine::Scene* const pScene)
 {
-	
-
 	if (m_pPlayers[index].pPlayer == nullptr)
 	{
 		m_pPlayers[index].Index = index;
@@ -471,4 +477,41 @@ void GameLoop::SpawnPlayer(int index, const Engine::Vector2& pos, Engine::Scene*
 		m_pPlayers[index].pTextComp = m_pLivesTexts[index];
 		m_pPlayers[index].pTextComp->SetText("P" + std::to_string(index) + " Lives " + std::to_string(m_pPlayers[index].Lives));
 	}
+}
+
+int GameLoop::GetAmountOfEnemies() const
+{
+	int count{ 0 };
+	if (m_RoundCount < 3)
+	{
+		count = 2;
+	}
+	else if (m_RoundCount < 6)
+	{
+		count = 3;
+	}
+	else
+	{
+		count = 5;
+	}
+	return count;
+}
+
+EnemyType GameLoop::GetRandomEnemyType() const
+{
+	int percentage{ 0 };
+	if (m_RoundCount < 3)
+	{
+		percentage = 50;
+	}
+	else if (m_RoundCount < 6)
+	{
+		percentage = 70;
+	}
+	else
+	{
+		percentage = 90;
+	}
+	int randomValue{ static_cast<int>(std::rand() % 100) };
+	return randomValue < percentage ? EnemyType::TANK : EnemyType::RECOGNIZER;
 }

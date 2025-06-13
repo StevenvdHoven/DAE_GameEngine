@@ -5,6 +5,7 @@
 #include <forward_list>
 #include "StartGameCommand.h"
 #include "SoundSystem.h"
+//GetRandomEnemyType#include "EnemyBrain.h"
 #include <map>
 
 namespace Engine
@@ -17,6 +18,7 @@ namespace Engine
 }
 
 enum struct GameMode;
+enum struct EnemyType;
 class ScoreComponent;
 class PlayerHealthComponent;
 class SimpleTriggerComponent;
@@ -87,6 +89,9 @@ private:
 	void NextMap();
 	void SpawnEnemies(Engine::Scene* const pScene);
 	void SpawnPlayer(int index, const Engine::Vector2& pos, Engine::Scene* const pScene);
+
+	int GetAmountOfEnemies() const;
+	EnemyType GetRandomEnemyType() const;
 
 	int m_RoundCount;
 	ScoreComponent* m_pScoreComponent;

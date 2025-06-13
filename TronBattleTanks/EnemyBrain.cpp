@@ -8,6 +8,7 @@
 #include "SceneManager.h"
 #include "Collider.h"
 #include "Renderer.h"
+#include "PlayerHealthComponent.h"
 
 using namespace Engine;
 
@@ -49,6 +50,21 @@ void EnemyBrain::Update()
 
 		if(m_EnemyType == EnemyType::TANK)
 			CheckForShoot();
+	}
+}
+
+void EnemyBrain::OnCollisionEnter(Engine::GameObject* other)
+{
+  	if (m_EnemyType == EnemyType::TANK) return;
+
+	if (other == m_pTargetPlayer)
+	{
+		auto healthComponent{ other->GetComponent<PlayerHealthComponent>() };
+		if (healthComponent)
+		{
+			healthComponent->TakeDamage(1);
+			m_pGame->OnNotify(this);
+		}
 	}
 }
 

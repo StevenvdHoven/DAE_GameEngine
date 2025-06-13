@@ -4,6 +4,10 @@
         "score_entry_score": 5600
     },
     {
+        "score_entry_name": "TWA",
+        "score_entry_score": 2500
+    },
+    {
         "score_entry_name": "MET",
         "score_entry_score": 2400
     },
@@ -13,10 +17,6 @@
     },
     {
         "score_entry_name": "CDW",
-        "score_entry_score": 2000
-    },
-    {
-        "score_entry_name": "BDB",
         "score_entry_score": 2000
     }
 ]
