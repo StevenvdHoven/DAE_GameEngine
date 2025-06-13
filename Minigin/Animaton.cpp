@@ -41,7 +41,7 @@ void Engine::Animation::Update()
         {
             m_AnimationTimer = 0;
             ++m_AnimationIndex;
-            if (m_AnimationIndex >= m_AnimationImages.size())
+            if (m_AnimationIndex >= static_cast<int>(m_AnimationImages.size()))
             {
                 if (m_Loop) m_AnimationIndex = 0;
                 else
@@ -85,7 +85,8 @@ void Engine::Animation::SetSequence(std::vector<std::string>&& filePath)
     m_AnimationImages.clear();
     m_AnimationImages.resize(m_AnimationImagePaths.size());
 
-    for (int index{ 0 }; index < m_AnimationImages.size(); ++index)
+	const int length{ static_cast<int>(m_AnimationImagePaths.size()) };
+    for (int index{ 0 }; index <  length; ++index)
     {
         m_AnimationImages[index] = ResourceManager::GetInstance().LoadTexture(m_AnimationImagePaths[index]);
     }

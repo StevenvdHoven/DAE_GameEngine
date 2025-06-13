@@ -69,7 +69,8 @@ const std::list<NavigationNode> Engine::PathFinding::FindPath(Graph* const graph
 			});
 		currentNode = nextNode;
 		++iteration;
-		if (iteration > graph->GetNodes().size())
+		const int length{ static_cast<int>(graph->GetNodes().size()) };
+		if (iteration > length)
 		{
 			return {};
 		}
